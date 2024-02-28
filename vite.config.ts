@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Eslint from 'vite-plugin-eslint'
 
 const pathSrc = path.resolve(__dirname, 'src')
 
@@ -36,5 +37,6 @@ export default defineConfig({
       ],
       dts: path.resolve(pathSrc, 'components.d.ts'),
     }),
+    Eslint(),
   ],
 })

@@ -2,13 +2,13 @@
   <div class="xy-tabs">
     <el-scrollbar height="100%">
       <div
-        class="xy-tabs__item"
-        :class="{ 'is-active': index === activeIndex }"
         v-for="(item, index) in list"
         :key="index"
+        class="xy-tabs__item"
+        :class="{ 'is-active': index === activeIndex }"
         @click="handleClick(item, index)"
       >
-        <Icon :icon="item.icon" class="xy-tabs__item--icon" />
+        <Icon class="xy-tabs__item--icon" :icon="item.icon" />
         <span class="xy-tabs__item--label">{{ item.label }}</span>
       </div>
     </el-scrollbar>

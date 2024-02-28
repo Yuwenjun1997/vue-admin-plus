@@ -1,13 +1,13 @@
 <template>
-  <el-sub-menu :index="menu.path" v-if="hasChild">
+  <el-sub-menu v-if="hasChild" :index="menu.path">
     <template #title>
-      <Icon :icon="menu.icon" class="xy-menu__item--icon" />
+      <Icon class="xy-menu__item--icon" :icon="menu.icon" />
       <span>{{ menu.title }}</span>
     </template>
     <MenuChildren v-for="_menu in menu.children" :key="_menu.path" :menu="_menu" />
   </el-sub-menu>
-  <el-menu-item :index="menu.path" v-else>
-    <Icon :icon="menu.icon" class="xy-menu__item--icon" />
+  <el-menu-item v-else :index="menu.path">
+    <Icon class="xy-menu__item--icon" :icon="menu.icon" />
     <span>{{ menu.title }}</span>
   </el-menu-item>
 </template>
@@ -33,7 +33,6 @@ export default defineComponent({
     const hasChild = computed(() => menu.value.children && menu.value.children.length > 0)
 
     return {
-      menu,
       hasChild,
     }
   },

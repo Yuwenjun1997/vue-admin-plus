@@ -1,6 +1,6 @@
 <template>
   <el-breadcrumb separator=">">
-    <el-breadcrumb-item :to="{ path: '/' }" v-for="item in breadcrumbs" :key="item.path">
+    <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.path" :to="{ path: '/' }">
       <template #default>
         <div class="flex items-center">
           <Icon :icon="item.icon" />

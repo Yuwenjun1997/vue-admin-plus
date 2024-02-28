@@ -1,5 +1,5 @@
 <template>
-  <el-config-provider :size="size" :z-index="zIndex" :locale="zhCn">
+  <el-config-provider :locale="zhCn" :size="size" :z-index="zIndex">
     <Layout />
   </el-config-provider>
 </template>

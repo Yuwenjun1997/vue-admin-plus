@@ -1,6 +1,6 @@
 <template>
-  <el-tabs type="card" class="xy-active-tags" closable v-model="activeTab">
-    <el-tab-pane :label="item.title" :name="item.name" v-for="item in list" :key="item.name"></el-tab-pane>
+  <el-tabs v-model="activeTab" class="xy-active-tags" closable type="card">
+    <el-tab-pane v-for="item in list" :key="item.name" :label="item.title" :name="item.name" />
   </el-tabs>
 </template>
 

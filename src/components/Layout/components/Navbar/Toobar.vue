@@ -1,21 +1,21 @@
 <template>
   <div class="xy-toolbar">
-    <el-tooltip effect="dark" content="全屏">
+    <el-tooltip content="全屏" effect="dark">
       <Icon class="xy-toolbar__icon" icon="material-symbols:fullscreen" />
     </el-tooltip>
-    <el-tooltip effect="dark" content="退出全屏">
+    <el-tooltip content="退出全屏" effect="dark">
       <Icon class="xy-toolbar__icon" icon="material-symbols:fullscreen-exit" />
     </el-tooltip>
-    <el-tooltip effect="dark" content="刷新">
+    <el-tooltip content="刷新" effect="dark">
       <Icon class="xy-toolbar__icon" icon="material-symbols:refresh" />
     </el-tooltip>
-    <el-tooltip effect="dark" content="消息通知">
+    <el-tooltip content="消息通知" effect="dark">
       <Icon class="xy-toolbar__icon" icon="line-md:bell-loop" />
     </el-tooltip>
-    <el-tooltip effect="dark" content="主题设置">
+    <el-tooltip content="主题设置" effect="dark">
       <Icon class="xy-toolbar__icon" icon="line-md:discord" />
     </el-tooltip>
-    <el-tooltip effect="dark" content="访问GitHub">
+    <el-tooltip content="访问GitHub" effect="dark">
       <Icon class="xy-toolbar__icon" icon="line-md:github-loop" />
     </el-tooltip>
   </div>

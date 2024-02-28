@@ -1,8 +1,8 @@
 <template>
   <el-container class="xy-layout__container">
-    <el-aside width="260px" class="xy-layout__aside">
+    <el-aside class="xy-layout__aside" width="260px">
       <div class="xy-logo">
-        <div class="xy-logo--pic"><img src="/vite.svg" alt="" /></div>
+        <div class="xy-logo--pic"><img alt="" src="/vite.svg" /></div>
         <div class="xy-logo-right">
           <div class="xy-logo--label">Vue Admin Plus</div>
           <el-divider>首页</el-divider>
@@ -23,7 +23,7 @@
         <ActiveTags />
       </el-header>
       <el-main class="xy-layout__main">
-        <el-scrollbar height="100%"> </el-scrollbar>
+        <el-scrollbar height="100%" />
       </el-main>
     </el-container>
   </el-container>
