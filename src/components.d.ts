@@ -30,6 +30,7 @@ declare module 'vue' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Index: typeof import('./components/Layout/Index.vue')['default']
+    Layout: typeof import('./components/Layout/index.vue')['default']
     LayoutDefault: typeof import('./components/Layout/LayoutDefault.vue')['default']
     LeftTabs: typeof import('./components/Layout/components/LeftTabs.vue')['default']
     MenuChildren: typeof import('./components/Layout/components/Menu/MenuChildren.vue')['default']

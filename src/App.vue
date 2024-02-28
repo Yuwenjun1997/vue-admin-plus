@@ -1,11 +1,11 @@
 <template>
   <el-config-provider :locale="zhCn" :size="size" :z-index="zIndex">
-    <Layout />
+    <router-view />
   </el-config-provider>
 </template>
 
 <script lang="ts" setup>
-import Layout from '@/components/Layout/Index.vue'
+// import Layout from '@/components/Layout/Index.vue'
 // import { useDark, useToggle } from '@vueuse/core'
 
 import zhCn from 'element-plus/es/locale/lang/zh-cn'

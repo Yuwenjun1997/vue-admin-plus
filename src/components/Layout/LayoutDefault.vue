@@ -23,7 +23,9 @@
         <ActiveTags />
       </el-header>
       <el-main class="xy-layout__main">
-        <el-scrollbar height="100%" />
+        <el-scrollbar height="100%">
+          <router-view />
+        </el-scrollbar>
       </el-main>
     </el-container>
   </el-container>
