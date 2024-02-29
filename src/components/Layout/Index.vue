@@ -13,11 +13,14 @@
 <script setup lang="ts">
 import LayoutDefault from './LayoutDefault.vue'
 import ThemeSetting from './components/ThemeSetting/index.vue'
-
 import { useTheme } from '@/store/theme'
 const theme = useTheme()
 
 const _watermarkContent = computed(() => (theme.showWatermark ? theme.watermarkContent : ''))
+
+onMounted(() => {
+  theme.loadTheme()
+})
 </script>
 
 <style scoped>

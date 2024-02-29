@@ -1,6 +1,6 @@
-import { ThemeColorMap } from '@/types/theme'
+import { ThemeColorMap, ThemeConfig } from '@/types/theme'
 
-export const themeColorMap: ThemeColorMap = {
+const themeColorMap: ThemeColorMap = {
   light: [
     {
       key: '--el-color-primary',
@@ -90,3 +90,77 @@ export const themeColorMap: ThemeColorMap = {
     },
   ],
 }
+
+const defaultTheme: ThemeConfig = {
+  /**
+   * 主题设置弹窗
+   */
+  showThemeSetting: false,
+
+  /**
+   * 主题颜色
+   */
+  themeColor: '#409eff',
+
+  /**
+   * 菜单是否收起
+   */
+  menuCollapse: false,
+
+  /**
+   * 菜单宽度
+   */
+  menuWidth: 240,
+
+  /**
+   * 显示菜单
+   */
+  showMenu: true,
+
+  /**
+   * 分栏宽度
+   */
+  subfieldWidth: 60,
+
+  /**
+   * 显示分栏
+   */
+  showSubfield: true,
+
+  /**
+   * 显示标签栏
+   */
+  showNavbarTags: true,
+
+  /**
+   * 显示标签栏图标
+   */
+  showNavbarTagsIcon: true,
+
+  /**
+   * 显示工具栏
+   */
+  hideToolbar: true,
+
+  /**
+   * 显示面包屑
+   */
+  showBreadcrumb: true,
+
+  /**
+   * 显示水印
+   */
+  showWatermark: false,
+
+  /**
+   * 水印内容
+   */
+  watermarkContent: 'vue admin plus',
+
+  /**
+   * 主题颜色
+   */
+  themeColorMap: themeColorMap,
+}
+
+export default defaultTheme

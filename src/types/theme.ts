@@ -77,6 +77,8 @@ export type ThemeColorProperty =
   | '--el-color-primary-light-8'
   | '--el-color-primary-light-9'
   | '--el-color-primary-dark-2'
+  | '--xy-layout-navbar-tags-height'
+  | '--xy-layout-aside-left-width'
 
 export interface ColorMap {
   key: ThemeColorProperty

@@ -7,7 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ActiveTags: typeof import('./components/Layout/components/ActiveTags/index.vue')['default']
     Breadcrumb: typeof import('./components/Layout/components/Navbar/Breadcrumb.vue')['default']
     Dropdown: typeof import('./components/Layout/components/Navbar/Dropdown.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
@@ -39,7 +38,6 @@ declare module 'vue' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElWatermark: typeof import('element-plus/es')['ElWatermark']
-    Index: typeof import('./components/Layout/Index.vue')['default']
     Layout: typeof import('./components/Layout/index.vue')['default']
     LayoutDefault: typeof import('./components/Layout/LayoutDefault.vue')['default']
     LeftTabs: typeof import('./components/Layout/components/LeftTabs.vue')['default']
@@ -50,7 +48,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ThemeSetting: typeof import('./components/Layout/components/ThemeSetting/index.vue')['default']
-    ThemeSettings: typeof import('./components/Layout/components/ThemeSettings/index.vue')['default']
     Toobar: typeof import('./components/Layout/components/Navbar/Toobar.vue')['default']
   }
 }

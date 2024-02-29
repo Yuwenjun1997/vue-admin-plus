@@ -1,37 +1,36 @@
 import { defineStore } from 'pinia'
-import { ThemeConfig } from '@/types/theme'
-import { themeColorMap } from '@/config/theme'
+import { ThemeColorProperty, ThemeConfig } from '@/types/theme'
 import { TinyColor } from '@ctrl/tinycolor'
-import { useCssVar } from '@vueuse/core'
-import { getThemeConfig } from '@/utils/theme'
+import { useCssVar, useDark } from '@vueuse/core'
+import { getThemeConfig, removeThemeConfig } from '@/utils/theme'
+import { toPx } from '@/utils'
+import { cloneDeep } from 'lodash'
+import defaultTheme from '@/config/theme'
 
-const state: ThemeConfig = {
-  showThemeSetting: false,
-  themeColor: '#409eff',
-  menuCollapse: false,
-  menuWidth: 240,
-  showMenu: true,
-  subfieldWidth: 60,
-  showSubfield: true,
-  showNavbarTags: true,
-  showNavbarTagsIcon: true,
-  hideToolbar: true,
-  showBreadcrumb: true,
-  showWatermark: false,
-  watermarkContent: 'vue admin plus',
-  themeColorMap: themeColorMap,
+/**
+ * 设置css变量值
+ * @param property
+ * @param value
+ */
+export function setCssVar(property: ThemeColorProperty, value: string) {
+  useCssVar(property, document.documentElement).value = value
 }
 
-const themeConfig = getThemeConfig()
-
-if (themeConfig) {
-  Object.assign(state, JSON.parse(themeConfig))
+/**
+ * 加载主题，如果缓存中有则从缓存中获取
+ */
+export function loadThemeConfig(): ThemeConfig {
+  const theme = cloneDeep(defaultTheme)
+  const config = getThemeConfig()
+  if (config) {
+    const data = JSON.parse(config)
+    Object.assign(theme, data)
+  }
+  return theme
 }
-
-// const data = state ? JSON.parse(state)
 
 export const useTheme = defineStore('theme', {
-  state: (): ThemeConfig => state,
+  state: (): ThemeConfig => loadThemeConfig(),
 
   actions: {
     /**
@@ -51,7 +50,7 @@ export const useTheme = defineStore('theme', {
      * @param color
      */
     updateThemeColor(color?: string) {
-      const primaryColor = new TinyColor(color || this.themeColor)
+      const primaryColor = new TinyColor(color || this.themeColor || '#000')
       const colors = [...this.themeColorMap.light, ...this.themeColorMap.dark]
       colors.forEach((item) => {
         const color = item.mixType === 'light' ? '#ffffff' : '#000000'
@@ -64,10 +63,38 @@ export const useTheme = defineStore('theme', {
      */
     applyThemeColor(isDark: boolean) {
       const colors = isDark ? this.themeColorMap.dark : this.themeColorMap.light
-      console.log(isDark)
       colors.forEach((item) => {
         useCssVar(item.key, document.documentElement).value = item.value
       })
+    },
+
+    /**
+     * 应用主题尺寸
+     */
+    applyThemeSize() {
+      setCssVar('--xy-layout-navbar-tags-height', this.showNavbarTags ? toPx(40) : toPx(0))
+      setCssVar('--xy-layout-aside-left-width', this.showSubfield ? toPx(this.subfieldWidth) : toPx(0))
+    },
+
+    /**
+     * 加载主题
+     */
+    loadTheme() {
+      this.updateThemeColor()
+      this.applyThemeColor(useDark().value)
+      this.applyThemeSize()
+    },
+
+    /**
+     * 重置主题
+     */
+    resetTheme() {
+      removeThemeConfig()
+      const theme = loadThemeConfig()
+      Object.assign(this.$state, theme)
+      this.updateThemeColor()
+      this.applyThemeColor(useDark().value)
+      this.applyThemeSize()
     },
   },
 })
