@@ -1,25 +1,25 @@
 @import './tailwind.css';
 
-:root:root {
-  --el-menu-item-height: 50px;
-  --el-border-color: #eee;
-}
-
 :root {
-  --xy-bg-color: #ecf0f1;
-  --xy-layout-header-bg-color: #fff;
-  --xy-layout-aside-bg-color: #fff;
-  --xy-layout-main-bg-color: #f1f1f1;
-  --xy-layout-aside--left-width: 60px;
+  --el-menu-item-height: 50px !important;
+  --el-border-color: #eee !important;
+
+  --xy-layout-bg-color: var(--el-bg-color);
+  --xy-layout-header-bg-color: var(--el-bg-color);
+  --xy-layout-aside-bg-color: var(--el-bg-color);
+  --xy-layout-main-bg-color: var(--el-bg-color-page);
+  --xy-layout-tabs-bg-color: var(--el-color-primary-light-9);
+  --xy-layout-navbar-text-color: var(--el-text-color-regular);
+
   --xy-layout-spacing: 6px;
-  --xy-layout-tabs-background-color: #f7f9ff;
-  --xy-layout-tabs-active-color: #0984e3;
+  --xy-layout-aside-left-width: 60px;
   --xy-layout-tabs-item-height: 56px;
-  --xy-logo-height: 60px;
-  --xy-logo-pic-width: 60px;
-  --xy-layout-toolbar-color: #666;
+
   --xy-layout-navbar-height: 60px;
-  --xy-layout-active-tags-height: 40px;
+  --xy-layout-navbar-tags-height: 40px;
+
+  --xy-logo-width: var(--xy-layout-aside-left-width);
+  --xy-logo-height: 60px;
 }
 
 body,

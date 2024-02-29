@@ -1,11 +1,15 @@
 <template>
   <div class="xy-navbar">
     <div class="xy-navbar__left">
-      <div class="xy-collapse__btn">
-        <Icon icon="line-md:menu-fold-left" />
-        <!-- <Icon icon="line-md:menu-fold-right" /> -->
-      </div>
-      <Breadcrumb />
+      <transition name="el-zoom-in-center">
+        <div v-if="showMenu" class="xy-collapse__btn" @click="toggleMenuCollapse()">
+          <Icon :icon="_collapseIcon" />
+          <!-- <Icon icon="line-md:menu-fold-right" /> -->
+        </div>
+      </transition>
+      <transition name="el-zoom-in-top">
+        <Breadcrumb v-if="showBreadcrumb" />
+      </transition>
     </div>
     <div class="xy-navbar__right">
       <Toobar />
@@ -19,6 +23,14 @@ import { Icon } from '@iconify/vue'
 import Breadcrumb from './Breadcrumb.vue'
 import Dropdown from './Dropdown.vue'
 import Toobar from './Toobar.vue'
+import { useTheme } from '@/store/theme'
+import { storeToRefs } from 'pinia'
+
+const themeStore = useTheme()
+const { showMenu, menuCollapse, showBreadcrumb } = storeToRefs(themeStore)
+const { toggleMenuCollapse } = themeStore
+
+const _collapseIcon = computed(() => `line-md:menu-fold-${menuCollapse.value ? 'right' : 'left'}`)
 </script>
 
 <style scoped lang="scss">
@@ -42,7 +54,7 @@ import Toobar from './Toobar.vue'
 .xy-collapse__btn {
   margin-right: 20px;
   font-size: var(--xy-collapse-btn-size);
-  color: var(--xy-layout-toolbar-color);
+  color: var(--xy-layout-navbar-text-color);
   cursor: pointer;
 }
 </style>

@@ -41,7 +41,7 @@ export default defineComponent({
 
 <style scoped>
 .xy-menu__item--icon {
-  font-size: 18px;
+  font-size: var(--el-font-size-large);
   margin-right: 5px;
 }
 </style>

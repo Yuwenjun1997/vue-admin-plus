@@ -77,11 +77,11 @@ const menus = ref<Menu[]>([
     .el-menu-item,
     .el-sub-menu,
     .el-sub-menu__title {
-      border-radius: 4px;
+      border-radius: var(--el-border-radius-base);
     }
 
     .el-menu-item.is-active {
-      background-color: var(--el-menu-hover-bg-color);
+      background-color: var(--el-color-primary-light-9);
     }
   }
 }

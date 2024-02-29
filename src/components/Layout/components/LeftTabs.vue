@@ -44,40 +44,41 @@ const handleClick = (item: TabsItem, index: number) => {
 <style scoped lang="scss">
 .xy-tabs {
   height: 100%;
-  background: var(--xy-layout-tabs-background-color);
+  background: var(--xy-layout-tabs-bg-color);
 
   :deep(.el-scrollbar__view) {
     padding: var(--xy-layout-spacing);
   }
 
   .xy-tabs__item {
+    user-select: none;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    user-select: none;
-    height: var(--xy-layout-tabs-item-height);
-    border-radius: 4px;
-    cursor: pointer;
     margin-top: var(--xy-layout-spacing);
-    transition: all 0.2s;
+    height: var(--xy-layout-tabs-item-height);
+    border-radius: var(--el-border-radius-base);
+    color: var(--el-text-color-regular);
+    transition: var(--el-transition-md-fade);
+    cursor: pointer;
 
     &:nth-child(1) {
       margin-top: 0;
     }
 
     &.is-active {
-      background: var(--xy-layout-tabs-active-color);
+      background: var(--el-color-primary);
       color: white;
     }
 
     .xy-tabs__item--icon {
-      font-size: 18px;
+      font-size: var(--el-font-size-large);
     }
 
     .xy-tabs__item--label {
       line-height: 1.8;
-      font-size: 12px;
+      font-size: var(--el-font-size-extra-small);
     }
   }
 }

@@ -3,8 +3,10 @@
     <el-tabs v-model="activeTab" closable type="card">
       <el-tab-pane v-for="item in list" :key="item.name" :label="item.title" :name="item.name">
         <template #label>
-          <div class="xy-tags-item" @contextmenu.prevent="openMenu(item, $event)">
-            <Icon v-if="item.icon" :icon="item.icon" />
+          <div class="flex items-center gap-1" @contextmenu.prevent="openMenu(item, $event)">
+            <transition name="el-zoom-in-center">
+              <Icon v-if="item.icon && theme.showNavbarTagsIcon" :icon="item.icon" />
+            </transition>
             <span>{{ item.title }}</span>
           </div>
         </template>
@@ -38,6 +40,9 @@ import { Icon } from '@iconify/vue'
 import { DropdownInstance } from 'element-plus'
 import { TagView } from '@/types/index'
 import { commandList } from './options'
+import { useTheme } from '@/store/theme'
+
+const theme = useTheme()
 
 const activeTab = ref('first')
 
@@ -45,12 +50,17 @@ const list = ref<TagView[]>([
   {
     title: '工作台',
     name: 'first',
-    icon: '',
+    icon: 'line-md:coffee-twotone-loop',
   },
   {
     title: '收银开单',
     name: 'second',
-    icon: '',
+    icon: 'line-md:clipboard-check-twotone',
+  },
+  {
+    title: '其它',
+    name: 'third',
+    icon: 'line-md:sunny-filled-loop-to-moon-filled-loop-transition',
   },
 ])
 
@@ -71,8 +81,8 @@ const handleCommand = () => {}
 .xy-active-tags {
   :deep(.el-tabs) {
     --el-tabs-header-height: 30px;
-    padding-top: calc(var(--xy-layout-active-tags-height) - var(--el-tabs-header-height));
-    height: var(--xy-layout-active-tags-height);
+    padding-top: calc(var(--xy-layout-navbar-tags-height) - var(--el-tabs-header-height));
+    height: var(--xy-layout-navbar-tags-height);
     border: 0;
     border-top: 1px var(--el-border-color) var(--el-border-style);
     background: transparent;
@@ -94,20 +104,27 @@ const handleCommand = () => {}
         }
 
         .el-tabs__item {
+          position: relative;
+          z-index: 1;
           border: 0;
           mask: url('@/assets/mask.png');
           mask-size: 100% 100%;
+          margin-left: -15px;
+          padding-left: 20px !important;
+          padding-right: 20px !important;
 
           &:nth-child(1) {
             margin-left: 0;
           }
 
           &.is-active {
-            background-color: var(--el-menu-hover-bg-color) !important;
+            background-color: var(--el-color-primary-light-9) !important;
+            z-index: 5;
           }
 
           &:hover {
-            background-color: #f1f1f1;
+            background-color: var(--el-color-info-light-7);
+            z-index: 10 !important;
           }
         }
       }
@@ -116,9 +133,7 @@ const handleCommand = () => {}
 
   .contextmenu {
     position: fixed;
-    left: 100px;
-    height: 100px;
-    z-index: 999;
+    z-index: var(--el-index-top);
   }
 }
 </style>
