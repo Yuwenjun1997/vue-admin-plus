@@ -3,24 +3,35 @@ import { ThemeConfig } from '@/types/theme'
 import { themeColorMap } from '@/config/theme'
 import { TinyColor } from '@ctrl/tinycolor'
 import { useCssVar } from '@vueuse/core'
+import { getThemeConfig } from '@/utils/theme'
+
+const state: ThemeConfig = {
+  showThemeSetting: false,
+  themeColor: '#409eff',
+  menuCollapse: false,
+  menuWidth: 240,
+  showMenu: true,
+  subfieldWidth: 60,
+  showSubfield: true,
+  showNavbarTags: true,
+  showNavbarTagsIcon: true,
+  hideToolbar: true,
+  showBreadcrumb: true,
+  showWatermark: false,
+  watermarkContent: 'vue admin plus',
+  themeColorMap: themeColorMap,
+}
+
+const themeConfig = getThemeConfig()
+
+if (themeConfig) {
+  Object.assign(state, JSON.parse(themeConfig))
+}
+
+// const data = state ? JSON.parse(state)
 
 export const useTheme = defineStore('theme', {
-  state: (): ThemeConfig => ({
-    showThemeSetting: false,
-    themeColor: '#409eff',
-    menuCollapse: false,
-    menuWidth: 240,
-    showMenu: true,
-    subfieldWidth: 60,
-    showSubfield: true,
-    showNavbarTags: true,
-    showNavbarTagsIcon: true,
-    hideToolbar: true,
-    showBreadcrumb: true,
-    showWatermark: false,
-    watermarkContent: 'vue admin plus',
-    themeColorMap: themeColorMap,
-  }),
+  state: (): ThemeConfig => state,
 
   actions: {
     /**

@@ -62,7 +62,7 @@
     </el-form>
     <template #footer>
       <el-button>恢复默认</el-button>
-      <el-button @click="theme.showThemeSetting = false">取消</el-button>
+      <el-button type="primary" @click="handleSaveTheme">保存</el-button>
     </template>
   </el-drawer>
 </template>
@@ -71,6 +71,7 @@
 import { useCssVar, useDark } from '@vueuse/core'
 import { useTheme } from '@/store/theme'
 import { toPx } from '@/utils'
+import { setThemeConfig } from '@/utils/theme'
 const theme = useTheme()
 
 const isDark = useDark()
@@ -106,6 +107,12 @@ const onSubfieldWidthChange = () => {
 const onNavbarTagsChange = () => {
   const height = useCssVar('--xy-layout-navbar-tags-height', document.documentElement)
   height.value = theme.showNavbarTags ? toPx(40) : toPx(0)
+}
+
+// 保存配置
+const handleSaveTheme = () => {
+  theme.showThemeSetting = false
+  setThemeConfig(JSON.stringify(theme.$state))
 }
 </script>
 

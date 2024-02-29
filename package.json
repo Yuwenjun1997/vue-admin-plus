@@ -13,6 +13,7 @@
     "@ctrl/tinycolor": "^4.0.3",
     "@vueuse/core": "^10.8.0",
     "element-plus": "^2.5.6",
+    "js-cookie": "^3.0.5",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "tinycolor2": "^1.6.0",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@iconify/vue": "^4.1.1",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.11.20",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
