@@ -10,7 +10,7 @@
       <Icon class="xy-toolbar__icon" icon="line-md:bell-loop" />
     </el-tooltip>
     <el-tooltip content="主题设置" effect="dark">
-      <Icon class="xy-toolbar__icon" icon="line-md:discord" @click="theme.showThemeSetting = true" />
+      <Icon class="xy-toolbar__icon" icon="line-md:paint-drop-half-filled" @click="theme.showThemeSetting = true" />
     </el-tooltip>
     <el-tooltip content="访问GitHub" effect="dark">
       <a href="https://gitee.com/yuwenjun1997/vue-admin-plus" target="_blank">
