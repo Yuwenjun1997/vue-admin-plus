@@ -4,7 +4,7 @@
       <Icon class="xy-toolbar__icon" :icon="_fullscreenIcon" @click="toggle()" />
     </el-tooltip>
     <el-tooltip content="刷新" effect="dark">
-      <Icon class="xy-toolbar__icon" icon="material-symbols:refresh" />
+      <Icon class="xy-toolbar__icon" icon="material-symbols:refresh" @click="handleRefresh" />
     </el-tooltip>
     <el-tooltip content="消息通知" effect="dark">
       <Icon class="xy-toolbar__icon" icon="line-md:bell-loop" />
@@ -13,7 +13,9 @@
       <Icon class="xy-toolbar__icon" icon="line-md:discord" @click="theme.showThemeSetting = true" />
     </el-tooltip>
     <el-tooltip content="访问GitHub" effect="dark">
-      <Icon class="xy-toolbar__icon" icon="line-md:github-loop" />
+      <a href="https://gitee.com/yuwenjun1997/vue-admin-plus" target="_blank">
+        <Icon class="xy-toolbar__icon" icon="line-md:github-loop" />
+      </a>
     </el-tooltip>
     <el-tooltip :content="_darkThemeLabel" effect="dark">
       <Icon class="xy-toolbar__icon" :icon="_darkThemeIcon" @click="handleToggleDark" />
@@ -25,6 +27,8 @@
 import { Icon } from '@iconify/vue'
 import { useTheme } from '@/store/theme'
 import { useDark, useToggle, useFullscreen } from '@vueuse/core'
+import { useRouter, useRoute } from 'vue-router'
+import { ElMessageBox } from 'element-plus'
 
 const theme = useTheme()
 
@@ -44,6 +48,19 @@ const handleToggleDark = () => {
 const { isFullscreen, toggle } = useFullscreen()
 const _fullscreenIcon = computed(() => `material-symbols:fullscreen${isFullscreen.value ? '-exit' : ''}`)
 const _fullscreenLabel = computed(() => (isFullscreen.value ? '退出全屏' : '全屏'))
+
+// 刷新页面
+const router = useRouter()
+const route = useRoute()
+const handleRefresh = () => {
+  ElMessageBox.confirm('确认刷新当前页面?', '提示', { type: 'warning' })
+    .then(() => {
+      router.replace({ path: '/redirect' + route.fullPath, query: route.query })
+    })
+    .catch(() => {
+      // 取消
+    })
+}
 </script>
 
 <style scoped lang="scss">

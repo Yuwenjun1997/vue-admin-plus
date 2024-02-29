@@ -31,3 +31,12 @@ html {
 #app {
   height: 100%;
 }
+
+.el-overlay {
+  &.is-message-box {
+    .el-overlay-message-box {
+      top: 20%;
+      bottom: unset;
+    }
+  }
+}
