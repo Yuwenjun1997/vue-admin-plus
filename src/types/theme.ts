@@ -62,4 +62,30 @@ export interface ThemeConfig {
    * 水印内容
    */
   watermarkContent: string | string[]
+
+  /**
+   * 主题颜色
+   */
+  themeColorMap: ThemeColorMap
+}
+
+export type ThemeColorProperty =
+  | '--el-color-primary'
+  | '--el-color-primary-light-3'
+  | '--el-color-primary-light-5'
+  | '--el-color-primary-light-7'
+  | '--el-color-primary-light-8'
+  | '--el-color-primary-light-9'
+  | '--el-color-primary-dark-2'
+
+export interface ColorMap {
+  key: ThemeColorProperty
+  percent: number
+  mixType: 'light' | 'dark'
+  value: string
+}
+
+export interface ThemeColorMap {
+  light: ColorMap[]
+  dark: ColorMap[]
 }

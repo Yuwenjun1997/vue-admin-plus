@@ -16,7 +16,7 @@
       <Icon class="xy-toolbar__icon" icon="line-md:github-loop" />
     </el-tooltip>
     <el-tooltip :content="_darkThemeLabel" effect="dark">
-      <Icon class="xy-toolbar__icon" :icon="_darkThemeIcon" @click="toggleDark(!isDark)" />
+      <Icon class="xy-toolbar__icon" :icon="_darkThemeIcon" @click="handleToggleDark" />
     </el-tooltip>
   </div>
 </template>
@@ -35,6 +35,10 @@ const _darkThemeIcon = computed(() =>
   isDark.value ? 'line-md:sun-rising-twotone-loop' : 'line-md:sunny-outline-to-moon-loop-transition'
 )
 const _darkThemeLabel = computed(() => (isDark.value ? '明亮模式' : '暗夜模式'))
+const handleToggleDark = () => {
+  toggleDark()
+  theme.applyThemeColor(isDark.value)
+}
 
 // 切换全屏
 const { isFullscreen, toggle } = useFullscreen()

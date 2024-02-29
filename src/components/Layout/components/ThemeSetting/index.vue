@@ -68,13 +68,12 @@
 </template>
 
 <script setup lang="ts">
-import { useCssVar } from '@vueuse/core'
+import { useCssVar, useDark } from '@vueuse/core'
 import { useTheme } from '@/store/theme'
 import { toPx } from '@/utils'
-import { themeColors } from '@/config/theme'
-import { TinyColor } from '@ctrl/tinycolor'
-
 const theme = useTheme()
+
+const isDark = useDark()
 
 const watermarkContent = ref<string>()
 
@@ -88,15 +87,8 @@ const onOpen = () => {
 
 // 主题色修改
 const onThemeColorChange = () => {
-  const primaryColor = new TinyColor(theme.themeColor)
-  themeColors.forEach((item) => {
-    const color = useCssVar(item.key, document.documentElement)
-    if (item.type === 'light') {
-      color.value = primaryColor.mix('#ffffff', item.percent * 10).toHexString()
-    } else if (item.type === 'dark') {
-      color.value = primaryColor.mix('#000', item.percent * 10).toHexString()
-    }
-  })
+  theme.updateThemeColor()
+  theme.applyThemeColor(isDark.value)
 }
 
 // 水印
