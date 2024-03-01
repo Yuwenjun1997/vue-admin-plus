@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import './plugins/element-ui'
 import './plugins/nprogress'
 import './styles/index.scss'
-import Nprogress from 'nprogress'
 import App from './App.vue'
 import Loading from './Loading.vue'
 import { setupStore } from './store'
@@ -12,8 +11,8 @@ import { sleep } from './utils'
 
 async function bootstrap() {
   // 加载动画
-  Nprogress.start()
-  createApp(Loading).mount('#app')
+  const loading = createApp(Loading)
+  loading.mount('#app')
 
   await sleep(500)
 
@@ -29,6 +28,7 @@ async function bootstrap() {
   // 路由守卫
   setupRouterGuard(router)
 
+  loading.unmount()
   app.mount('#app')
 }
 
