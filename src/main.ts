@@ -5,9 +5,9 @@ import './styles/index.scss'
 import Nprogress from 'nprogress'
 import App from './App.vue'
 import Loading from './Loading.vue'
-import { createPinia } from 'pinia'
-import router from './router/index'
-import './permission'
+import { setupStore } from './store'
+import { router, setupRouter } from './router'
+import { setupRouterGuard } from '@/router/guard'
 import { sleep } from './utils'
 
 async function bootstrap() {
@@ -19,8 +19,16 @@ async function bootstrap() {
 
   // 应用渲染
   const app = createApp(App)
-  app.use(createPinia())
-  app.use(router)
+
+  // 配置 store
+  setupStore(app)
+
+  // 配置路由
+  setupRouter(app)
+
+  // 路由守卫
+  setupRouterGuard(router)
+
   app.mount('#app')
 }
 
