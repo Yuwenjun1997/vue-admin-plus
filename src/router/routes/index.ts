@@ -2,7 +2,7 @@ import type { AppRouteRecordRaw, AppRouteModule } from '@/router/types'
 import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '@/router/routes/basic'
 import { PageEnum } from '@/enums/pageEnum'
 
-// import.meta.globEager() 直接引入所有的模块 Vite 独有的功能
+// import.meta.glob() 直接引入所有的模块 Vite 独有的功能
 const modules = import.meta.glob('./modules/**/*.ts', { eager: true })
 const routeModuleList: AppRouteModule[] = []
 
@@ -13,7 +13,7 @@ Object.keys(modules).forEach(async (key) => {
   routeModuleList.push(...modList)
 })
 
-export const asyncRoutes = [PAGE_NOT_FOUND_ROUTE, ...routeModuleList]
+export const asyncRoutes = [...routeModuleList, PAGE_NOT_FOUND_ROUTE]
 
 // 根路由
 export const RootRoute: AppRouteRecordRaw = {
