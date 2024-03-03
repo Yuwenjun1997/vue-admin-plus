@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+import { Icon } from '@iconify/vue'
 import { prefixCls } from '@/layout/config/index'
 import { useDark, useToggle } from '@vueuse/core'
 

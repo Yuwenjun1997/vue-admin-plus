@@ -1,42 +1,42 @@
 @import './tailwind.css';
 
-:root {
-  --el-menu-item-height: 50px !important;
-  --el-border-color: #eee !important;
+// :root {
+//   --el-menu-item-height: 50px !important;
+//   --el-border-color: #eee !important;
 
-  --xy-layout-bg-color: var(--el-bg-color);
-  --xy-layout-header-bg-color: var(--el-bg-color);
-  --xy-layout-aside-bg-color: var(--el-bg-color);
-  --xy-layout-main-bg-color: var(--el-bg-color-page);
-  --xy-layout-tabs-bg-color: var(--el-color-primary-light-9);
-  --xy-layout-navbar-text-color: var(--el-text-color-regular);
+//   --xy-layout-bg-color: var(--el-bg-color);
+//   --xy-layout-header-bg-color: var(--el-bg-color);
+//   --xy-layout-aside-bg-color: var(--el-bg-color);
+//   --xy-layout-main-bg-color: var(--el-bg-color-page);
+//   --xy-layout-tabs-bg-color: var(--el-color-primary-light-9);
+//   --xy-layout-navbar-text-color: var(--el-text-color-regular);
 
-  --xy-layout-spacing: 6px;
-  --xy-layout-aside-left-width: 60px;
-  --xy-layout-tabs-item-height: 56px;
+//   --xy-layout-spacing: 6px;
+//   --xy-layout-aside-left-width: 60px;
+//   --xy-layout-tabs-item-height: 56px;
 
-  --xy-layout-navbar-height: 60px;
-  --xy-layout-navbar-tags-height: 40px;
+//   --xy-layout-navbar-height: 60px;
+//   --xy-layout-navbar-tags-height: 40px;
 
-  --xy-logo-width: var(--xy-layout-aside-left-width);
-  --xy-logo-height: 60px;
-}
+//   --xy-logo-width: var(--xy-layout-aside-left-width);
+//   --xy-logo-height: 60px;
+// }
 
-body,
-html {
-  height: 100%;
-  color: var(--el-text-color-primary);
-}
+// body,
+// html {
+//   height: 100%;
+//   color: var(--el-text-color-primary);
+// }
 
-#app {
-  height: 100%;
-}
+// #app {
+//   height: 100%;
+// }
 
-.el-overlay {
-  &.is-message-box {
-    .el-overlay-message-box {
-      top: 20%;
-      bottom: unset;
-    }
-  }
-}
+// .el-overlay {
+//   &.is-message-box {
+//     .el-overlay-message-box {
+//       top: 20%;
+//       bottom: unset;
+//     }
+//   }
+// }

@@ -1,11 +1,11 @@
 <template>
-  <div class="xy-active-tags">
+  <div :class="prefixCls + 'tabs'">
     <el-tabs v-model="activeTab" closable type="card">
       <el-tab-pane v-for="item in list" :key="item.name" :label="item.title" :name="item.name">
         <template #label>
           <div class="flex items-center gap-1" @contextmenu.prevent="openMenu(item, $event)">
             <transition name="el-zoom-in-center">
-              <Icon v-if="item.icon && theme.showNavbarTagsIcon" :icon="item.icon" />
+              <Icon v-if="item.icon && themeStore.showNavbarTagsIcon" :icon="item.icon" />
             </transition>
             <span>{{ item.title }}</span>
           </div>
@@ -15,7 +15,7 @@
 
     <el-dropdown
       ref="contextmenu"
-      class="contextmenu"
+      :class="prefixCls + 'tabs__contextmenu'"
       placement="bottom-start"
       trigger="click"
       @command="handleCommand"
@@ -36,13 +36,14 @@
 </template>
 
 <script setup lang="ts">
+import { prefixCls } from '@/layout/config/index'
 import { Icon } from '@iconify/vue'
 import { DropdownInstance } from 'element-plus'
 import { TagView } from '@/types/index'
 import { commandList } from './options'
-import { useTheme } from '@/store/theme'
+import { useThemeStore } from '@/layout/store'
 
-const theme = useTheme()
+const themeStore = useThemeStore()
 
 const activeTab = ref('first')
 

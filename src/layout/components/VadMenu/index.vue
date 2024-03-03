@@ -1,26 +1,22 @@
 <template>
-  <el-sub-menu v-if="hasChild" :index="menu.path">
-    <template #title>
-      <Icon class="xy-menu__item--icon" :icon="menu.icon" />
-      <span>{{ menu.title }}</span>
+  <component :is="renderComponent" :item-or-menu="menu">
+    <template v-if="hasChild">
+      <VadMenu v-for="item in menu.children" :key="item.path" :menu="item" />
     </template>
-    <VadMenu v-for="_menu in menu.children" :key="_menu.path" :menu="_menu" />
-  </el-sub-menu>
-  <el-menu-item v-else :index="menu.path">
-    <Icon class="xy-menu__item--icon" :icon="menu.icon" />
-    <span>{{ menu.title }}</span>
-  </el-menu-item>
+  </component>
 </template>
 
 <script lang="ts">
-import { Icon } from '@iconify/vue'
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, computed } from 'vue'
 import type { Menu } from '@/types/index'
+import VadMenuItem from './components/VadMenuItem.vue'
+import VadSubMenu from './components/VadSubMenu.vue'
 
 export default defineComponent({
   name: 'VadMenu',
   components: {
-    Icon,
+    VadMenuItem,
+    VadSubMenu,
   },
   props: {
     menu: {
@@ -29,11 +25,14 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const menu = computed(() => props.menu)
-    const hasChild = computed(() => menu.value.children && menu.value.children.length > 0)
-
+    const { menu } = props
+    const hasChild = computed(() => menu.children && menu.children.length > 0)
+    const renderComponent = computed(() => {
+      return hasChild.value ? VadSubMenu : VadMenuItem
+    })
     return {
       hasChild,
+      renderComponent,
     }
   },
 })

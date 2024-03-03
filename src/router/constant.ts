@@ -9,4 +9,4 @@ export const EXCEPTION_COMPONENT = () => import('@/views/exception/index.vue')
 /**
  * @description: default layout
  */
-export const LAYOUT = () => import('@/components/Layout/Index.vue')
+export const LAYOUT = () => import('@/layout/index.vue')

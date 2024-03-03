@@ -1,5 +1,5 @@
 <template>
-  <div :class="prefixCls + 'tools'">
+  <div :class="clsObj">
     <VadRefresh />
     <VadFullscreen />
     <VadNotice />
@@ -15,6 +15,19 @@ import VadNotice from '../VadNotice/index.vue'
 import VadRefresh from '../VadRefresh/index.vue'
 import VadTheme from '../VadTheme/index.vue'
 import VadToggleDark from '../VadToggleDark/index.vue'
+
+interface Props {
+  align: 'start' | 'center' | 'end'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  align: 'center',
+})
+
+const clsObj = computed(() => {
+  return {
+    [prefixCls + 'tools']: true,
+    [`${prefixCls}tools__${props.align}`]: true,
+  }
+})
 </script>
-
-

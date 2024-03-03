@@ -3,10 +3,6 @@ export interface ThemeConfig {
    * 主题颜色
    */
   themeColor: string
-  /**
-   * 主题设置弹窗
-   */
-  showThemeSetting: boolean
 
   /**
    * 菜单是否收起
@@ -19,19 +15,14 @@ export interface ThemeConfig {
   menuWidth: number
 
   /**
+   * logo宽度
+   */
+  logoWidth: number
+
+  /**
    * 显示菜单
    */
   showMenu: boolean
-
-  /**
-   * 分栏宽度
-   */
-  subfieldWidth: number
-
-  /**
-   * 显示分栏
-   */
-  showSubfield: boolean
 
   /**
    * 显示标签栏
@@ -64,24 +55,23 @@ export interface ThemeConfig {
   watermarkContent: string | string[]
 
   /**
+   * 水印颜色
+   */
+  watermarkColor: string
+
+  /**
+   * 水印大小
+   */
+  watermarkFontSize: number
+
+  /**
    * 主题颜色
    */
   themeColorMap: ThemeColorMap
 }
 
-export type ThemeColorProperty =
-  | '--el-color-primary'
-  | '--el-color-primary-light-3'
-  | '--el-color-primary-light-5'
-  | '--el-color-primary-light-7'
-  | '--el-color-primary-light-8'
-  | '--el-color-primary-light-9'
-  | '--el-color-primary-dark-2'
-  | '--xy-layout-navbar-tags-height'
-  | '--xy-layout-aside-left-width'
-
 export interface ColorMap {
-  key: ThemeColorProperty
+  key: string
   percent: number
   mixType: 'light' | 'dark'
   value: string
