@@ -1,13 +1,14 @@
-import type { AppRouteRecordRaw } from '@/router/types'
 import { REDIRECT_NAME, LAYOUT, EXCEPTION_COMPONENT, PAGE_NOT_FOUND_NAME, REDIRECT_COMPONENT } from '@/router/constant'
+import { RouteRecordRaw } from 'vue-router'
 
 // 404 on a page
-export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
+export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
   path: '/:path(.*)*',
   name: PAGE_NOT_FOUND_NAME,
   component: LAYOUT,
   meta: {
-    title: 'ErrorPage',
+    menuId: 'ErrorPageLayout',
+    title: '错误页面',
     hideBreadcrumb: true,
     hideMenu: true,
   },
@@ -17,7 +18,8 @@ export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
       name: PAGE_NOT_FOUND_NAME,
       component: EXCEPTION_COMPONENT,
       meta: {
-        title: 'ErrorPage',
+        menuId: 'ErrorPage',
+        title: '错误页面',
         hideBreadcrumb: true,
         hideMenu: true,
       },
@@ -25,11 +27,12 @@ export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   ],
 }
 
-export const REDIRECT_ROUTE: AppRouteRecordRaw = {
+export const REDIRECT_ROUTE: RouteRecordRaw = {
   path: '/redirect',
   component: LAYOUT,
-  name: 'RedirectTo',
+  name: '重定向',
   meta: {
+    menuId: 'RedirectTo',
     title: REDIRECT_NAME,
     hideBreadcrumb: true,
     hideMenu: true,
@@ -40,6 +43,7 @@ export const REDIRECT_ROUTE: AppRouteRecordRaw = {
       name: REDIRECT_NAME,
       component: REDIRECT_COMPONENT,
       meta: {
+        menuId: 'Redirect',
         title: REDIRECT_NAME,
         hideBreadcrumb: true,
       },

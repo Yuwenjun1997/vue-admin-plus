@@ -9,7 +9,9 @@
         <VadNav />
         <VadTabs v-if="theme.showNavbarTags" />
       </el-header>
-      <el-main :class="prefixCls + 'layout-main'">Main</el-main>
+      <el-main :class="prefixCls + 'layout-main'">
+        <slot />
+      </el-main>
     </el-container>
   </el-container>
 </template>

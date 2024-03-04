@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { TinyColor } from '@ctrl/tinycolor'
 import { useCssVar, useDark } from '@vueuse/core'
-import type { ThemeConfig } from '../types'
+import type { ThemeConfig } from '@/layout/types'
 import { loadThemeConfig, removeThemeConfig, setCssVar, toPx } from '../utils'
 import { ThemeCssProperty } from '../config'
 

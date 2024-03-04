@@ -1,4 +1,4 @@
-import type { ThemeColorMap, ThemeConfig } from '../types'
+import type { ThemeColorMap, ThemeConfig } from '@/layout/types'
 
 // class类名前缀
 export const prefixCls: string = 'vad-'

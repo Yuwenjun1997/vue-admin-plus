@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { MenuOption } from '../types'
+import { MenuOption } from '@/layout/types'
 
 interface MenuStore {
   activeRootMenuKey: string
@@ -34,6 +34,14 @@ export const useMenuStore = defineStore('menu', {
         this.flatMenus.push(menu)
         this.flatMenusHandler(menu.children)
       })
+    },
+
+    /**
+     * 根据菜单id获取菜单path
+     * @param menuId
+     */
+    getMenuPathByMenuId(menuId: string) {
+      return this.flatMenus.find((menu) => menu.meta.menuId === menuId)?.path
     },
   },
 })

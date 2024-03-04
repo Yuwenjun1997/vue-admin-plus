@@ -1,15 +1,15 @@
 import { DropdownInstance } from 'element-plus'
-import { CommandEnums, MenuOption } from '@/layout/types'
+import { CommandEnums, MenuMeta } from '@/layout/types'
 import { useTabsStore } from '../store/tabs'
 import { useMenuStore } from '../store/menu'
 
 const tabsStore = useTabsStore()
 const menuStore = useMenuStore()
 
-const handleMenu = ref<MenuOption>()
+const handleMenu = ref<MenuMeta>()
 
 export function useTabsCommand() {
-  const openMenu = (item: MenuOption, evnt: MouseEvent, contextmenu?: DropdownInstance) => {
+  const openMenu = (item: MenuMeta, evnt: MouseEvent, contextmenu?: DropdownInstance) => {
     if (!contextmenu) return
     contextmenu.handleOpen()
     const { clientX, clientY } = evnt
@@ -19,14 +19,14 @@ export function useTabsCommand() {
   }
 
   const handleMenuIndex = computed(() => {
-    return tabsStore.activeTabs.findIndex((item) => item.meta.menuId === handleMenu.value?.meta.menuId)
+    return tabsStore.activeTabs.findIndex((item) => item.menuId === handleMenu.value?.menuId)
   })
   const allTabsFixed = computed(() => {
-    return tabsStore.activeTabs.every((item) => item.meta.tabFixed)
+    return tabsStore.activeTabs.every((item) => item.tabFixed)
   })
   const isFirstTab = computed(() => handleMenuIndex.value === 0)
   const isLastTab = computed(() => handleMenuIndex.value === tabsStore.activeTabs.length - 1)
-  const isActiveTab = computed(() => !!handleMenu.value && handleMenu.value.meta.menuId !== menuStore.activeMenuKey)
+  const isActiveTab = computed(() => !!handleMenu.value && handleMenu.value.menuId !== menuStore.activeMenuKey)
 
   const disabledCommand = (command: CommandEnums): boolean => {
     if (command === CommandEnums.refresh) return isActiveTab.value

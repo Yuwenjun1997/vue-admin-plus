@@ -2,16 +2,17 @@ import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { basicRoutes } from './routes'
-import { addAllRoutes } from './helper'
+import { addAllRoutes, generateRoutes, resetRouter } from './helper'
 import { useMenuStore } from '@/layout/store/menu'
 
 // 白名单应该包含基本静态路由
 export const WHITE_NAME_LIST: string[] = []
-const getRouteNames = (array: any[]) =>
+export function getRouteNames(array: any[]) {
   array.forEach((item) => {
     WHITE_NAME_LIST.push(item.name)
     getRouteNames(item.children || [])
   })
+}
 getRouteNames(basicRoutes)
 
 // app router
@@ -30,6 +31,9 @@ export const router = createRouter({
 // 配置路由器
 export function setupRouter(app: App<Element>) {
   const menuStore = useMenuStore()
-  addAllRoutes(menuStore.flatMenus)
+  resetRouter()
+  const routes = generateRoutes(menuStore.rootMenus)
+  addAllRoutes(routes)
+  console.log(routes)
   app.use(router)
 }

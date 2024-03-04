@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { prefixCls } from '@/layout/config/index'
 import { Icon } from '@iconify/vue'
-import { Menu } from '@/types/index'
+
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -25,7 +25,7 @@ watchEffect(() => {
   console.log(route.matched)
 })
 
-const breadcrumbs: Menu[] = [
+const breadcrumbs = [
   {
     path: '/',
     icon: 'line-md:home-md-twotone-alt',

@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import { MenuOption } from '../types'
+import { MenuMeta } from '@/layout/types'
 
 interface TabsState {
-  activeTabs: MenuOption[]
-  cacheTabs: MenuOption[]
+  activeTabs: MenuMeta[]
+  cacheTabs: MenuMeta[]
 }
 
 export const useTabsStore = defineStore('tabs', {
@@ -18,8 +18,8 @@ export const useTabsStore = defineStore('tabs', {
     /**
      * 加载固定选项卡
      */
-    loadFixedTabs(menus: MenuOption[]) {
-      this.activeTabs = menus.filter((item) => item.meta.tabFixed)
+    loadFixedTabs(menus: MenuMeta[]) {
+      this.activeTabs = menus.filter((item) => item.tabFixed)
       this.refreshCacheTabs()
     },
 
@@ -27,29 +27,29 @@ export const useTabsStore = defineStore('tabs', {
      * 添加选项卡
      * @param tab
      */
-    addTab(tab: MenuOption) {
-      const index = this.activeTabs.findIndex((item) => item.meta.menuId === tab.meta.menuId)
+    addTab(tab: MenuMeta) {
+      const index = this.activeTabs.findIndex((item) => item.menuId === tab.menuId)
       if (index > -1) return
       this.activeTabs.push(tab)
-      if (tab.meta.cache) this.refreshCacheTabs()
+      if (tab.cache) this.refreshCacheTabs()
     },
 
     /**
      * 删除选项卡
      * @param tab
      */
-    delTab(tab: MenuOption) {
-      this.activeTabs = this.activeTabs.filter((item) => item.meta.menuId !== tab.meta.menuId)
-      if (tab.meta.cache) this.refreshCacheTabs()
+    delTab(tab: MenuMeta) {
+      this.activeTabs = this.activeTabs.filter((item) => item.menuId !== tab.menuId)
+      if (tab.cache) this.refreshCacheTabs()
     },
 
     /**
      * 删除左侧选项卡
      * @param tab
      */
-    delLeftTabs(tab: MenuOption) {
-      const index = this.activeTabs.findIndex((item) => item.meta.menuId === tab.meta.menuId)
-      this.activeTabs = this.activeTabs.filter((item, i) => i >= index || item.meta.tabFixed)
+    delLeftTabs(tab: MenuMeta) {
+      const index = this.activeTabs.findIndex((item) => item.menuId === tab.menuId)
+      this.activeTabs = this.activeTabs.filter((item, i) => i >= index || item.tabFixed)
       this.refreshCacheTabs()
     },
 
@@ -57,17 +57,17 @@ export const useTabsStore = defineStore('tabs', {
      * 删除右侧选项卡
      * @param tab
      */
-    delRightTabs(tab: MenuOption) {
-      const index = this.activeTabs.findIndex((item) => item.meta.menuId === tab.meta.menuId)
-      this.activeTabs = this.activeTabs.filter((item, i) => i <= index || item.meta.tabFixed)
+    delRightTabs(tab: MenuMeta) {
+      const index = this.activeTabs.findIndex((item) => item.menuId === tab.menuId)
+      this.activeTabs = this.activeTabs.filter((item, i) => i <= index || item.tabFixed)
       this.refreshCacheTabs()
     },
 
     /**
      * 删除其它选项卡
      */
-    delOtherTabs(tab: MenuOption) {
-      this.activeTabs = this.activeTabs.filter((item) => item.meta.menuId === tab.meta.menuId || item.meta.tabFixed)
+    delOtherTabs(tab: MenuMeta) {
+      this.activeTabs = this.activeTabs.filter((item) => item.menuId === tab.menuId || item.tabFixed)
       this.refreshCacheTabs()
     },
 
@@ -75,7 +75,7 @@ export const useTabsStore = defineStore('tabs', {
      * 删除全部选项卡
      */
     delAllTabs() {
-      this.activeTabs = this.activeTabs.filter((item) => item.meta.tabFixed)
+      this.activeTabs = this.activeTabs.filter((item) => item.tabFixed)
       this.refreshCacheTabs()
     },
 
@@ -83,7 +83,7 @@ export const useTabsStore = defineStore('tabs', {
      * 刷新缓存选项卡
      */
     refreshCacheTabs() {
-      this.cacheTabs = this.activeTabs.filter((item) => item.meta.cache)
+      this.cacheTabs = this.activeTabs.filter((item) => item.cache)
     },
   },
 })

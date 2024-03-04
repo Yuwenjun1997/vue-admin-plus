@@ -1,3 +1,5 @@
+import { RouteMeta } from 'vue-router'
+
 export interface ThemeConfig {
   /**
    * 主题颜色
@@ -82,15 +84,7 @@ export interface ThemeColorMap {
   dark: ColorMap[]
 }
 
-export interface MenuMeta {
-  menuId: string
-  title: string
-  icon?: string
-  cache?: boolean
-  tabFixed?: boolean
-  layout?: string
-  component?: string
-}
+export interface MenuMeta extends RouteMeta {}
 
 export interface MenuOption {
   name: string
@@ -98,7 +92,6 @@ export interface MenuOption {
   redirect?: string
   meta: MenuMeta
   children?: MenuOption[]
-  component?: any
 }
 
 export interface BreadcrumbOption extends MenuOption {}

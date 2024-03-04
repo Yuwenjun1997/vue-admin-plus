@@ -3,17 +3,20 @@
     <el-tabs v-model="menuStore.activeMenuKey" closable type="card">
       <el-tab-pane
         v-for="item in tabsStore.activeTabs"
-        :key="item.meta.menuId"
-        :closable="!item.meta.tabFixed"
-        :name="item.meta.menuId"
+        :key="item.menuId"
+        :closable="!item.tabFixed"
+        :name="item.menuId"
       >
         <template #label>
-          <router-link :to="item.path" @contextmenu.prevent="openMenu(item, $event, contextmenu)">
+          <router-link
+            :to="menuStore.getMenuPathByMenuId(item.menuId)"
+            @contextmenu.prevent="openMenu(item, $event, contextmenu)"
+          >
             <div class="flex items-center gap-1">
               <transition name="el-zoom-in-center">
-                <Icon v-if="item.meta.icon && themeStore.showNavbarTagsIcon" :icon="item.meta.icon" />
+                <Icon v-if="item.icon && themeStore.showNavbarTagsIcon" :icon="item.icon" />
               </transition>
-              <span>{{ item.meta.title }}</span>
+              <span>{{ item.title }}</span>
             </div>
           </router-link>
         </template>

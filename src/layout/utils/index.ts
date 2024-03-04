@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import type { ThemeConfig } from '../types'
+import type { ThemeConfig } from '@/layout/types'
 import { useCssVar } from '@vueuse/core'
 import { cloneDeep } from 'lodash'
 import { defaultTheme } from '../config'

@@ -20,7 +20,7 @@ export const menus: MenuOption[] = [
           title: '工作台',
           icon: 'line-md:compass-loop',
           tabFixed: true,
-          component: '../../views/home/dashboard/index.vue',
+          component: '@/views/home/dashboard/index.vue',
         },
       },
       {
@@ -71,7 +71,7 @@ export const menus: MenuOption[] = [
             name: '/setting/menu',
             path: '/setting/menu',
             meta: {
-              menuId: '/setting/menu',
+              menuId: 'SettingMenu',
               title: '菜单设置',
               icon: 'line-md:person-search',
               component: '@/views/customer/setting/menu/index.vue',
