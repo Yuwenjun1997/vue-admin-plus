@@ -4,10 +4,12 @@ export const menus: MenuOption[] = [
   {
     name: 'Home',
     path: '/',
+    redirect: '/dashboard',
     meta: {
       menuId: 'Home',
       title: '首页',
       icon: 'line-md:home-md-twotone-alt',
+      layout: 'Layout',
     },
     children: [
       {
@@ -18,6 +20,7 @@ export const menus: MenuOption[] = [
           title: '工作台',
           icon: 'line-md:compass-loop',
           tabFixed: true,
+          component: '../../views/home/dashboard/index.vue',
         },
       },
       {
@@ -28,6 +31,7 @@ export const menus: MenuOption[] = [
           title: '个人中心',
           icon: 'line-md:account',
           tabFixed: true,
+          component: '@/views/home/personnal/index.vue',
         },
       },
     ],
@@ -35,10 +39,12 @@ export const menus: MenuOption[] = [
   {
     name: 'Customer',
     path: '/customer',
+    redirect: '/customer/manager',
     meta: {
       menuId: 'Customer',
       title: '客资',
       icon: 'line-md:person-search',
+      layout: 'Layout',
     },
     children: [
       {
@@ -48,6 +54,7 @@ export const menus: MenuOption[] = [
           menuId: 'CustomerManager',
           title: '客资管理',
           icon: 'line-md:account',
+          component: '@/views/customer/manager/index.vue',
         },
       },
       {
@@ -57,17 +64,9 @@ export const menus: MenuOption[] = [
           menuId: 'CustomerSetting',
           title: '系统设置',
           icon: 'line-md:cog-loop',
+          component: '@/views/customer/setting/index.vue',
         },
         children: [
-          {
-            name: '/setting/user',
-            path: '/setting/user',
-            meta: {
-              menuId: '/setting/user',
-              title: '用户设置',
-              icon: 'line-md:person-search',
-            },
-          },
           {
             name: '/setting/menu',
             path: '/setting/menu',
@@ -75,6 +74,7 @@ export const menus: MenuOption[] = [
               menuId: '/setting/menu',
               title: '菜单设置',
               icon: 'line-md:person-search',
+              component: '@/views/customer/setting/menu/index.vue',
             },
           },
         ],

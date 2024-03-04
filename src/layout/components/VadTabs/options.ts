@@ -1,40 +1,34 @@
-export enum Command {
-  refresh = 'refresh',
-  closeOther = 'closeOther',
-  closeLeft = 'closeLeft',
-  closeRight = 'closeRight',
-  closeAll = 'closeAll',
-}
+import { CommandEnums } from '@/layout/types'
 
 interface CommandSource {
-  command: Command
+  command: CommandEnums
   name: string
   icon?: string
 }
 
 export const commandList: CommandSource[] = [
   {
-    command: Command.refresh,
+    command: CommandEnums.refresh,
     name: '刷新',
     icon: 'line-md:backup-restore',
   },
   {
-    command: Command.closeOther,
+    command: CommandEnums.closeOther,
     name: '关闭其他',
     icon: 'line-md:close',
   },
   {
-    command: Command.closeLeft,
+    command: CommandEnums.closeLeft,
     name: '关闭左侧',
     icon: 'line-md:arrow-small-left',
   },
   {
-    command: Command.closeRight,
+    command: CommandEnums.closeRight,
     name: '关闭右侧',
     icon: 'line-md:arrow-small-right',
   },
   {
-    command: Command.closeAll,
+    command: CommandEnums.closeAll,
     name: '关闭全部',
     icon: 'line-md:close',
   },

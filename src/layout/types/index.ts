@@ -88,13 +88,25 @@ export interface MenuMeta {
   icon?: string
   cache?: boolean
   tabFixed?: boolean
+  layout?: string
+  component?: string
 }
 
 export interface MenuOption {
   name: string
   path: string
+  redirect?: string
   meta: MenuMeta
   children?: MenuOption[]
+  component?: any
 }
 
 export interface BreadcrumbOption extends MenuOption {}
+
+export enum CommandEnums {
+  refresh = 'refresh',
+  closeOther = 'closeOther',
+  closeLeft = 'closeLeft',
+  closeRight = 'closeRight',
+  closeAll = 'closeAll',
+}

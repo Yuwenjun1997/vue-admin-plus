@@ -1,5 +1,8 @@
 <template>
-  <el-empty description="description" />
+  <div>
+    仪表盘
+    <el-button type="primary">按钮</el-button>
+  </div>
 </template>
 
 <script setup lang="ts"></script>

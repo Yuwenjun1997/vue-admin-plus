@@ -5,7 +5,9 @@
     :font="{ color: theme.watermarkColor, fontSize: theme.watermarkFontSize }"
     :z-index="10000"
   >
-    <VadLayoutColumn :class="prefixCls + 'layout'" />
+    <VadLayoutColumn :class="prefixCls + 'layout'">
+      <router-view />
+    </VadLayoutColumn>
   </el-watermark>
 </template>
 

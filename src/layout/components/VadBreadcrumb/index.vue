@@ -21,6 +21,10 @@ const route = useRoute()
 
 console.log(route)
 
+watchEffect(() => {
+  console.log(route.matched)
+})
+
 const breadcrumbs: Menu[] = [
   {
     path: '/',

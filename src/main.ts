@@ -7,15 +7,12 @@ import Loading from './Loading.vue'
 import { setupStore } from './store'
 import { router, setupRouter } from './router'
 import { setupRouterGuard } from '@/router/guard'
-// import { sleep } from './utils'
 import { setupLayout } from './layout'
 
 async function bootstrap() {
   // 加载动画
   const loading = createApp(Loading)
   loading.mount('#app')
-
-  // await sleep(500)
 
   // 应用渲染
   const app = createApp(App)
@@ -24,7 +21,7 @@ async function bootstrap() {
   setupStore(app)
 
   // 初始化布局
-  setupLayout(app)
+  await setupLayout()
 
   // 配置路由
   setupRouter(app)

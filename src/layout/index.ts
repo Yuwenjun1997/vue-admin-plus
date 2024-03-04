@@ -1,11 +1,13 @@
-import { App } from 'vue'
 import './styles/index.scss'
 import { useThemeStore } from './store/theme'
 import { useMenuStore } from './store/menu'
-import { menus } from './data'
 import { useTabsStore } from './store/tabs'
+import { menus } from './data'
+import { sleep } from '@/utils'
 
-export function setupLayout(app: App<Element>) {
+export async function setupLayout() {
+  await sleep(500)
+
   // 加载主题
   const theme = useThemeStore()
   theme.loadTheme()
@@ -17,5 +19,6 @@ export function setupLayout(app: App<Element>) {
   // 加载选项卡
   const tabsStore = useTabsStore()
   tabsStore.loadFixedTabs(menuStore.flatMenus)
-  console.log(app)
+
+  return true
 }

@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <el-button type="primary">按钮</el-button>
-  </div>
+  <div>菜单设置</div>
 </template>
 
 <script setup lang="ts"></script>
