@@ -86,6 +86,8 @@ export interface MenuMeta {
   menuId: string
   title: string
   icon?: string
+  cache?: boolean
+  tabFixed?: boolean
 }
 
 export interface MenuOption {

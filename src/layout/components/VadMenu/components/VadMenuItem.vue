@@ -1,9 +1,13 @@
 <template>
   <el-menu-item :index="item.meta.menuId">
-    <template v-if="item.meta.icon">
-      <Icon :class="prefixCls + 'menu__item--icon'" :icon="item.meta.icon" />
-    </template>
-    <span>{{ item.meta.title }}</span>
+    <router-link :to="item.path">
+      <div class="flex items-center">
+        <template v-if="item.meta.icon">
+          <Icon :class="prefixCls + 'menu__item--icon'" :icon="item.meta.icon" />
+        </template>
+        <span>{{ item.meta.title }}</span>
+      </div>
+    </router-link>
   </el-menu-item>
 </template>
 

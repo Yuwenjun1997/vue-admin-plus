@@ -1,4 +1,4 @@
-enum Command {
+export enum Command {
   refresh = 'refresh',
   closeOther = 'closeOther',
   closeLeft = 'closeLeft',
@@ -26,12 +26,12 @@ export const commandList: CommandSource[] = [
   {
     command: Command.closeLeft,
     name: '关闭左侧',
-    icon: 'line-md:arrow-small-right',
+    icon: 'line-md:arrow-small-left',
   },
   {
     command: Command.closeRight,
     name: '关闭右侧',
-    icon: 'line-md:arrow-small-left',
+    icon: 'line-md:arrow-small-right',
   },
   {
     command: Command.closeAll,

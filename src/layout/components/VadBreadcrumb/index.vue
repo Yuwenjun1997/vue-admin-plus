@@ -15,6 +15,11 @@
 import { prefixCls } from '@/layout/config/index'
 import { Icon } from '@iconify/vue'
 import { Menu } from '@/types/index'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+console.log(route)
 
 const breadcrumbs: Menu[] = [
   {
