@@ -12,11 +12,8 @@
 <script setup lang="ts">
 import { prefixCls } from './config/index'
 import VadLayoutColumn from './layouts/VadLayoutColumn.vue'
-import { useThemeStore } from './store'
+import { useThemeStore } from './store/theme'
 
 const theme = useThemeStore()
 const watermarkContent = computed(() => (theme.showWatermark ? theme.watermarkContent : ''))
-onMounted(() => {
-  theme.loadTheme()
-})
 </script>

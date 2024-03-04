@@ -7,8 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import { prefixCls } from '@/layout/config/index'
 import { Icon } from '@iconify/vue'
+import { prefixCls } from '@/layout/config/index'
 import { useMenuCollapse } from '@/layout/hooks/useMenuCollapse'
 
 const { toggle, menuCollapse, showMenu } = useMenuCollapse()

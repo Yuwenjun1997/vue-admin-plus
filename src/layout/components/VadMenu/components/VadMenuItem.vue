@@ -1,17 +1,19 @@
 <template>
-  <el-menu-item :index="item.path">
-    <Icon :class="prefixCls + 'menu__item--icon'" :icon="item.icon" />
-    <span>{{ item.title }}</span>
+  <el-menu-item :index="item.meta.menuId">
+    <template v-if="item.meta.icon">
+      <Icon :class="prefixCls + 'menu__item--icon'" :icon="item.meta.icon" />
+    </template>
+    <span>{{ item.meta.title }}</span>
   </el-menu-item>
 </template>
 
 <script setup lang="ts">
-import { prefixCls } from '@/layout/config/index'
 import { Icon } from '@iconify/vue'
-import { Menu } from '@/types'
+import { prefixCls } from '@/layout/config/index'
+import { MenuOption } from '@/layout/types'
 
 interface Props {
-  itemOrMenu: Menu
+  itemOrMenu: MenuOption
 }
 
 const props = defineProps<Props>()

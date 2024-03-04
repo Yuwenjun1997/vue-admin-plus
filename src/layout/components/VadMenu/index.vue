@@ -1,16 +1,16 @@
 <template>
   <component :is="renderComponent" :item-or-menu="menu">
     <template v-if="hasChild">
-      <VadMenu v-for="item in menu.children" :key="item.path" :menu="item" />
+      <VadMenu v-for="item in menu.children" :key="item.meta.menuId" :menu="item" />
     </template>
   </component>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import type { Menu } from '@/types/index'
 import VadMenuItem from './components/VadMenuItem.vue'
 import VadSubMenu from './components/VadSubMenu.vue'
+import type { MenuOption } from '@/layout/types'
 
 export default defineComponent({
   name: 'VadMenu',
@@ -20,7 +20,7 @@ export default defineComponent({
   },
   props: {
     menu: {
-      type: Object as PropType<Menu>,
+      type: Object as PropType<MenuOption>,
       default: () => ({}),
     },
   },

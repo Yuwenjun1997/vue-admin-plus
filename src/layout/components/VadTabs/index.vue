@@ -37,11 +37,11 @@
 
 <script setup lang="ts">
 import { prefixCls } from '@/layout/config/index'
+import { useThemeStore } from '@/layout/store/theme'
 import { Icon } from '@iconify/vue'
 import { DropdownInstance } from 'element-plus'
 import { TagView } from '@/types/index'
 import { commandList } from './options'
-import { useThemeStore } from '@/layout/store'
 
 const themeStore = useThemeStore()
 
@@ -67,12 +67,12 @@ const list = ref<TagView[]>([
 
 const contextmenu = ref<DropdownInstance>()
 const openMenu = (item: TagView, evnt: MouseEvent) => {
-  console.log(item)
   if (!contextmenu.value) return
   contextmenu.value.handleOpen()
   const { clientX, clientY } = evnt
   contextmenu.value.$el.style.left = clientX + 'px'
   contextmenu.value.$el.style.top = clientY + 'px'
+  console.log(item)
 }
 
 const handleCommand = () => {}

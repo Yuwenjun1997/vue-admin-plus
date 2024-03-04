@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { prefixCls } from '@/layout/config/index'
 import { ElMessageBox } from 'element-plus'
+import { prefixCls } from '@/layout/config/index'
 
 // 刷新页面
 const router = useRouter()
@@ -22,5 +22,3 @@ const handleRefresh = () => {
     })
 }
 </script>
-
-

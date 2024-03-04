@@ -8,12 +8,12 @@
 </template>
 
 <script setup lang="ts">
-import { prefixCls } from '@/layout/config/index'
 import VadCollapse from '../VadCollapse/index.vue'
 import VadTools from '../VadTools/index.vue'
 import VadAvatar from '../VadAvatar/index.vue'
 import VadBreadcrumb from '../VadBreadcrumb/index.vue'
-import { useThemeStore } from '@/layout/store'
+import { useThemeStore } from '@/layout/store/theme'
+import { prefixCls } from '@/layout/config/index'
 
 const theme = useThemeStore()
 </script>

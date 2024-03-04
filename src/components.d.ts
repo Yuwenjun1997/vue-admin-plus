@@ -7,8 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Breadcrumb: typeof import('./components/Layout/components/Navbar/Breadcrumb.vue')['default']
-    Dropdown: typeof import('./components/Layout/components/Navbar/Dropdown.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -39,16 +37,7 @@ declare module 'vue' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElWatermark: typeof import('element-plus/es')['ElWatermark']
-    Layout: typeof import('./components/Layout/index.vue')['default']
-    LayoutDefault: typeof import('./components/Layout/LayoutDefault.vue')['default']
-    LeftTabs: typeof import('./components/Layout/components/LeftTabs.vue')['default']
-    MenuChildren: typeof import('./components/Layout/components/Menu/MenuChildren.vue')['default']
-    Navbar: typeof import('./components/Layout/components/Navbar/index.vue')['default']
-    NavbarTags: typeof import('./components/Layout/components/NavbarTags/index.vue')['default']
-    RightMenu: typeof import('./components/Layout/components/Menu/RightMenu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    ThemeSetting: typeof import('./components/Layout/components/ThemeSetting/index.vue')['default']
-    Toobar: typeof import('./components/Layout/components/Navbar/Toobar.vue')['default']
   }
 }

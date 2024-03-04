@@ -76,11 +76,11 @@
 </template>
 
 <script setup lang="ts">
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { Icon } from '@iconify/vue'
 import { prefixCls } from '@/layout/config/index'
 import { setThemeConfig } from '@/layout/utils'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { useThemeStore } from '@/layout/store'
+import { useThemeStore } from '@/layout/store/theme'
 
 const showThemePanel = ref<boolean>(false)
 

@@ -20,9 +20,9 @@ import VadColumnBar from '../components/VadColumnBar/index.vue'
 import VadNav from '../components/VadNav/index.vue'
 import VadTabs from '../components/VadTabs/index.vue'
 import { prefixCls } from '../config/index'
-import { useAside } from '@/layout/hooks/useAside'
+import { useAside } from '../hooks/useAside'
 import { toPx } from '../utils'
-import { useThemeStore } from '../store'
+import { useThemeStore } from '../store/theme'
 
 const { asideWidth } = useAside()
 const theme = useThemeStore()

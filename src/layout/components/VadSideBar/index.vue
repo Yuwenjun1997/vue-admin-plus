@@ -1,7 +1,7 @@
 <template>
   <div :class="prefixCls + 'menu'">
     <el-scrollbar height="100%">
-      <el-menu default-active="1">
+      <el-menu>
         <VadMenu v-for="menu in menus" :key="menu.path" :menu="menu" />
       </el-menu>
     </el-scrollbar>
@@ -9,54 +9,78 @@
 </template>
 
 <script setup lang="ts">
+import type { MenuOption } from '@/layout/types'
 import { prefixCls } from '@/layout/config/index'
 import VadMenu from '../VadMenu/index.vue'
-import type { Menu } from '@/types/index'
 
-const menus = ref<Menu[]>([
+const menus = ref<MenuOption[]>([
   {
+    name: '/dash',
     path: '/dash',
-    title: '工作台',
-    icon: 'line-md:compass-loop',
+    meta: {
+      title: '工作台',
+      icon: 'line-md:compass-loop',
+    },
   },
   {
+    name: '/personnal',
     path: '/personnal',
-    title: '个人中心',
-    icon: 'line-md:account',
+    meta: {
+      title: '个人中心',
+      icon: 'line-md:account',
+    },
   },
   {
+    name: '/message',
     path: '/message',
-    title: '消息',
-    icon: 'line-md:bell-loop',
+    meta: {
+      title: '消息',
+      icon: 'line-md:bell-loop',
+    },
     children: [
       {
+        name: '/message/list',
         path: '/message/list',
-        title: '消息列表',
-        icon: 'line-md:bell-loop',
+        meta: {
+          title: '消息列表',
+          icon: 'line-md:bell-loop',
+        },
         children: [
           {
-            path: '/message/list',
-            title: '消息列表',
-            icon: 'line-md:bell-loop',
+            name: '/message/list2',
+            path: '/message/list2',
+            meta: {
+              title: '消息列表',
+              icon: 'line-md:bell-loop',
+            },
           },
         ],
       },
     ],
   },
   {
+    name: '/setting',
     path: '/setting',
-    title: '系统设置',
-    icon: 'line-md:cog-loop',
+    meta: {
+      title: '系统设置',
+      icon: 'line-md:cog-loop',
+    },
     children: [
       {
+        name: '/setting/user',
         path: '/setting/user',
-        title: '用户设置',
-        icon: 'line-md:person-search',
+        meta: {
+          title: '用户设置',
+          icon: 'line-md:person-search',
+        },
       },
       {
+        name: '/setting/menu',
         path: '/setting/menu',
-        title: '菜单设置',
-        icon: 'line-md:person-search',
+        meta: {
+          title: '菜单设置',
+          icon: 'line-md:person-search',
+        },
       },
     ],
   },

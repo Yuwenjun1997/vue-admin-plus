@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { prefixCls } from '@/layout/config/index'
 import { useFullscreen } from '@vueuse/core'
+import { prefixCls } from '@/layout/config/index'
 
 // 切换全屏
 const { isFullscreen, toggle } = useFullscreen()

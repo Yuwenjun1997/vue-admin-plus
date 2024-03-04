@@ -81,3 +81,18 @@ export interface ThemeColorMap {
   light: ColorMap[]
   dark: ColorMap[]
 }
+
+export interface MenuMeta {
+  menuId: string
+  title: string
+  icon?: string
+}
+
+export interface MenuOption {
+  name: string
+  path: string
+  meta: MenuMeta
+  children?: MenuOption[]
+}
+
+export interface BreadcrumbOption extends MenuOption {}

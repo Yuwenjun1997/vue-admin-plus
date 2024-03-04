@@ -1,4 +1,4 @@
-import { useThemeStore } from '../store'
+import { useThemeStore } from '../store/theme'
 
 export function useAside() {
   const themeStore = useThemeStore()
