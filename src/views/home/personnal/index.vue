@@ -1,7 +1,11 @@
 <template>
-  <div>个人中心</div>
+  <div>
+    <el-input v-model="model" />
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts" name="Personnal">
+const model = ref<string>('hello world')
+</script>
 
 <style scoped></style>

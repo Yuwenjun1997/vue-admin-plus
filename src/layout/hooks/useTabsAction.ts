@@ -10,7 +10,11 @@ export function useTabsAction() {
   // tabs change
   const handleTabChange = (targetTab: TabPaneName) => {
     const menu = menuStore.flatMenus.find((item) => item.meta.menuId === targetTab)
-    if (menu) router.push(menu.path)
+    if (menu) {
+      router.push(menu.path)
+    } else {
+      router.push('/')
+    }
   }
 
   // tabs remove

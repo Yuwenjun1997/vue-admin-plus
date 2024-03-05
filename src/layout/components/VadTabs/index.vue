@@ -46,7 +46,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadTabs">
 import { prefixCls } from '@/layout/config/index'
 import { useThemeStore } from '@/layout/store/theme'
 import { Icon } from '@iconify/vue'

@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadSideBar">
 import type { MenuOption } from '@/layout/types'
 import { prefixCls } from '@/layout/config/index'
 import VadMenu from '../VadMenu/index.vue'

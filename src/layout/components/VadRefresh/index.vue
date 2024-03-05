@@ -4,7 +4,7 @@
   </el-tooltip>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadRefresh">
 import { Icon } from '@iconify/vue'
 import { prefixCls } from '@/layout/config/index'
 import { useRedo } from '@/layout/hooks/usePage'

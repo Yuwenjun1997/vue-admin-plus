@@ -7,7 +7,7 @@
   </el-menu-item>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadMenuItem">
 import { Icon } from '@iconify/vue'
 import { prefixCls } from '@/layout/config/index'
 import { MenuOption } from '@/layout/types'

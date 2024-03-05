@@ -4,7 +4,7 @@
   </el-tooltip>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadFullscreen">
 import { Icon } from '@iconify/vue'
 import { useFullscreen } from '@vueuse/core'
 import { prefixCls } from '@/layout/config/index'

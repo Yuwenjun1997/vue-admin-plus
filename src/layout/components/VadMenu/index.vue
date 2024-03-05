@@ -6,7 +6,7 @@
   </component>
 </template>
 
-<script lang="ts">
+<script lang="ts" name="VadMenu">
 import { defineComponent, PropType, computed } from 'vue'
 import VadMenuItem from './components/VadMenuItem.vue'
 import VadSubMenu from './components/VadSubMenu.vue'

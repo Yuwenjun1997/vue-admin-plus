@@ -65,7 +65,7 @@
             <el-color-picker v-model="theme.watermarkColor" show-alpha />
           </el-form-item>
           <el-form-item label="水印大小">
-            <el-slider v-model="theme.watermarkFontSize" />
+            <el-slider v-model="theme.watermarkFontSize" :max="45" :min="15" :step="5" />
           </el-form-item>
           <el-form-item label="水印内容">
             <el-input v-model="watermarkContent" type="textarea" @blur="onWatermarkContentBlur" />
@@ -80,7 +80,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadTheme">
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Icon } from '@iconify/vue'
 import { prefixCls } from '@/layout/config/index'

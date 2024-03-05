@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadLogo">
 import { prefixCls } from '@/layout/config/index'
 import { useAside } from '@/layout/hooks/useAside'
 

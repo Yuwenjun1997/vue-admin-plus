@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadColumnBar">
 import { Icon } from '@iconify/vue'
 import VadMenu from '../VadMenu/index.vue'
 import { prefixCls } from '@/layout/config/index'

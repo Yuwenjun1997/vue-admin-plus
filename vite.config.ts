@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import vueSetupExtend from 'vite-plugin-vue-setup-extend' // 引入插件
 
 const pathSrc = path.resolve(__dirname, 'src')
 
@@ -37,5 +38,6 @@ export default defineConfig({
       ],
       dts: path.resolve(pathSrc, 'components.d.ts'),
     }),
+    vueSetupExtend(),
   ],
 })

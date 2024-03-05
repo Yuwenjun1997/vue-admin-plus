@@ -6,22 +6,24 @@ import { REDIRECT_NAME } from '@/router/constant'
  * @description: redo current page
  */
 export const useRedo = (_router?: Router) => {
-  const { replace, currentRoute } = _router || useRouter()
-  const { query, params = {}, name, fullPath } = unref(currentRoute.value)
   function redo(): Promise<boolean> {
+    const { replace, currentRoute } = _router || useRouter()
+    const { name, fullPath, query } = unref(currentRoute.value)
+
     return new Promise((resolve) => {
       if (name === REDIRECT_NAME) {
         resolve(false)
         return
       }
-      if (name && Object.keys(params).length > 0) {
-        params['_redirect_type'] = 'name'
-        params['path'] = String(name)
-      } else {
-        params['_redirect_type'] = 'path'
-        params['path'] = fullPath
-      }
-      replace({ name: REDIRECT_NAME, params, query }).then(() => resolve(true))
+      replace({
+        name: REDIRECT_NAME,
+        params: {
+          path: fullPath,
+        },
+        query: {
+          ...query,
+        },
+      }).then(() => resolve(true))
     })
   }
   return redo

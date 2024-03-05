@@ -10,7 +10,7 @@
   </el-sub-menu>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadSubMenu">
 import { Icon } from '@iconify/vue'
 import { prefixCls } from '@/layout/config/index'
 import { MenuOption } from '@/layout/types'

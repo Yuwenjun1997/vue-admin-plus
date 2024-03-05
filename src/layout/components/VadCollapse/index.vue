@@ -6,7 +6,7 @@
   </transition>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadCollapse">
 import { Icon } from '@iconify/vue'
 import { prefixCls } from '@/layout/config/index'
 import { useMenuCollapse } from '@/layout/hooks/useMenuCollapse'

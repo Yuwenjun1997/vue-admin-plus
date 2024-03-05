@@ -16,7 +16,7 @@
   </el-container>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadLayoutColumn">
 import VadLogo from '../components/VadLogo/index.vue'
 import VadColumnBar from '../components/VadColumnBar/index.vue'
 import VadNav from '../components/VadNav/index.vue'

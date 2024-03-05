@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadNav">
 import VadCollapse from '../VadCollapse/index.vue'
 import VadTools from '../VadTools/index.vue'
 import VadAvatar from '../VadAvatar/index.vue'

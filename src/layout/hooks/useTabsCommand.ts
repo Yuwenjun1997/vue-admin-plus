@@ -3,13 +3,15 @@ import { CommandEnums, MenuMeta } from '@/layout/types'
 import { useTabsStore } from '../store/tabs'
 import { useMenuStore } from '../store/menu'
 import { useRedo } from './usePage'
-
-const tabsStore = useTabsStore()
-const menuStore = useMenuStore()
-
-const handleMenu = ref<MenuMeta>()
+import { useTabsAction } from './useTabsAction'
 
 export function useTabsCommand() {
+  const tabsStore = useTabsStore()
+  const menuStore = useMenuStore()
+  const { handleTabChange } = useTabsAction()
+
+  const handleMenu = ref<MenuMeta>()
+
   const openMenu = (item: MenuMeta, evnt: MouseEvent, contextmenu?: DropdownInstance) => {
     if (!contextmenu) return
     contextmenu.handleOpen()
@@ -44,11 +46,25 @@ export function useTabsCommand() {
 
   const handleCommand = (command: CommandEnums) => {
     if (!handleMenu.value) return
-    if (command === CommandEnums.closeOther) tabsStore.delOtherTabs(handleMenu.value)
-    if (command === CommandEnums.closeLeft) tabsStore.delLeftTabs(handleMenu.value)
-    if (command === CommandEnums.closeRight) tabsStore.delRightTabs(handleMenu.value)
-    if (command === CommandEnums.closeAll) tabsStore.delAllTabs()
-    if (command === CommandEnums.refresh) handleRefresh()
+    if (command === CommandEnums.closeOther) {
+      tabsStore.delOtherTabs(handleMenu.value)
+      handleTabChange(handleMenu.value.menuId)
+    }
+    if (command === CommandEnums.closeLeft) {
+      tabsStore.delLeftTabs(handleMenu.value)
+      handleTabChange(handleMenu.value.menuId)
+    }
+    if (command === CommandEnums.closeRight) {
+      tabsStore.delRightTabs(handleMenu.value)
+      handleTabChange(handleMenu.value.menuId)
+    }
+    if (command === CommandEnums.closeAll) {
+      tabsStore.delAllTabs()
+      router.push('/')
+    }
+    if (command === CommandEnums.refresh) {
+      handleRefresh()
+    }
   }
 
   return {

@@ -4,7 +4,7 @@
   </el-tooltip>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadToggleDark">
 import { Icon } from '@iconify/vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { prefixCls } from '@/layout/config/index'

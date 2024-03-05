@@ -32,6 +32,7 @@ export const menus: MenuOption[] = [
           icon: 'line-md:account',
           tabFixed: true,
           component: '@/views/home/personnal/index.vue',
+          cache: true,
         },
       },
     ],

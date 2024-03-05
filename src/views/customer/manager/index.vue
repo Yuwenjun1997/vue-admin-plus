@@ -2,8 +2,6 @@
   <div>客资管理</div>
 </template>
 
-<script>
-export default {}
-</script>
+<script lang="ts" setup name="CustomerManager"></script>
 
 <style lang="scss" scoped></style>

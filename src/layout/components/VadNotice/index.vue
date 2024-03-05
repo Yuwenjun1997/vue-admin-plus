@@ -4,7 +4,7 @@
   </el-tooltip>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadNotice">
 import { Icon } from '@iconify/vue'
 import { prefixCls } from '@/layout/config/index'
 </script>
