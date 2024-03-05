@@ -1,6 +1,6 @@
 import { MenuOption } from '@/layout/types'
 import { WHITE_NAME_LIST, router } from '..'
-import { LAYOUT, EXCEPTION_COMPONENT } from '../constant'
+import { LAYOUT, VIEW_COMPONENT } from '../constant'
 import { RouteRecordRaw } from 'vue-router'
 
 const modules = import.meta.glob('@/views/**/*.vue')
@@ -42,7 +42,7 @@ export function generateRoutes(menus: MenuOption[]): RouteRecordRaw[] {
     } else if (menu.meta.component) {
       route.component = modules[resolvePath(menu.meta.component)]
     } else {
-      route.component = EXCEPTION_COMPONENT
+      route.component = VIEW_COMPONENT
     }
     if (menu.children) {
       route.children = generateRoutes(menu.children)
@@ -50,6 +50,21 @@ export function generateRoutes(menus: MenuOption[]): RouteRecordRaw[] {
     return route
   })
 }
+// export function generateRoutes(menus: MenuOption[]): RouteRecordRaw[] {
+//   return menus.map((menu) => {
+//     const route = {} as RouteRecordRaw
+//     route.path = menu.path
+//     route.name = menu.name
+//     route.meta = menu.meta
+//     route.redirect = menu.redirect
+//     if (menu.meta.layout) {
+//       route.component = LAYOUT
+//     } else if (menu.meta.component) {
+//       route.component = modules[resolvePath(menu.meta.component)]
+//     }
+//     return route
+//   })
+// }
 
 /**
  * 添加全部路由

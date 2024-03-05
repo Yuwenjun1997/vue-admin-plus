@@ -18,6 +18,8 @@
   height: 100vh;
   overflow: hidden;
   background: var(--el-bg-color-page);
+  font-size: var(--el-font-size-base);
+  color: var(--el-text-color-primary);
 
   &-header {
     height: auto !important;
@@ -29,6 +31,14 @@
     transition: var(--el-transition-all);
     overflow: hidden !important;
   }
+
+  &-main {
+    padding: 0 !important;
+  }
+}
+
+.#{$prefixCls}-main {
+  padding: var(--el-main-padding);
 }
 
 .#{$prefixCls}-tools-btn__icon {

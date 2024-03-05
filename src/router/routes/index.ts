@@ -1,11 +1,12 @@
 import { REDIRECT_ROUTE } from '@/router/routes/basic'
 import { PageEnum } from '@/enums/pageEnum'
 import { RouteRecordRaw } from 'vue-router'
+import { ROOT_NAME } from '../constant'
 
 // 根路由
 export const RootRoute: RouteRecordRaw = {
   path: '/',
-  name: 'Root',
+  name: ROOT_NAME,
   redirect: PageEnum.BASE_HOME,
   meta: {
     menuId: 'Root',

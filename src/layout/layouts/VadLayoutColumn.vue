@@ -10,7 +10,7 @@
         <VadTabs v-if="theme.showNavbarTags" />
       </el-header>
       <el-main :class="prefixCls + 'layout-main'">
-        <slot />
+        <VadMain> <slot /></VadMain>
       </el-main>
     </el-container>
   </el-container>
@@ -21,6 +21,7 @@ import VadLogo from '../components/VadLogo/index.vue'
 import VadColumnBar from '../components/VadColumnBar/index.vue'
 import VadNav from '../components/VadNav/index.vue'
 import VadTabs from '../components/VadTabs/index.vue'
+import VadMain from '../components/VadMain/index.vue'
 import { prefixCls } from '../config/index'
 import { useAside } from '../hooks/useAside'
 import { toPx } from '../utils'

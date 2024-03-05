@@ -3,7 +3,7 @@ import { MenuOption } from './types'
 export const menus: MenuOption[] = [
   {
     name: 'Home',
-    path: '/',
+    path: '/home',
     redirect: '/dashboard',
     meta: {
       menuId: 'Home',
@@ -23,60 +23,45 @@ export const menus: MenuOption[] = [
           component: '@/views/home/dashboard/index.vue',
         },
       },
-      {
-        name: 'Personnal',
-        path: '/personnal',
-        meta: {
-          menuId: 'Personnal',
-          title: '个人中心',
-          icon: 'line-md:account',
-          tabFixed: true,
-          component: '@/views/home/personnal/index.vue',
-          cache: true,
-        },
-      },
     ],
   },
   {
-    name: 'Customer',
-    path: '/customer',
-    redirect: '/customer/manager',
+    name: 'Component',
+    path: '/component',
+    redirect: '/component/icon',
     meta: {
-      menuId: 'Customer',
-      title: '客资',
-      icon: 'line-md:person-search',
+      menuId: 'Component',
+      title: '组件',
+      icon: 'line-md:beer-alt-twotone-loop',
       layout: 'Layout',
     },
     children: [
       {
-        name: 'CustomerManager',
-        path: '/customer/manager',
+        name: 'ComponentIcon',
+        path: '/component/icon',
+        redirect: '/component/iconList',
         meta: {
-          menuId: 'CustomerManager',
-          title: '客资管理',
-          icon: 'line-md:account',
-          component: '@/views/customer/manager/index.vue',
-        },
-      },
-      {
-        name: 'CustomerSetting',
-        path: '/customer/setting',
-        redirect: '/customer/setting/menu',
-        meta: {
-          menuId: 'CustomerSetting',
-          title: '系统设置',
-          icon: 'line-md:cog-loop',
-          component: '@/views/customer/setting/index.vue',
+          menuId: 'ComponentIcon',
+          title: '图标',
+          icon: 'line-md:emoji-smile-wink',
         },
         children: [
           {
-            name: 'CustomerSettingMenu',
-            path: '/customer/setting/menu',
+            name: 'ComponentIconList',
+            path: '/component/iconList',
             meta: {
-              menuId: 'CustomerSettingMenu',
-              title: '菜单设置',
-              icon: 'line-md:person-search',
-              component: '@/views/customer/setting/menu/index.vue',
+              menuId: 'ComponentIconList',
+              title: '图标列表',
+              component: '@/views/sys/components/icons/index.vue',
+            },
+          },
+          {
+            name: 'ComponentIconPicker',
+            path: '/component/iconPicker',
+            meta: {
+              menuId: 'ComponentIconPicker',
+              title: '图标选择器',
+              component: '@/views/sys/components/icon-picker/index.vue',
             },
           },
         ],

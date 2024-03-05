@@ -32,8 +32,6 @@ export const router = createRouter({
 export function setupRouter(app: App<Element>) {
   const menuStore = useMenuStore()
   resetRouter()
-  const routes = generateRoutes(menuStore.rootMenus)
-  addAllRoutes(routes)
-  console.log(routes)
+  addAllRoutes(generateRoutes(menuStore.rootMenus))
   app.use(router)
 }
