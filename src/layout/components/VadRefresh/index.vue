@@ -6,19 +6,10 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { ElMessageBox } from 'element-plus'
 import { prefixCls } from '@/layout/config/index'
+import { useRedo } from '@/layout/hooks/usePage'
 
 // 刷新页面
 const router = useRouter()
-const route = useRoute()
-const handleRefresh = () => {
-  ElMessageBox.confirm('确认刷新当前页面?', '提示', { type: 'warning' })
-    .then(() => {
-      router.replace({ path: '/redirect' + route.fullPath, query: route.query })
-    })
-    .catch(() => {
-      // 取消
-    })
-}
+const handleRefresh = useRedo(router)
 </script>

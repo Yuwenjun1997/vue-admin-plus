@@ -245,3 +245,9 @@
   font-size: var(--el-font-size-extra-large);
   color: var(--el-text-color-regular);
 }
+
+.#{$prefixCls}-breadcrumb {
+  .el-breadcrumb__inner.is-link {
+    font-weight: normal !important;
+  }
+}

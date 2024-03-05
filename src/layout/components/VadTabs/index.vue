@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls + 'tabs'">
-    <el-tabs v-model="menuStore.activeMenuKey" closable type="card">
+    <el-tabs v-model="menuStore.activeMenuKey" type="card" @tab-change="handleTabChange" @tab-remove="handleTabRemove">
       <el-tab-pane
         v-for="item in tabsStore.activeTabs"
         :key="item.menuId"
@@ -8,17 +8,12 @@
         :name="item.menuId"
       >
         <template #label>
-          <router-link
-            :to="menuStore.getMenuPathByMenuId(item.menuId)"
-            @contextmenu.prevent="openMenu(item, $event, contextmenu)"
-          >
-            <div class="flex items-center gap-1">
-              <transition name="el-zoom-in-center">
-                <Icon v-if="item.icon && themeStore.showNavbarTagsIcon" :icon="item.icon" />
-              </transition>
-              <span>{{ item.title }}</span>
-            </div>
-          </router-link>
+          <div class="flex items-center gap-1" @contextmenu.prevent="openMenu(item, $event, contextmenu)">
+            <transition name="el-zoom-in-center">
+              <Icon v-if="item.icon && themeStore.showNavbarTagsIcon" :icon="item.icon" />
+            </transition>
+            <span>{{ item.title }}</span>
+          </div>
         </template>
       </el-tab-pane>
     </el-tabs>
@@ -60,10 +55,12 @@ import { commandList } from './options'
 import { useTabsStore } from '@/layout/store/tabs'
 import { useMenuStore } from '@/layout/store/menu'
 import { useTabsCommand } from '@/layout/hooks/useTabsCommand'
+import { useTabsAction } from '@/layout/hooks/useTabsAction'
 
 const themeStore = useThemeStore()
 const tabsStore = useTabsStore()
 const menuStore = useMenuStore()
 const contextmenu = ref<DropdownInstance>()
 const { disabledCommand, onCommand, openMenu } = useTabsCommand()
+const { handleTabChange, handleTabRemove } = useTabsAction()
 </script>

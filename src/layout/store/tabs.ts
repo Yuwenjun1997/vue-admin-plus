@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { MenuMeta } from '@/layout/types'
+import { MenuMeta, MenuOption } from '@/layout/types'
 
 interface TabsState {
   activeTabs: MenuMeta[]
@@ -18,8 +18,8 @@ export const useTabsStore = defineStore('tabs', {
     /**
      * 加载固定选项卡
      */
-    loadFixedTabs(menus: MenuMeta[]) {
-      this.activeTabs = menus.filter((item) => item.tabFixed)
+    loadFixedTabs(menus: MenuOption[]) {
+      this.activeTabs = menus.map((menu) => menu.meta).filter((meta) => meta.tabFixed)
       this.refreshCacheTabs()
     },
 

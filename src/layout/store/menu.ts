@@ -41,7 +41,15 @@ export const useMenuStore = defineStore('menu', {
      * @param menuId
      */
     getMenuPathByMenuId(menuId: string) {
-      return this.flatMenus.find((menu) => menu.meta.menuId === menuId)?.path
+      return this.getMenuByMenuId(menuId)?.path
+    },
+
+    /**
+     * 根据菜单id获取菜单
+     */
+    getMenuByMenuId(menuId: string) {
+      if (typeof menuId === 'undefined') return
+      return this.flatMenus.find((menu) => menu.meta.menuId === menuId)
     },
   },
 })

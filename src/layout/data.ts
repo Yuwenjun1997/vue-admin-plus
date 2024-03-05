@@ -60,6 +60,7 @@ export const menus: MenuOption[] = [
       {
         name: 'CustomerSetting',
         path: '/customer/setting',
+        redirect: '/customer/setting/menu',
         meta: {
           menuId: 'CustomerSetting',
           title: '系统设置',
@@ -68,10 +69,10 @@ export const menus: MenuOption[] = [
         },
         children: [
           {
-            name: '/setting/menu',
-            path: '/setting/menu',
+            name: 'CustomerSettingMenu',
+            path: '/customer/setting/menu',
             meta: {
-              menuId: 'SettingMenu',
+              menuId: 'CustomerSettingMenu',
               title: '菜单设置',
               icon: 'line-md:person-search',
               component: '@/views/customer/setting/menu/index.vue',

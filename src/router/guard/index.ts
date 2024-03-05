@@ -36,6 +36,7 @@ export function createMenuActiveGuard(router: Router) {
   router.afterEach((to) => {
     menuStore.activeRootMenuKey = to.matched[0].meta.menuId
     menuStore.activeMenuKey = to.meta.menuId
-    tabsStore.addTab(to.meta)
+    const menu = menuStore.getMenuByMenuId(to.meta.menuId)
+    menu && tabsStore.addTab(to.meta)
   })
 }

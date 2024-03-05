@@ -143,6 +143,11 @@ export const defaultTheme: ThemeConfig = {
   showBreadcrumb: true,
 
   /**
+   * 显示面包屑图标
+   */
+  showBreadcrumbIcon: true,
+
+  /**
    * 显示水印
    */
   showWatermark: false,

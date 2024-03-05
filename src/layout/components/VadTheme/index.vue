@@ -49,6 +49,11 @@
             <el-switch v-model="theme.showBreadcrumb" />
           </div>
         </el-form-item>
+        <el-form-item label="面包屑图标">
+          <div class="flex justify-end w-full">
+            <el-switch v-model="theme.showBreadcrumbIcon" :disabled="!theme.showBreadcrumb" />
+          </div>
+        </el-form-item>
         <el-divider />
         <el-form-item label="显示水印">
           <div class="flex justify-end w-full">

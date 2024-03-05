@@ -47,6 +47,11 @@ export interface ThemeConfig {
   showBreadcrumb: boolean
 
   /**
+   * 显示面包屑图标
+   */
+  showBreadcrumbIcon: boolean
+
+  /**
    * 显示水印
    */
   showWatermark: boolean

@@ -2,6 +2,7 @@ import { DropdownInstance } from 'element-plus'
 import { CommandEnums, MenuMeta } from '@/layout/types'
 import { useTabsStore } from '../store/tabs'
 import { useMenuStore } from '../store/menu'
+import { useRedo } from './usePage'
 
 const tabsStore = useTabsStore()
 const menuStore = useMenuStore()
@@ -37,15 +38,17 @@ export function useTabsCommand() {
     return false
   }
 
+  // 刷新页面
+  const router = useRouter()
+  const handleRefresh = useRedo(router)
+
   const handleCommand = (command: CommandEnums) => {
     if (!handleMenu.value) return
     if (command === CommandEnums.closeOther) tabsStore.delOtherTabs(handleMenu.value)
     if (command === CommandEnums.closeLeft) tabsStore.delLeftTabs(handleMenu.value)
     if (command === CommandEnums.closeRight) tabsStore.delRightTabs(handleMenu.value)
     if (command === CommandEnums.closeAll) tabsStore.delAllTabs()
-    if (command === CommandEnums.refresh) {
-      // router.replace({ path: '/redirect' + route.fullPath, query: route.query })
-    }
+    if (command === CommandEnums.refresh) handleRefresh()
   }
 
   return {
