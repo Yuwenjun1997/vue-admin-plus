@@ -8,6 +8,9 @@
 import { Icon } from '@iconify/vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { prefixCls } from '@/layout/config/index'
+import { useThemeStore } from '@/layout/store/theme'
+
+const { applyThemeColor } = useThemeStore()
 
 // 切换暗夜模式
 const isDark = useDark()
@@ -18,5 +21,6 @@ const _darkThemeIcon = computed(() =>
 const _darkThemeLabel = computed(() => (isDark.value ? '明亮模式' : '暗夜模式'))
 const handleToggleDark = () => {
   toggleDark()
+  applyThemeColor(isDark.value)
 }
 </script>

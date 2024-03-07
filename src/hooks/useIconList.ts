@@ -8,6 +8,14 @@ interface UseIconListParams {
   pageNum?: number
 }
 
+export function loadIcons(collection: string[]) {
+  const icons: string[] = []
+  collection.forEach((item) => {
+    icons.push(...listIcons(undefined, item).sort())
+  })
+  return icons
+}
+
 export function useIconList(params: UseIconListParams = {}) {
   const keyword = ref<string>('')
   const onlyName = ref<boolean>(false)
@@ -21,7 +29,7 @@ export function useIconList(params: UseIconListParams = {}) {
     ElMessage.success('拷贝成功:' + iconText)
   }
 
-  const sourceIcons = listIcons(undefined, 'line-md').concat(listIcons(undefined, 'ep')).sort()
+  const sourceIcons = loadIcons(['line-md', 'ep', 'bi'])
   const filterIcons = ref<string[]>(sourceIcons)
   const iconTotal = computed(() => filterIcons.value.length)
   const icons = ref<string[]>([])

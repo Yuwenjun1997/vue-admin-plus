@@ -47,7 +47,7 @@
   </el-popover>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VadIconPicker">
 import { Icon } from '@iconify/vue'
 import { useIconList } from '@/hooks/useIconList'
 import { PopoverInstance } from 'element-plus'

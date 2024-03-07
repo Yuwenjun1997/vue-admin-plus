@@ -22,7 +22,7 @@ export const LoginRoute: RouteRecordRaw = {
     menuId: 'Login',
     title: '用户登录',
   },
-  component: () => import('@/views/sys/authorize/login.vue'),
+  component: () => import('@/views/system/authorize/login.vue'),
 }
 
 // Basic routing without permission
