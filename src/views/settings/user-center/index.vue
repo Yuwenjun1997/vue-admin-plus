@@ -85,7 +85,7 @@
                   <div>绑定QQ</div>
                   <div class="mt-1 vad-text-color-secondary">当前未绑定QQ账号</div>
                 </div>
-                <el-button type="text">立即绑定</el-button>
+                <el-button link type="primary">立即绑定</el-button>
               </div>
               <el-divider />
               <div class="flex items-center">
@@ -94,7 +94,7 @@
                   <div>绑定微信</div>
                   <div class="mt-1 vad-text-color-secondary">当前未绑定微信账号</div>
                 </div>
-                <el-button type="text">立即绑定</el-button>
+                <el-button link type="primary">立即绑定</el-button>
               </div>
               <el-divider />
               <div class="flex items-center">
@@ -103,9 +103,9 @@
                   <div>绑定GitHub</div>
                   <div class="mt-1 vad-text-color-secondary">当前未绑定GitHub账号</div>
                 </div>
-                <el-button type="text">立即绑定</el-button>
-                <el-button type="text">解绑</el-button>
-                <el-button type="text">更换绑定</el-button>
+                <el-button link type="primary">立即绑定</el-button>
+                <el-button link type="primary">解绑</el-button>
+                <el-button link type="primary">更换绑定</el-button>
               </div>
             </div>
           </el-tab-pane>

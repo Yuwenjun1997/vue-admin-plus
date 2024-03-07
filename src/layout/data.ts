@@ -66,6 +66,16 @@ export const menus: MenuOption[] = [
           },
         ],
       },
+      {
+        name: 'ComponentPermission',
+        path: '/component/permission',
+        meta: {
+          menuId: 'ComponentPermission',
+          title: '角色权限',
+          icon: 'bi:person-lock',
+          component: '@/views/components/permission/index.vue',
+        },
+      },
     ],
   },
   {
@@ -140,5 +150,17 @@ export const menus: MenuOption[] = [
         },
       },
     ],
+  },
+  {
+    name: 'Others',
+    path: '/others',
+    redirect: '/others/permission',
+    meta: {
+      menuId: 'Others',
+      title: '其他',
+      icon: 'line-md:coffee-half-empty-twotone-loop',
+      layout: 'Layout',
+    },
+    children: [],
   },
 ]
