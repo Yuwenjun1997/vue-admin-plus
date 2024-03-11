@@ -26,6 +26,9 @@ dependencies:
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(typescript@5.4.2)(vue@3.4.21)
+  sortablejs:
+    specifier: ^1.15.2
+    version: 1.15.2
   tinycolor2:
     specifier: ^1.6.0
     version: 1.6.0
@@ -64,6 +67,9 @@ devDependencies:
   '@types/nprogress':
     specifier: ^0.2.3
     version: 0.2.3
+  '@types/sortablejs':
+    specifier: ^1.15.8
+    version: 1.15.8
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.21.0
     version: 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.57.0)(typescript@5.4.2)
@@ -756,6 +762,10 @@ packages:
 
   /@types/semver@7.5.8:
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
+    dev: true
+
+  /@types/sortablejs@1.15.8:
+    resolution: {integrity: sha512-b79830lW+RZfwaztgs1aVPgbasJ8e7AXtZYHTELNXZPsERt4ymJdjV4OccDbHQAvHrCcFpbF78jkm0R6h/pZVg==}
     dev: true
 
   /@types/web-bluetooth@0.0.16:
@@ -2474,6 +2484,10 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
     dev: true
+
+  /sortablejs@1.15.2:
+    resolution: {integrity: sha512-FJF5jgdfvoKn1MAKSdGs33bIqLi3LmsgVTliuX6iITj834F+JRQZN90Z93yql8h0K2t0RwDPBmxwlbZfDcxNZA==}
+    dev: false
 
   /source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}

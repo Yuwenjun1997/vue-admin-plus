@@ -76,6 +76,16 @@ export const menus: MenuOption[] = [
           component: '@/views/components/permission/index.vue',
         },
       },
+      {
+        name: 'ComponentSortable',
+        path: '/component/sortable',
+        meta: {
+          menuId: 'ComponentSortable',
+          title: '可拖拽',
+          icon: 'bi:person-lock',
+          component: '@/views/components/sortable/index.vue',
+        },
+      },
     ],
   },
   {
