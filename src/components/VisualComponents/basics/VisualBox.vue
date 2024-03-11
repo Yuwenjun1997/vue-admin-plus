@@ -1,13 +1,20 @@
 <template>
-  <div class="visual-box p-4" :class="{ active: isActive }" @click.stop="toggleActive(props.template)">
-    <div ref="visualBoxWrap" class="visual-box__wrap">
+  <div
+    class="visual-box"
+    :class="{ active: isActive }"
+    :style="props.template.layoutStyle"
+    @click.stop="toggleActive(props.template)"
+  >
+    <div ref="visualBoxWrap" class="visual-box__wrap" :style="props.template.style">
       <slot />
     </div>
-    <div v-show="isActive" class="visual-box__tools" @click.stop>
-      <template v-if="!isRoot">
+    <div v-if="isActive && showTools" class="visual-box__tools" @click.stop>
+      <template v-if="!isRoot && isDraggable">
         <Icon class="visual-box__tools--control move" icon="bi:arrows-move" />
       </template>
-      <Icon class="visual-box__tools--control" icon="ep:delete" />
+      <template v-if="isDeletable">
+        <Icon class="visual-box__tools--control" icon="ep:delete" />
+      </template>
       <template v-if="!isRoot">
         <Icon class="visual-box__tools--control" icon="line-md:arrow-up" />
       </template>
@@ -34,6 +41,9 @@ const { toggleActive } = useVisualBoxStore()
 
 const isActive = computed(() => props.template.isActive)
 const isRoot = computed(() => props.template.isRoot)
+const isDraggable = computed(() => props.template.isDraggable)
+const isDeletable = computed(() => props.template.isDeletable)
+const showTools = computed(() => props.template.showTools)
 
 const visualBoxWrap = ref<HTMLElement>()
 
@@ -50,11 +60,13 @@ onMounted(() => {
 <style scoped lang="scss">
 .visual-box {
   $outline-width: 2px;
-  min-height: 40px;
   position: relative;
+  cursor: pointer;
+  user-select: none;
 
   &.active {
     outline: $outline-width solid var(--el-color-primary);
+    z-index: 10;
   }
 
   &__wrap {

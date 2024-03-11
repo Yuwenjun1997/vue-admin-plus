@@ -7,8 +7,6 @@
 </template>
 <script lang="ts" setup>
 import { useVisualBoxStore } from '@/store/modules/visual-box'
-import VisualBoxRender from './components/VisualBoxRender.vue'
-import VisualBox from './components/VisualBox.vue'
 import { storeToRefs } from 'pinia'
 import templates from './data'
 

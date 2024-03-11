@@ -1,11 +1,18 @@
+import { CSSProperties } from 'vue'
+
 export interface VisualBoxTemplateRender {
-  type: string
+  component: string
 }
 
 export interface VisualBoxTemplate {
   visualBoxKey: string
+  showTools?: boolean
+  isDraggable?: boolean
+  isDeletable?: boolean
   isRoot?: boolean
   isActive?: boolean
-  children?: VisualBoxTemplate[]
   render?: VisualBoxTemplateRender
+  layoutStyle?: CSSProperties
+  style?: CSSProperties
+  children?: VisualBoxTemplate[]
 }

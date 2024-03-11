@@ -10,6 +10,7 @@ import { setupRouterGuard } from '@/router/guard'
 import { setupLayout } from './layout'
 import { setupIconify } from './plugins/iconify'
 import { setupVxeTable } from './plugins/vxe-table'
+import { setupVisual } from './components/VisualComponents/index'
 
 async function bootstrap() {
   // 加载动画
@@ -18,6 +19,8 @@ async function bootstrap() {
 
   // 应用渲染
   const app = createApp(App)
+
+  setupVisual(app)
 
   setupIconify()
 

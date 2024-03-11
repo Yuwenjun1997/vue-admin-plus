@@ -27,9 +27,8 @@ export const useVisualBoxStore = defineStore('visualBox', {
     },
 
     toggleActive(template: VisualBoxTemplate) {
-      const oldStatus = template.isActive
       this.flatVisualBoxTemplates.forEach((t) => (t.isActive = false))
-      template.isActive = !oldStatus
+      template.isActive = true
     },
   },
 })
