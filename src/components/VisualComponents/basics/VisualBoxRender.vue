@@ -1,23 +1,20 @@
 <template>
-  <!-- eslint-disable-next-line vue/no-multiple-template-root -->
-  <VisualBox v-for="temp in templates" :key="temp.visualBoxKey" :template="temp">
-    <component :is="temp.render.component" v-if="temp.render" />
-    <VisualBoxRender v-if="temp.children" :templates="temp.children" />
+  <VisualBox :template="props.template">
+    <template v-if="props.template.render && props.template.render.component">
+      <component :is="props.template.render.component" :template="props.template" />
+    </template>
+    <template v-else-if="props.template.children">
+      <VisualBoxRender v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
+    </template>
   </VisualBox>
 </template>
 
-<script lang="ts">
-import { PropType, defineComponent } from 'vue'
+<script lang="ts" setup name="VisualBoxRender">
 import { VisualBoxTemplate } from '@/types/visual-box'
 
-export default defineComponent({
-  name: 'VisualBoxRender',
-  props: {
-    templates: {
-      type: Array as PropType<VisualBoxTemplate[]>,
-      default: () => [],
-    },
-  },
-  setup() {},
-})
+interface Props {
+  template: VisualBoxTemplate
+}
+
+const props = defineProps<Props>()
 </script>

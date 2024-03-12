@@ -34,11 +34,16 @@
 
   &-main {
     padding: 0 !important;
+
+    .el-scrollbar__view {
+      height: 100%;
+    }
   }
 }
 
 .#{$prefixCls}-main {
   padding: var(--el-main-padding);
+  height: 100%;
 }
 
 .#{$prefixCls}-tools-btn__icon {

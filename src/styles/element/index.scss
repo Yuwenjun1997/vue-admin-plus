@@ -1,3 +1,4 @@
-@forward 'element-plus/theme-chalk/src/mixins/config.scss' with (
-  $namespace: 'ep'
-);
+.el-overlay.is-message-box .el-overlay-message-box {
+  top: 16% !important;
+  bottom: unset;
+}

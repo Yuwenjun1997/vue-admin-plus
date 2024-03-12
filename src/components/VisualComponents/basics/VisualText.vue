@@ -1,35 +1,34 @@
 <template>
-  <!-- <el-text size="large">Large</el-text> -->
-  <el-table :data="tableData">
-    <el-table-column label="Date" prop="date" width="180" />
-    <el-table-column label="Name" prop="name" width="180" />
-    <el-table-column label="Address" prop="address" />
-  </el-table>
+  <span :style="customStyle">{{ text }}</span>
 </template>
 
-<script setup lang="ts">
-const tableData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
+<script setup lang="ts" name="VisualText">
+import { VisualBoxTemplate } from '@/types/visual-box'
+
+interface Options {
+  content: string
+  fontSize: string
+  color: string
+}
+
+interface Props {
+  template: VisualBoxTemplate<Options>
+}
+
+const props = defineProps<Props>()
+
+const customStyle = computed(() => {
+  if (!props.template.render) return
+  if (!props.template.render.props) return
+  return {
+    color: props.template.render.props.color,
+    fontSize: props.template.render.props.fontSize,
+  }
+})
+
+const text = computed(() => {
+  return props.template.render?.props?.content
+})
 </script>
 
 <style scoped></style>

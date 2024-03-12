@@ -1,10 +1,12 @@
 import { App } from 'vue'
-import VisualText from './basics/VisualText.vue'
-import VisualBoxRender from './basics/VisualBoxRender.vue'
-import VisualBox from './basics/VisualBox.vue'
+
+const moudules = import.meta.glob('./**/*.vue', { eager: true })
+const pattern = /([^/\\]+)\.vue$/
 
 export function setupVisual(app: App) {
-  app.component('VisualBox', VisualBox)
-  app.component('VisualBoxRender', VisualBoxRender)
-  app.component('VisualText', VisualText)
+  Object.keys(moudules).forEach((key) => {
+    const mod = (moudules[key] as any).default
+    const match = key.match(pattern)
+    if (match) app.component(match[1], mod)
+  })
 }
