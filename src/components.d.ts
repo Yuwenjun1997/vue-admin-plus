@@ -28,7 +28,6 @@ declare module 'vue' {
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElInput: typeof import('element-plus/es')['ElInput']
-    ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
@@ -40,11 +39,8 @@ declare module 'vue' {
     ElSlider: typeof import('element-plus/es')['ElSlider']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
-    ElTable: typeof import('element-plus/es')['ElTable']
-    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
-    ElText: typeof import('element-plus/es')['ElText']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElWatermark: typeof import('element-plus/es')['ElWatermark']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -55,7 +51,6 @@ declare module 'vue' {
     VisualBoxRender: typeof import('./components/VisualComponents/basics/VisualBoxRender.vue')['default']
     VisualCol: typeof import('./components/VisualComponents/basics/VisualCol.vue')['default']
     VisualGrid: typeof import('./components/VisualComponents/basics/VisualGrid.vue')['default']
-    VisualRow: typeof import('./components/VisualComponents/basics/VisualRow.vue')['default']
     VisualText: typeof import('./components/VisualComponents/basics/VisualText.vue')['default']
   }
 }

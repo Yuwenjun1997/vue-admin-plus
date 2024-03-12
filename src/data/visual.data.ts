@@ -34,27 +34,25 @@ export const visualBoxComponents: VisualBoxComponents[] = [
           padding: '4px',
           outlineOffset: '-1px',
         },
-        render: {
-          component: 'VisualGrid',
-          props: {
-            columns: 4,
-            gutter: 16,
-          },
-          options: [
-            {
-              label: '当前栅格列',
-              property: 'columns',
-              value: 4,
-              formControlType: 'select',
-            },
-            {
-              label: '栅格间隔(px)',
-              property: 'columns',
-              value: 4,
-              formControlType: 'select',
-            },
-          ],
+        component: 'VisualGrid',
+        props: {
+          columns: 4,
+          gutter: 16,
         },
+        propOptions: [
+          {
+            label: '当前栅格列',
+            property: 'columns',
+            value: 4,
+            formControlType: 'select',
+          },
+          {
+            label: '栅格间隔(px)',
+            property: 'columns',
+            value: 4,
+            formControlType: 'select',
+          },
+        ],
         children: [
           {
             visualBoxKey: uuidv4(),
@@ -69,10 +67,8 @@ export const visualBoxComponents: VisualBoxComponents[] = [
             style: {
               minHeight: '36px',
             },
-            render: {
-              props: {
-                span: 6,
-              },
+            props: {
+              span: 6,
             },
           },
           {
@@ -88,10 +84,8 @@ export const visualBoxComponents: VisualBoxComponents[] = [
             style: {
               minHeight: '36px',
             },
-            render: {
-              props: {
-                span: 6,
-              },
+            props: {
+              span: 6,
             },
           },
           {
@@ -107,10 +101,8 @@ export const visualBoxComponents: VisualBoxComponents[] = [
             style: {
               minHeight: '36px',
             },
-            render: {
-              props: {
-                span: 6,
-              },
+            props: {
+              span: 6,
             },
           },
           {
@@ -125,10 +117,8 @@ export const visualBoxComponents: VisualBoxComponents[] = [
             style: {
               minHeight: '36px',
             },
-            render: {
-              props: {
-                span: 6,
-              },
+            props: {
+              span: 6,
             },
           },
         ],
@@ -141,35 +131,122 @@ export const visualBoxComponents: VisualBoxComponents[] = [
     components: [
       {
         visualBoxKey: uuidv4(),
-        visualBoxName: '文本',
+        visualBoxName: '文本组件',
         visualBoxIcon: 'bi:file-earmark-font',
         showTools: true,
         isDraggable: true,
         isDeletable: true,
         isEditable: true,
         disabled: true,
-        render: {
-          component: 'VisualText',
-          props: {
-            content: '这是一行文本，hello world',
-            fontSize: '14px',
-            color: '#333',
-          },
-          options: [
-            {
-              formControlType: 'input',
-              label: '字体大小',
-              property: 'fontSize',
-              value: '14px',
-            },
-            {
-              formControlType: 'textarea',
-              label: '文本内容',
-              property: 'content',
-              value: '这是一行文本，hello world',
-            },
-          ],
+        component: 'VisualText',
+        style: {
+          fontSize: '16px',
+          color: '#333',
+          textAlign: 'left',
+          fontStyle: 'normal',
+          fontWeight: 'normal',
         },
+        props: {
+          content: '这是一行文本，hello world',
+        },
+        propOptions: [
+          {
+            formControlType: 'textarea',
+            label: '文本内容',
+            property: 'content',
+            value: '这是一行文本，hello world',
+          },
+        ],
+        options: [
+          {
+            title: '基础属性',
+            target: 'normal',
+            options: [
+              {
+                label: '唯一标识',
+                property: 'visualBoxKey',
+                formControlType: 'input',
+                value: '',
+                disabled: true,
+              },
+              {
+                label: '自定义名称',
+                property: 'visualBoxName',
+                formControlType: 'input',
+                value: '文本',
+              },
+            ],
+          },
+          {
+            title: '样式属性',
+            target: 'style',
+            options: [
+              {
+                formControlType: 'input',
+                label: '字体大小',
+                property: 'fontSize',
+              },
+              {
+                formControlType: 'colorPicker',
+                label: '字体颜色',
+                property: 'color',
+              },
+              {
+                formControlType: 'select',
+                label: '对齐方式',
+                property: 'textAlign',
+                options: [
+                  {
+                    label: '左对齐',
+                    value: 'left',
+                  },
+                  {
+                    label: '居中对齐',
+                    value: 'center',
+                  },
+                  {
+                    label: '右对齐',
+                    value: 'right',
+                  },
+                ],
+              },
+              {
+                formControlType: 'select',
+                label: '是否斜体',
+                property: 'fontStyle',
+                options: [
+                  {
+                    label: '是',
+                    value: 'italic',
+                  },
+                  {
+                    label: '否',
+                    value: 'normal',
+                  },
+                ],
+              },
+              {
+                formControlType: 'select',
+                label: '字体粗细',
+                property: 'fontWeight',
+                options: [
+                  {
+                    label: 'normal',
+                    value: 'normal',
+                  },
+                  {
+                    label: 'bold',
+                    value: 'bold',
+                  },
+                  {
+                    label: 'lighter',
+                    value: 'lighter',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     ],
   },

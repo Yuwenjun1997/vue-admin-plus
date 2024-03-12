@@ -1,5 +1,5 @@
 <template>
-  <el-row v-if="props.template.children" :gutter="props.template.render?.props?.gutter">
+  <el-row v-if="props.template.children" :gutter="props.template.props?.gutter">
     <VisualCol v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
   </el-row>
 </template>

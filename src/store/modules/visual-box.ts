@@ -77,8 +77,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
       toItem.children = toItem.children || []
       fromItem.children.splice(fromIndex, 1)
       toItem.children.splice(toIndex, 0, moveItem)
-
-      console.log(this.visualBoxTemplates)
     },
 
     // 扁平化
@@ -96,7 +94,25 @@ export const useVisualBoxStore = defineStore('visualBox', {
       template.isActive = true
       const current = cloneDeep(template)
       delete current.children
+      this.refreshOptons(current)
       this.activeVisualBox = current
+      console.log(current)
+    },
+
+    // 初始化组件配置信息
+    refreshOptons(template: VisualBoxTemplate) {
+      template.propOptions?.forEach((i) => (i.value = template.props[i.property]))
+      template.options?.forEach((item) => {
+        if (item.target === 'normal') {
+          item.options.forEach((i) => {
+            i.value = template[i.property as keyof VisualBoxTemplate]
+          })
+        } else if (item.target === 'style') {
+          item.options.forEach((i) => {
+            i.value = template.style && template.style[i.property]
+          })
+        }
+      })
     },
 
     // 初始化组件列表
@@ -118,6 +134,34 @@ export const useVisualBoxStore = defineStore('visualBox', {
       toItem.children.splice(toIndex, 0, addItem)
       this.flatTemplatesHandler(this.visualBoxTemplates)
       console.log(this.visualBoxTemplates)
+    },
+
+    // 更新propOptions
+    updateVisualBoxProps(template: VisualBoxTemplate) {
+      const current = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === template.visualBoxKey)
+      if (!current) return
+      current.propOptions = template.propOptions || []
+      current.propOptions.forEach((item) => {
+        current.props = Object.assign(current.props || {}, { [item.property]: item.value })
+      })
+    },
+
+    // 更新基本信息
+    updateVisualBoxOption(template: VisualBoxTemplate) {
+      const current = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === template.visualBoxKey)
+      if (!current) return
+      current.options = template.options || []
+      current.options.forEach((item) => {
+        if (item.target === 'normal') {
+          item.options.forEach((i) => {
+            Object.assign(current, { [i.property]: i.value })
+          })
+        } else if (item.target === 'style') {
+          item.options.forEach((i) => {
+            current.style = Object.assign(current.style || {}, { [i.property]: i.value })
+          })
+        }
+      })
     },
   },
 })

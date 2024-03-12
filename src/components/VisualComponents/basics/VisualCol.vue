@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="props.template.render?.props?.span">
+  <el-col :span="props.template.props?.span">
     <VisualBoxRender :template="props.template" />
   </el-col>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <VisualBox :template="props.template">
-    <template v-if="props.template.render && props.template.render.component">
-      <component :is="props.template.render.component" :template="props.template" />
+    <template v-if="props.template.component">
+      <component :is="props.template.component" :template="props.template" />
     </template>
     <template v-else-if="props.template.children">
       <VisualBoxRender v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />

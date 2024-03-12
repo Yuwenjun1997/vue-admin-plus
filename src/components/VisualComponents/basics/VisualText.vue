@@ -1,5 +1,5 @@
 <template>
-  <span :style="customStyle">{{ text }}</span>
+  <span>{{ text }}</span>
 </template>
 
 <script setup lang="ts" name="VisualText">
@@ -17,17 +17,8 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const customStyle = computed(() => {
-  if (!props.template.render) return
-  if (!props.template.render.props) return
-  return {
-    color: props.template.render.props.color,
-    fontSize: props.template.render.props.fontSize,
-  }
-})
-
 const text = computed(() => {
-  return props.template.render?.props?.content
+  return props.template.props?.content
 })
 </script>
 

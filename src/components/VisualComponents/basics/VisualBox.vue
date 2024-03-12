@@ -5,6 +5,7 @@
     :class="layoutClassList"
     :data-visual-box-key="props.template.visualBoxKey"
     :style="props.template.layoutStyle"
+    :title="props.template.visualBoxName"
     @click="handleClick"
   >
     <div
@@ -102,11 +103,15 @@ onMounted(() => {
     ghostClass: 'visual-box-ghost',
 
     onEnd: (evt: Sortable.SortableEvent) => {
-      nextTick(() => evt.item.remove())
       const currentKey = evt.item.dataset.visualBoxKey || ''
       const fromKey = evt.from.dataset.visualBoxKey || ''
       const toKey = evt.to.dataset.visualBoxKey || ''
       const { oldIndex = 0, newIndex = 0 } = evt
+
+      if (fromKey !== toKey) {
+        nextTick(() => evt.item.remove())
+      }
+
       moveVisualBox(currentKey, fromKey, toKey, oldIndex, newIndex)
     },
   })
