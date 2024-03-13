@@ -66,6 +66,10 @@ export const basicOptions: VisualBoxOption[] = [
         label: '右对齐',
         value: 'right',
       },
+      {
+        label: '边缘对齐',
+        value: 'justify',
+      },
     ],
   },
   {
