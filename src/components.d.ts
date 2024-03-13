@@ -52,6 +52,7 @@ declare module 'vue' {
     VadPermission: typeof import('./components/VadPermission/index.vue')['default']
     VisualBox: typeof import('./components/VisualComponents/basics/VisualBox.vue')['default']
     VisualBoxRender: typeof import('./components/VisualComponents/helper/VisualBoxRender.vue')['default']
+    VisualButton: typeof import('./components/VisualComponents/basics/VisualButton.vue')['default']
     VisualCol: typeof import('./components/VisualComponents/basics/VisualCol.vue')['default']
     VisualControlsRender: typeof import('./components/VisualComponents/helper/VisualControlsRender.vue')['default']
     VisualCssInput: typeof import('./components/VisualComponents/helper/VisualCssInput.vue')['default']

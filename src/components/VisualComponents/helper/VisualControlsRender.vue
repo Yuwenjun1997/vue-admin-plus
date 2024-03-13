@@ -23,6 +23,11 @@
           <el-input-number v-model.number="item.value" :disabled="item.disabled" @change="handleChange" />
         </div>
       </template>
+      <template v-if="item.formType === 'switch'">
+        <div class="w-full text-right">
+          <el-switch v-model.number="item.value" :disabled="item.disabled" @change="handleChange" />
+        </div>
+      </template>
     </el-form-item>
   </el-form>
 </template>

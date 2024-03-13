@@ -91,16 +91,17 @@ export class VisualBoxTarget<T = any> {
   }
 
   applyOptions() {
-    this.options.reduce((prev, option) => {
+    this.target.style = {}
+    this.options.forEach((option) => {
       if (option.target === 'style') {
         // @ts-ignore
-        prev[option.property] = option.value
-      } else if (option.target === 'root') {
+        this.target.style[option.property] = option.value
+      }
+      if (option.target === 'root') {
         // @ts-ignore
         this.target[option.property] = option.value
       }
-      return prev
-    }, (this.target.style = {}))
+    })
   }
 
   initPropsOptions(): VisualBoxRenderOption[] {

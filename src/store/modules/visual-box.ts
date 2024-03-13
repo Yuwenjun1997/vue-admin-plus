@@ -121,6 +121,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
       toItem.children = toItem.children || []
       toItem.children.splice(toIndex, 0, addItem)
       this.flatTemplatesHandler(this.visualBoxTemplates)
+      this.toggleActive(addItem)
     },
 
     // 更新propOptions

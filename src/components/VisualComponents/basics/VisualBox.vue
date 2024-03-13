@@ -1,39 +1,45 @@
 <template>
   <div
     :key="props.template.visualBoxKey"
+    ref="visualBoxWrap"
     class="visual-box"
-    :class="layoutClassList"
+    :class="classList"
     :data-visual-box-key="props.template.visualBoxKey"
-    :style="props.template.layoutStyle"
+    :style="styles"
     :title="props.template.visualBoxName"
     @click="handleClick"
   >
-    <div
-      ref="visualBoxWrap"
-      class="visual-box__wrap"
-      :class="props.template.classList"
-      :data-visual-box-key="props.template.visualBoxKey"
-      :style="props.template.style"
-    >
-      <slot />
-    </div>
-    <div v-if="isActive && showTools && !isRoot" class="visual-box__tools" @click.stop>
-      <template v-if="!isLocked">
-        <template v-if="isDraggable">
-          <Icon class="visual-box__tools--control move" icon="bi:arrows-move" />
+    <slot />
+    <template v-if="isActive && showTools && !isRoot">
+      <div class="visual-box__tools left" :class="{ move: !isLocked }" @click.stop>
+        <template v-if="!isLocked">
+          <template v-if="isDraggable">
+            <Icon class="visual-box__tools--control !cursor-move" icon="bi:arrows-move" />
+          </template>
         </template>
-        <template v-if="isDeletable">
-          <Icon class="visual-box__tools--control" icon="ep:delete" @click="handleDelete" />
+        <template v-if="visualBoxName">
+          <span class="visual-box__tools--label">{{ visualBoxName }}</span>
         </template>
-        <Icon class="visual-box__tools--control" icon="line-md:arrow-up" @click="moveVisualBoxUp(props.template)" />
-        <Icon class="visual-box__tools--control" icon="line-md:arrow-down" @click="moveVisualBoxDown(props.template)" />
-      </template>
-      <Icon
-        class="visual-box__tools--control"
-        :icon="!isLocked ? 'ep:unlock' : 'ep:lock'"
-        @click="toggleLockVisualBox(props.template)"
-      />
-    </div>
+      </div>
+      <div class="visual-box__tools right" @click.stop>
+        <template v-if="!isLocked">
+          <template v-if="isDeletable">
+            <Icon class="visual-box__tools--control" icon="ep:delete" @click="handleDelete" />
+          </template>
+          <Icon class="visual-box__tools--control" icon="line-md:arrow-up" @click="moveVisualBoxUp(props.template)" />
+          <Icon
+            class="visual-box__tools--control"
+            icon="line-md:arrow-down"
+            @click="moveVisualBoxDown(props.template)"
+          />
+        </template>
+        <Icon
+          class="visual-box__tools--control"
+          :icon="!isLocked ? 'ep:unlock' : 'ep:lock'"
+          @click="toggleLockVisualBox(props.template)"
+        />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -62,9 +68,22 @@ const isDisabled = computed(() => props.template.disabled)
 const isEditable = computed(() => props.template.isEditable)
 const isLocked = computed(() => props.template.isLocked)
 
-const layoutClassList = computed(() => {
-  const classList = props.template.layoutClassList || []
-  return [{ active: isActive.value }, ...classList]
+const classList = computed(() => {
+  const layoutClassList = props.template.layoutClassList || []
+  const classList = props.template.classList || []
+  return [{ active: isActive.value }, ...layoutClassList, ...classList]
+})
+
+const styles = computed(() => {
+  return [props.template.layoutStyle, props.template.style]
+})
+
+const visualBoxName = computed(() => {
+  if (!props.template.visualBoxName) return
+  if (props.template.visualBoxName.length > 10) {
+    return props.template.visualBoxName.substring(0, 10) + '...'
+  }
+  return props.template.visualBoxName
 })
 
 const visualBoxWrap = ref<HTMLElement>()
@@ -95,7 +114,7 @@ onMounted(() => {
   new Sortable(visualBoxWrap.value, {
     group: 'shared',
     animation: 100,
-    handle: '.visual-box__tools--control.move',
+    handle: '.visual-box__tools.move',
     fallbackOnBody: true,
     disabled: isDisabled.value,
     draggable: '.visual-box',
@@ -126,6 +145,12 @@ onMounted(() => {
   cursor: pointer;
   user-select: none;
 
+  &.active {
+    outline: $outline-width solid var(--el-color-primary);
+    // box-shadow: 0 0 0 $outline-width var(--el-color-primary);
+    z-index: 10;
+  }
+
   &.visual-box-ghost {
     width: 100%;
     height: 8px;
@@ -144,11 +169,6 @@ onMounted(() => {
     }
   }
 
-  &.active {
-    outline: $outline-width solid var(--el-color-primary);
-    z-index: 10;
-  }
-
   &__wrap {
     position: relative;
     min-height: $min-height;
@@ -157,12 +177,7 @@ onMounted(() => {
   &__tools {
     position: absolute;
     top: 0;
-    // left: -$outline-width;
-    left: 0;
-    // transform: translateY(calc(-100% - #{$outline-width}));
-    // background-color: var(--el-bg-color);
     background-color: var(--el-color-primary);
-    // border: 1px solid var(--el-border-color-light);
     border-bottom: 0;
     display: flex;
     align-items: center;
@@ -170,19 +185,28 @@ onMounted(() => {
     height: $min-height;
     padding: 0 6px;
 
+    &.move {
+      cursor: move;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
+
     &--control {
       cursor: pointer;
       transition: var(--el-transition-all);
-
-      &.move {
-        cursor: move;
-      }
-
+      font-size: var(--el-font-size-base);
       color: var(--el-color-white);
+    }
 
-      // &:hover {
-      //   color: var(--el-color-primary);
-      // }
+    &--label {
+      font-size: var(--el-font-size-small);
+      color: var(--el-color-white);
     }
   }
 }
