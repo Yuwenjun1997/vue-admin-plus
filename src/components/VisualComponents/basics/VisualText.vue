@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts" name="VisualText">
-import { VisualBoxTemplate } from '@/types/visual-box'
+import { VisualBasic } from '@/types/visual-box'
 
 interface Options {
   content: string
@@ -12,7 +12,7 @@ interface Options {
 }
 
 interface Props {
-  template: VisualBoxTemplate<Options>
+  template: VisualBasic<Options>
 }
 
 const props = defineProps<Props>()

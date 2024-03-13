@@ -1,14 +1,15 @@
-import { VisualBoxComponents, VisualBoxTemplate } from '@/types/visual-box'
+import { basicOptions } from '@/data/visual.data'
+import { VisualBoxComponents, VisualBasic, VisualBoxTarget } from '@/types/visual-box'
 import { ElMessage } from 'element-plus'
 import { cloneDeep } from 'lodash'
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
 
 interface VisualBoxState {
-  visualBoxTemplates: VisualBoxTemplate[]
-  flatVisualBoxTemplates: VisualBoxTemplate[] // 扁平化的模板数组
-  visualBoxComponents: VisualBoxTemplate[]
-  activeVisualBox: VisualBoxTemplate | null
+  visualBoxTemplates: VisualBasic[]
+  flatVisualBoxTemplates: VisualBasic[] // 扁平化的模板数组
+  visualBoxComponents: VisualBasic[]
+  activeVisualBox: VisualBoxTarget | null
 }
 
 export const useVisualBoxStore = defineStore('visualBox', {
@@ -21,18 +22,18 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
   actions: {
     // 初始化
-    initVisualBox(templates: VisualBoxTemplate[]) {
+    initVisualBox(templates: VisualBasic[]) {
       this.flatTemplatesHandler(templates)
       this.visualBoxTemplates = templates
     },
 
     // 锁定or解锁
-    toggleLockVisualBox(template: VisualBoxTemplate) {
+    toggleLockVisualBox(template: VisualBasic) {
       template.isLocked = !template.isLocked
     },
 
     // 删除
-    deleteVisualBox(template: VisualBoxTemplate) {
+    deleteVisualBox(template: VisualBasic) {
       const parentItem = this.flatVisualBoxTemplates.find((i) => i.children && i.children.includes(template))
       if (!parentItem) return
       parentItem.children = parentItem.children?.filter((i) => i.visualBoxKey !== template.visualBoxKey)
@@ -40,7 +41,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     },
 
     // 上移
-    moveVisualBoxUp(template: VisualBoxTemplate) {
+    moveVisualBoxUp(template: VisualBasic) {
       const parentItem = this.flatVisualBoxTemplates.find((i) => i.children && i.children.includes(template))
       if (!parentItem) return
       parentItem.children = parentItem.children || []
@@ -54,7 +55,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     },
 
     // 下移
-    moveVisualBoxDown(template: VisualBoxTemplate) {
+    moveVisualBoxDown(template: VisualBasic) {
       const parentItem = this.flatVisualBoxTemplates.find((i) => i.children && i.children.includes(template))
       if (!parentItem) return
       parentItem.children = parentItem.children || []
@@ -80,7 +81,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     },
 
     // 扁平化
-    flatTemplatesHandler(templates?: VisualBoxTemplate[]) {
+    flatTemplatesHandler(templates?: VisualBasic[]) {
       if (!templates) return
       templates.forEach((template) => {
         this.flatVisualBoxTemplates.push(template)
@@ -88,31 +89,19 @@ export const useVisualBoxStore = defineStore('visualBox', {
       })
     },
 
-    // 选中
-    toggleActive(template: VisualBoxTemplate) {
-      this.flatVisualBoxTemplates.forEach((t) => (t.isActive = false))
-      template.isActive = true
-      const current = cloneDeep(template)
-      delete current.children
-      this.refreshOptons(current)
-      this.activeVisualBox = current
-      console.log(current)
+    // 重新刷新列表
+    reFlatTemplates() {
+      this.flatVisualBoxTemplates = []
+      this.flatTemplatesHandler(this.visualBoxTemplates)
     },
 
-    // 初始化组件配置信息
-    refreshOptons(template: VisualBoxTemplate) {
-      template.propOptions?.forEach((i) => (i.value = template.props[i.property]))
-      template.options?.forEach((item) => {
-        if (item.target === 'normal') {
-          item.options.forEach((i) => {
-            i.value = template[i.property as keyof VisualBoxTemplate]
-          })
-        } else if (item.target === 'style') {
-          item.options.forEach((i) => {
-            i.value = template.style && template.style[i.property]
-          })
-        }
-      })
+    // 选中
+    toggleActive(template: VisualBasic) {
+      this.flatVisualBoxTemplates.forEach((t) => (t.isActive = false))
+      template.isActive = true
+      this.activeVisualBox = new VisualBoxTarget(template, basicOptions)
+      this.activeVisualBox.initOptions()
+      this.activeVisualBox.initPropsOptions()
     },
 
     // 初始化组件列表
@@ -124,7 +113,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 添加
     addVisualBox(currentKey: string, toKey: string, toIndex: number) {
-      console.log(currentKey, toKey, toIndex)
       const moveItem = this.visualBoxComponents.find((i) => i.visualBoxKey === currentKey)
       const toItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === toKey)
       if (!moveItem || !toItem) return
@@ -133,35 +121,23 @@ export const useVisualBoxStore = defineStore('visualBox', {
       toItem.children = toItem.children || []
       toItem.children.splice(toIndex, 0, addItem)
       this.flatTemplatesHandler(this.visualBoxTemplates)
-      console.log(this.visualBoxTemplates)
     },
 
     // 更新propOptions
-    updateVisualBoxProps(template: VisualBoxTemplate) {
-      const current = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === template.visualBoxKey)
-      if (!current) return
-      current.propOptions = template.propOptions || []
-      current.propOptions.forEach((item) => {
-        current.props = Object.assign(current.props || {}, { [item.property]: item.value })
-      })
+    updateVisualBoxProps() {
+      if (!this.activeVisualBox) return
+      this.activeVisualBox.applyPropsOptions()
     },
 
     // 更新基本信息
-    updateVisualBoxOption(template: VisualBoxTemplate) {
-      const current = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === template.visualBoxKey)
-      if (!current) return
-      current.options = template.options || []
-      current.options.forEach((item) => {
-        if (item.target === 'normal') {
-          item.options.forEach((i) => {
-            Object.assign(current, { [i.property]: i.value })
-          })
-        } else if (item.target === 'style') {
-          item.options.forEach((i) => {
-            current.style = Object.assign(current.style || {}, { [i.property]: i.value })
-          })
-        }
-      })
+    updateVisualBoxOption() {
+      if (!this.activeVisualBox) return
+      this.activeVisualBox.applyOptions()
+    },
+
+    // 根据key获取组件
+    getVisualBoxByKey(key: string) {
+      return this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === key)
     },
   },
 })

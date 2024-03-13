@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts" setup name="VisualBoxRender">
-import { VisualBoxTemplate } from '@/types/visual-box'
+import { VisualBasic } from '@/types/visual-box'
 
 interface Props {
-  template: VisualBoxTemplate
+  template: VisualBasic
 }
 
 const props = defineProps<Props>()

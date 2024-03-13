@@ -39,13 +39,13 @@
 
 <script setup lang="ts" name="VisualBox">
 import { useVisualBoxStore } from '@/store/modules/visual-box'
-import { VisualBoxTemplate } from '@/types/visual-box'
+import { VisualBasic } from '@/types/visual-box'
 import { Icon } from '@iconify/vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Sortable from 'sortablejs'
 
 interface Props {
-  template: VisualBoxTemplate
+  template: VisualBasic
 }
 
 const props = defineProps<Props>()

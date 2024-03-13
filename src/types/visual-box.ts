@@ -1,28 +1,13 @@
 import { CSSProperties } from 'vue'
 
-export enum VisualBoxTemplateType {}
-
-export interface VisualBoxOption {
-  formControlType: string
-  label: string
-  property: any
-  value?: any
-  options?: any
-  required?: boolean
-  rule?: any
-  disabled?: boolean
-}
-
-export interface VisualBoxOptionItem {
-  title: string
-  target: string
+interface VisualBoxRenderOption {
+  groupName: string
   options: VisualBoxOption[]
 }
 
-export interface VisualBoxTemplate<T = any> {
+export interface VisualBasic<T = any> {
   visualBoxKey: string
   visualBoxName?: string
-  visualBoxType?: VisualBoxTemplateType
   visualBoxCover?: string
   visualBoxIcon?: string
   showTools?: boolean
@@ -39,13 +24,106 @@ export interface VisualBoxTemplate<T = any> {
   classList?: string[]
   component?: string
   props?: T
-  propOptions?: VisualBoxOption[]
+  propsOptions?: VisualBoxOption[]
+  options?: VisualBoxOption[]
+  children?: VisualBasic[]
+}
+
+export interface VisualBoxOptionItem {
+  label: string
+  value: string
+}
+
+export interface VisualBoxOption {
+  formType: string
+  groupName: string
+  target: 'style' | 'props' | 'root'
+  label: string
+  property: string
+  value?: any
   options?: VisualBoxOptionItem[]
-  children?: VisualBoxTemplate[]
+  disabled?: boolean
+  required?: boolean
 }
 
 export interface VisualBoxComponents {
   type: string
   title: string
-  components: VisualBoxTemplate[]
+  components: VisualBasic[]
+}
+
+export class VisualBoxTarget<T = any> {
+  target: VisualBasic<T>
+  visualBoxKey: string
+  visualBoxName?: string
+  options: VisualBoxOption[]
+  propsOptions: VisualBoxOption[]
+  renderOptions: VisualBoxRenderOption[]
+  renderPropsOptions: VisualBoxRenderOption[] = []
+
+  constructor(target: VisualBasic<T>, basicOptions: VisualBoxOption[] = []) {
+    this.target = target
+    this.visualBoxKey = target.visualBoxKey
+    this.visualBoxName = target.visualBoxName
+    this.options = basicOptions.concat(target.options || [])
+    this.propsOptions = target.propsOptions || []
+    this.renderOptions = this.initOptions()
+    this.renderPropsOptions = this.initPropsOptions()
+  }
+
+  initOptions(): VisualBoxRenderOption[] {
+    const results: VisualBoxRenderOption[] = []
+    this.options.forEach((option) => {
+      if (option.target === 'root') {
+        option.value = this.target[option.property as keyof VisualBasic]
+      }
+      if (option.target === 'style' && this.target.style) {
+        option.value = this.target.style[option.property as keyof CSSProperties]
+      }
+      const group = results.find((r) => r.groupName === option.groupName)
+      if (group) {
+        group.options.push(option)
+      } else {
+        results.push({ groupName: option.groupName, options: [option] })
+      }
+    })
+    return results
+  }
+
+  applyOptions() {
+    this.options.reduce((prev, option) => {
+      if (option.target === 'style') {
+        // @ts-ignore
+        prev[option.property] = option.value
+      } else if (option.target === 'root') {
+        // @ts-ignore
+        this.target[option.property] = option.value
+      }
+      return prev
+    }, (this.target.style = {}))
+  }
+
+  initPropsOptions(): VisualBoxRenderOption[] {
+    const results: VisualBoxRenderOption[] = []
+    this.propsOptions.forEach((option) => {
+      // @ts-ignore
+      option.value = this.target.props[option.property]
+      const group = results.find((r) => r.groupName === option.groupName)
+      if (group) {
+        group.options.push(option)
+      } else {
+        results.push({ groupName: option.groupName, options: [option] })
+      }
+    })
+    return results
+  }
+
+  applyPropsOptions() {
+    this.propsOptions.forEach((option) => {
+      if (option.target === 'props') {
+        // @ts-ignore
+        this.target.props[option.property] = option.value
+      }
+    })
+  }
 }

@@ -2,7 +2,7 @@
   <el-collapse v-model="activeNames">
     <el-collapse-item v-for="item in visualBoxComponents" :key="item.type" :name="item.type">
       <template #title>
-        <span class="font-bold p-2">{{ item.title }}</span>
+        <span class="p-2">{{ item.title }}</span>
       </template>
       <div ref="visualGridItem" class="visualGridItem grid grid-cols-2 gap-2 p-2">
         <div
@@ -43,10 +43,13 @@ onMounted(() => {
       animation: 100,
       fallbackOnBody: true,
       onEnd: (evt: Sortable.SortableEvent) => {
-        nextTick(() => evt.item.remove())
         const visualboxkey = evt.item.dataset.visualBoxKey || ''
         const toKey = evt.to.dataset.visualBoxKey || ''
         const toIndex = evt.newIndex || 0
+        const fromKey = evt.from.dataset.visualBoxKey || ''
+        if (fromKey !== toKey) {
+          nextTick(() => evt.item.remove())
+        }
         visualBoxStore.addVisualBox(visualboxkey, toKey, toIndex)
       },
     })
