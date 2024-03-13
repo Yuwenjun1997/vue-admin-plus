@@ -8,7 +8,6 @@ export const basicOptions: VisualBoxOption[] = [
     label: '唯一标识',
     property: 'visualBoxKey',
     formType: 'input',
-    value: '',
     disabled: true,
     required: true,
   },
@@ -18,28 +17,14 @@ export const basicOptions: VisualBoxOption[] = [
     label: '自定义名称',
     property: 'visualBoxName',
     formType: 'input',
-    value: '文本',
   },
   {
     groupName: '基础属性',
     target: 'style',
-    label: '盒子模型',
-    property: 'display',
-    formType: 'select',
-    options: [
-      {
-        label: '块级元素',
-        value: 'block',
-      },
-      {
-        label: '行内元素',
-        value: 'inline',
-      },
-      {
-        label: '行内块级元素',
-        value: 'inline-block',
-      },
-    ],
+    label: '最小高度',
+    property: 'minHeight',
+    formType: 'cssInput',
+    value: '20px',
   },
   {
     groupName: '字体颜色',
@@ -54,6 +39,13 @@ export const basicOptions: VisualBoxOption[] = [
     formType: 'colorPicker',
     label: '字体颜色',
     property: 'color',
+  },
+  {
+    groupName: '字体颜色',
+    target: 'style',
+    formType: 'cssInput',
+    label: '行间距',
+    property: 'lineHeight',
   },
   {
     groupName: '字体颜色',
@@ -170,14 +162,14 @@ export const basicOptions: VisualBoxOption[] = [
     label: '左内边距',
     property: 'paddingLeft',
   },
-  {
-    groupName: '边框',
-    target: 'style',
-    formType: 'select',
-    label: '边框位置',
-    property: 'border-width',
-    options: [],
-  },
+  // {
+  //   groupName: '边框',
+  //   target: 'style',
+  //   formType: 'select',
+  //   label: '边框位置',
+  //   property: 'border-width',
+  //   options: [],
+  // },
   {
     groupName: '边框',
     target: 'style',
@@ -227,22 +219,13 @@ export const templates: VisualBasic[] = [
   {
     visualBoxKey: uuidv4(),
     isRoot: true,
-    isDraggable: false,
-    isActive: false,
-    showTools: true,
+    showTools: false,
+    isEditable: false,
+    layoutStyle: {},
     style: {
       minHeight: '600px',
     },
     children: [],
-    options: [
-      {
-        groupName: '基础属性',
-        formType: 'cssInput',
-        label: '最小高度',
-        property: 'minHeight',
-        target: 'style',
-      },
-    ],
   },
 ]
 
@@ -260,18 +243,8 @@ export const visualBoxComponents: VisualBoxComponents[] = [
         isDeletable: true,
         isEditable: true,
         disabled: true,
-        layoutStyle: {
-          border: '1px dashed #ccc',
-          padding: '4px',
-          outlineOffset: '-1px',
-        },
         component: 'VisualGrid',
-        props: {
-          columns: 4,
-          gutter: 16,
-          justify: 'center',
-          align: 'middle',
-        },
+        props: {},
         propsOptions: [
           {
             groupName: '基础信息',
@@ -343,6 +316,22 @@ export const visualBoxComponents: VisualBoxComponents[] = [
           },
         ],
         children: [],
+      },
+      {
+        visualBoxKey: uuidv4(),
+        visualBoxName: '弹性盒子',
+        visualBoxIcon: 'bi:grid-1x2',
+        showTools: true,
+        isDraggable: true,
+        isDeletable: true,
+        isEditable: true,
+        disabled: false,
+        layoutStyle: {},
+        style: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
       },
     ],
   },

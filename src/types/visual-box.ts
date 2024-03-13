@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash'
 import { CSSProperties } from 'vue'
 
 interface VisualBoxRenderOption {
@@ -65,7 +66,7 @@ export class VisualBoxTarget<T = any> {
     this.target = target
     this.visualBoxKey = target.visualBoxKey
     this.visualBoxName = target.visualBoxName
-    this.options = basicOptions.concat(target.options || [])
+    this.options = cloneDeep(basicOptions).concat(target.options || [])
     this.propsOptions = target.propsOptions || []
     this.renderOptions = this.initOptions()
     this.renderPropsOptions = this.initPropsOptions()

@@ -100,8 +100,8 @@ export const useVisualBoxStore = defineStore('visualBox', {
       this.flatVisualBoxTemplates.forEach((t) => (t.isActive = false))
       template.isActive = true
       this.activeVisualBox = new VisualBoxTarget(template, basicOptions)
-      this.activeVisualBox.initOptions()
-      this.activeVisualBox.initPropsOptions()
+      // this.activeVisualBox.initOptions()
+      // this.activeVisualBox.initPropsOptions()
     },
 
     // 初始化组件列表

@@ -1,28 +1,27 @@
 <template>
   <div
     :key="props.template.visualBoxKey"
-    ref="visualBoxWrap"
     class="visual-box"
-    :class="classList"
+    :class="{ active: isActive }"
     :data-visual-box-key="props.template.visualBoxKey"
-    :style="styles"
     :title="props.template.visualBoxName"
     @click="handleClick"
   >
-    <slot />
+    <div
+      ref="visualBoxWrap"
+      class="visual-box__wrap"
+      :class="classList"
+      :data-visual-box-key="props.template.visualBoxKey"
+      :style="styles"
+    >
+      <slot />
+    </div>
     <template v-if="isActive && showTools && !isRoot">
-      <div class="visual-box__tools left" :class="{ move: !isLocked }" @click.stop>
+      <div class="visual-box__tools" @click.stop>
         <template v-if="!isLocked">
           <template v-if="isDraggable">
-            <Icon class="visual-box__tools--control !cursor-move" icon="bi:arrows-move" />
+            <Icon class="visual-box__tools--control move" icon="bi:arrows-move" />
           </template>
-        </template>
-        <template v-if="visualBoxName">
-          <span class="visual-box__tools--label">{{ visualBoxName }}</span>
-        </template>
-      </div>
-      <div class="visual-box__tools right" @click.stop>
-        <template v-if="!isLocked">
           <template v-if="isDeletable">
             <Icon class="visual-box__tools--control" icon="ep:delete" @click="handleDelete" />
           </template>
@@ -71,19 +70,11 @@ const isLocked = computed(() => props.template.isLocked)
 const classList = computed(() => {
   const layoutClassList = props.template.layoutClassList || []
   const classList = props.template.classList || []
-  return [{ active: isActive.value }, ...layoutClassList, ...classList]
+  return [...layoutClassList, ...classList]
 })
 
 const styles = computed(() => {
   return [props.template.layoutStyle, props.template.style]
-})
-
-const visualBoxName = computed(() => {
-  if (!props.template.visualBoxName) return
-  if (props.template.visualBoxName.length > 10) {
-    return props.template.visualBoxName.substring(0, 10) + '...'
-  }
-  return props.template.visualBoxName
 })
 
 const visualBoxWrap = ref<HTMLElement>()
@@ -114,7 +105,7 @@ onMounted(() => {
   new Sortable(visualBoxWrap.value, {
     group: 'shared',
     animation: 100,
-    handle: '.visual-box__tools.move',
+    handle: '.visual-box__tools--control.move',
     fallbackOnBody: true,
     disabled: isDisabled.value,
     draggable: '.visual-box',
@@ -145,27 +136,42 @@ onMounted(() => {
   cursor: pointer;
   user-select: none;
 
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    display: block;
+    border: 1px dotted var(--el-border-color);
+  }
+
   &.active {
     outline: $outline-width solid var(--el-color-primary);
-    // box-shadow: 0 0 0 $outline-width var(--el-color-primary);
+    // outline-offset: -2px;
+    // box-shadow: 0 0 0 $outline-width var(--el-color-primary) inset;
     z-index: 10;
   }
 
   &.visual-box-ghost {
     width: 100%;
     height: 8px;
+    min-height: 8px;
     overflow: hidden;
     outline: none !important;
+
+    &::before {
+      display: none;
+    }
 
     &::after {
       content: '';
       display: block;
       position: absolute;
-      width: 100%;
-      height: 100%;
-      left: 0;
-      bottom: 0;
+      inset: 0;
       background-color: var(--el-color-primary);
+    }
+
+    .visual-box__tools {
+      display: none;
     }
   }
 
@@ -177,6 +183,7 @@ onMounted(() => {
   &__tools {
     position: absolute;
     top: 0;
+    left: 0;
     background-color: var(--el-color-primary);
     border-bottom: 0;
     display: flex;
@@ -184,24 +191,19 @@ onMounted(() => {
     gap: 8px;
     height: $min-height;
     padding: 0 6px;
-
-    &.move {
-      cursor: move;
-    }
-
-    &.left {
-      left: 0;
-    }
-
-    &.right {
-      right: 0;
-    }
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    z-index: 5;
 
     &--control {
       cursor: pointer;
       transition: var(--el-transition-all);
       font-size: var(--el-font-size-base);
       color: var(--el-color-white);
+
+      &.move {
+        cursor: move;
+      }
     }
 
     &--label {

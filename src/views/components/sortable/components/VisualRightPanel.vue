@@ -1,5 +1,5 @@
 <template>
-  <el-tabs v-model="activeTab" stretch>
+  <el-tabs :key="activeVisualBox?.visualBoxKey" v-model="activeTab" stretch>
     <el-tab-pane label="组件属性" name="ComponentStyle">
       <template #label>
         <Icon icon="line-md:cog-filled-loop" />

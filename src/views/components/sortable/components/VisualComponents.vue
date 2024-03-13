@@ -47,6 +47,7 @@ onMounted(() => {
         const toKey = evt.to.dataset.visualBoxKey || ''
         const toIndex = evt.newIndex || 0
         const fromKey = evt.from.dataset.visualBoxKey || ''
+
         if (fromKey !== toKey) {
           nextTick(() => evt.item.remove())
         }
