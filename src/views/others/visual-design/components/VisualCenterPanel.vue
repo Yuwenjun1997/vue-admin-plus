@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 h-full">
+  <div class="VisualCenterPanel p-2 h-full">
     <el-scrollbar height="100%">
       <VisualBoxRender v-for="template in visualBoxTemplates" :key="template.visualBoxKey" :template="template" />
     </el-scrollbar>

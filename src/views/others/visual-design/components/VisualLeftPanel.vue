@@ -1,9 +1,9 @@
 <template>
-  <div class="px-2">
+  <div class="VisualLeftPanel px-2">
     <el-tabs v-model="activeTab" stretch>
       <el-tab-pane name="Components">
         <template #label>
-          <Icon icon="line-md:beer-alt-twotone" />
+          <Icon icon="bi:boxes" />
           <span class="ml-1">组件</span>
         </template>
         <el-scrollbar height="100%">

@@ -4,7 +4,9 @@
       <VisualLeftPanel />
     </el-aside>
     <el-container>
-      <el-header class="vad-bg-color" />
+      <el-header class="vad-bg-color">
+        <VisualHeaderPanel />
+      </el-header>
       <el-main class="!p-0">
         <VisualCenterPanel />
       </el-main>
@@ -19,12 +21,13 @@
 import VisualLeftPanel from './components/VisualLeftPanel.vue'
 import VisualRightPanel from './components/VisualRightPanel.vue'
 import VisualCenterPanel from './components/VisualCenterPanel.vue'
+import VisualHeaderPanel from './components/VisualHeaderPanel.vue'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
-import { visualBoxComponents, templates } from '@/data/visual.data'
+import { visualComponentGroups, templates } from '@/data/visual.data'
 
 const visualBoxStore = useVisualBoxStore()
 visualBoxStore.initVisualBox(templates)
-visualBoxStore.initVisualComponents(visualBoxComponents)
+visualBoxStore.initVisualComponents(visualComponentGroups)
 </script>
 
 <style lang="scss" scoped>

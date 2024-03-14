@@ -1,10 +1,12 @@
 <template>
-  <el-collapse v-model="activeNames">
-    <el-collapse-item v-for="item in visualBoxComponents" :key="item.type" :name="item.type">
-      <template #title>
-        <span class="p-2">{{ item.title }}</span>
-      </template>
-      <div ref="visualGridItem" class="visualGridItem grid grid-cols-2 gap-2 p-2">
+  <el-collapse v-model="activeNames" class="VisualComponents">
+    <el-collapse-item
+      v-for="item in visualComponentGroups"
+      :key="item.group"
+      :name="item.group"
+      :title="item.groupName"
+    >
+      <div ref="visualGridItem" class="grid grid-cols-2 gap-2 p-2">
         <div
           v-for="component in item.components"
           :key="component.visualBoxKey"
@@ -22,7 +24,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import Sortable from 'sortablejs'
-import { visualBoxComponents } from '@/data/visual.data'
+import { visualComponentGroups } from '@/data/visual.data'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 
 const visualBoxStore = useVisualBoxStore()

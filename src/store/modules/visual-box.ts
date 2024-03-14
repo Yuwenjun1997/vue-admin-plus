@@ -1,6 +1,6 @@
 import { basicOptions } from '@/data/visual.data'
 import { VisualBoxTarget } from '@/helper/visual.helper'
-import { VisualBoxComponents, VisualBasic } from '@/types/visual-box'
+import { VisualBoxGroup, VisualBasic } from '@/types/visual-box'
 import { ElMessage } from 'element-plus'
 import { cloneDeep } from 'lodash'
 import { defineStore } from 'pinia'
@@ -106,7 +106,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     },
 
     // 初始化组件列表
-    initVisualComponents(components: VisualBoxComponents[]) {
+    initVisualComponents(components: VisualBoxGroup[]) {
       components.forEach((item) => {
         this.visualBoxComponents.push(...item.components)
       })
