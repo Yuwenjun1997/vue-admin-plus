@@ -1,7 +1,9 @@
 import { cloneDeep } from 'lodash'
 import { CSSProperties } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 
 interface VisualBoxRenderOption {
+  groupId: string
   groupName: string
   options: VisualBoxOption[]
 }
@@ -85,7 +87,7 @@ export class VisualBoxTarget<T = any> {
       if (group) {
         group.options.push(option)
       } else {
-        results.push({ groupName: option.groupName, options: [option] })
+        results.push({ groupName: option.groupName, options: [option], groupId: uuidv4() })
       }
     })
     return results
@@ -114,7 +116,7 @@ export class VisualBoxTarget<T = any> {
       if (group) {
         group.options.push(option)
       } else {
-        results.push({ groupName: option.groupName, options: [option] })
+        results.push({ groupName: option.groupName, options: [option], groupId: uuidv4() })
       }
     })
     return results

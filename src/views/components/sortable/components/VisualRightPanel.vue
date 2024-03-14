@@ -1,5 +1,5 @@
 <template>
-  <el-tabs :key="activeVisualBox?.visualBoxKey" v-model="activeTab" stretch>
+  <el-tabs v-model="activeTab" stretch>
     <el-tab-pane label="组件属性" name="ComponentStyle">
       <template #label>
         <Icon icon="line-md:cog-filled-loop" />
@@ -36,7 +36,7 @@
             <el-empty description="暂无配置信息" />
           </template>
           <template v-else>
-            <div v-for="(item, index) in activeVisualBox.renderPropsOptions" :key="index">
+            <div v-for="item in activeVisualBox.renderPropsOptions" :key="item.groupId">
               <el-divider>{{ item.groupName }}</el-divider>
               <VisualControlsRender :options="item.options" @change="updateVisualBoxProps" />
             </div>

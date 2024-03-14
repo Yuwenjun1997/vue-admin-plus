@@ -1,6 +1,6 @@
 <template>
   <el-form class="p-2" label-position="left" label-width="100px" size="small">
-    <el-form-item v-for="item in props.options" :key="item.property" :label="item.label" :required="item.required">
+    <el-form-item v-for="item in props.options" :key="getKey(item)" :label="item.label" :required="item.required">
       <template v-if="item.formType === 'input'">
         <el-input v-model="item.value" :disabled="item.disabled" @blur="handleChange" />
       </template>
@@ -47,6 +47,10 @@ const props = defineProps<Props>()
 
 const handleChange = () => {
   emit('change')
+}
+
+const getKey = (option: VisualBoxOption) => {
+  return option.property + Date.now().toString()
 }
 </script>
 

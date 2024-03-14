@@ -99,9 +99,9 @@ export const useVisualBoxStore = defineStore('visualBox', {
     toggleActive(template: VisualBasic) {
       this.flatVisualBoxTemplates.forEach((t) => (t.isActive = false))
       template.isActive = true
+      if (this.activeVisualBox && this.activeVisualBox.visualBoxKey === template.visualBoxKey) return
       this.activeVisualBox = new VisualBoxTarget(template, basicOptions)
-      // this.activeVisualBox.initOptions()
-      // this.activeVisualBox.initPropsOptions()
+      console.log(this.activeVisualBox)
     },
 
     // 初始化组件列表
