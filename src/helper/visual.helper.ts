@@ -28,8 +28,11 @@ export class VisualBoxTarget<T = any> {
       if (option.target === 'root') {
         option.value = this.target[option.property as keyof VisualBasic]
       }
-      if (option.target === 'style' && this.target.style) {
-        option.value = this.target.style[option.property as keyof CSSProperties]
+      if (option.target === 'customStyle' && this.target.customStyle) {
+        option.value = this.target.customStyle[option.property as keyof CSSProperties]
+      }
+      if (option.target === 'layoutStyle' && this.target.layoutStyle) {
+        option.value = this.target.layoutStyle[option.property as keyof CSSProperties]
       }
       const group = results.find((r) => r.groupName === option.groupName)
       if (group) {
@@ -42,11 +45,16 @@ export class VisualBoxTarget<T = any> {
   }
 
   applyOptions() {
-    this.target.style = {}
+    this.target.customStyle = {}
+    this.target.layoutStyle = {}
     this.options.forEach((option) => {
-      if (option.target === 'style') {
+      if (option.target === 'customStyle') {
         // @ts-ignore
-        this.target.style[option.property] = option.value
+        this.target.customStyle[option.property] = option.value
+      }
+      if (option.target === 'layoutStyle') {
+        // @ts-ignore
+        this.target.layoutStyle[option.property] = option.value
       }
       if (option.target === 'root') {
         // @ts-ignore

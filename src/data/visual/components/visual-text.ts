@@ -8,7 +8,7 @@ export interface VisualTextProps {
 export const visualText: VisualBasic<VisualTextProps> = {
   visualBoxKey: uuidv4(),
   visualBoxGroup: 'basic',
-  visualBoxName: '文本组件',
+  visualBoxName: '文本',
   visualBoxIcon: 'bi:file-earmark-font',
   showTools: true,
   isDraggable: true,

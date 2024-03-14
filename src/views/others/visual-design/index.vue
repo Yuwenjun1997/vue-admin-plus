@@ -11,6 +11,9 @@
         <VisualCenterPanel />
       </el-main>
     </el-container>
+    <el-aside class="vad-bg-color visual-design__tools">
+      <VisualTools />
+    </el-aside>
     <el-aside class="vad-bg-color">
       <VisualRightPanel />
     </el-aside>
@@ -22,6 +25,7 @@ import VisualLeftPanel from './components/VisualLeftPanel.vue'
 import VisualRightPanel from './components/VisualRightPanel.vue'
 import VisualCenterPanel from './components/VisualCenterPanel.vue'
 import VisualHeaderPanel from './components/VisualHeaderPanel.vue'
+import VisualTools from './components/VisualTools.vue'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { visualComponentGroups, templates } from '@/data/visual.data'
 
@@ -36,6 +40,12 @@ visualBoxStore.initVisualComponents(visualComponentGroups)
 
   .el-header {
     --el-header-height: 38px;
+  }
+
+  .visual-design__tools {
+    --el-aside-width: 40px;
+    border-right: 1px dashed var(--el-border-color-light);
+    // background-color: var(--el-color-success-light-9);
   }
 
   :deep(.el-tabs) {

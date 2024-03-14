@@ -3,7 +3,7 @@
     <template v-if="props.template.component">
       <component :is="props.template.component" :template="props.template" />
     </template>
-    <template v-else-if="props.template.children">
+    <template v-else-if="props.template.children && props.template.children.length">
       <VisualBoxRender v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
     </template>
   </VisualBox>

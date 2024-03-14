@@ -20,10 +20,11 @@ export interface VisualBasic<T = any> {
   isActive?: boolean
   isLocked?: boolean
   disabled?: boolean
-  layoutStyle?: CSSProperties
+  style?: CSSProperties // 不可修改的样式
+  layoutStyle?: CSSProperties // 用于控制布局的样式
   layoutClassList?: string[]
-  style?: CSSProperties
-  classList?: string[]
+  customStyle?: CSSProperties // 自定义的样式
+  customClassList?: string[]
   component?: string
   props?: T
   propsOptions?: VisualBoxOption[]
@@ -39,7 +40,7 @@ export interface VisualBoxOptionItem {
 export interface VisualBoxOption {
   formType: string
   groupName: string
-  target: 'style' | 'props' | 'root'
+  target: 'props' | 'root' | 'customStyle' | 'layoutStyle'
   label: string
   property: string
   value?: any

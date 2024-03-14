@@ -14,8 +14,8 @@ export interface VisualButtonProps {
 export const visualButton: VisualBasic<VisualButtonProps> = {
   visualBoxKey: uuidv4(),
   visualBoxGroup: 'basic',
-  visualBoxName: '按钮组件',
-  visualBoxIcon: 'bi:file-earmark-font',
+  visualBoxName: '按钮',
+  visualBoxIcon: 'ep:switch-button',
   showTools: true,
   isDraggable: true,
   isDeletable: true,
@@ -24,7 +24,7 @@ export const visualButton: VisualBasic<VisualButtonProps> = {
   component: 'VisualButton',
   props: {
     content: '按钮',
-    color: '#409EFF',
+    color: '#007DFF',
     plain: false,
     text: false,
     link: false,

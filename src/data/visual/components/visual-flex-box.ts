@@ -14,18 +14,45 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
   isEditable: true,
   disabled: false,
   style: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
+    display: 'flex !important',
+  },
+  customStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'nowrap',
+    flexDirection: 'row',
   },
   options: [
     {
       groupName: '弹性布局',
+      label: '主轴方向',
+      formType: 'select',
+      target: 'customStyle',
+      property: 'flexDirection',
+      options: [
+        {
+          label: '从左向右',
+          value: 'row',
+        },
+        {
+          label: '从右向左',
+          value: 'row-reverse',
+        },
+        {
+          label: '从上向下',
+          value: 'column',
+        },
+        {
+          label: '从下向上',
+          value: 'column-reverse',
+        },
+      ],
+    },
+    {
+      groupName: '弹性布局',
       label: '水平排列方式',
       formType: 'select',
-      target: 'style',
+      target: 'customStyle',
       property: 'justifyContent',
       options: [
         {
@@ -58,7 +85,7 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
       groupName: '弹性布局',
       label: '垂直排列方式',
       formType: 'select',
-      target: 'style',
+      target: 'customStyle',
       property: 'alignItems',
       options: [
         {
@@ -85,10 +112,10 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
     },
     {
       groupName: '弹性布局',
-      label: '元素换行',
+      label: '内容是否换行',
       formType: 'select',
-      target: 'style',
-      property: 'nowrap',
+      target: 'customStyle',
+      property: 'flexWrap',
       options: [
         {
           label: '不换行',
@@ -97,31 +124,6 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
         {
           label: '换行',
           value: 'wrap',
-        },
-      ],
-    },
-    {
-      groupName: '弹性布局',
-      label: '主轴方向',
-      formType: 'select',
-      target: 'style',
-      property: 'flexDirection',
-      options: [
-        {
-          label: '从左向右',
-          value: 'row',
-        },
-        {
-          label: '从右向左',
-          value: 'row-reverse',
-        },
-        {
-          label: '从上向下',
-          value: 'column',
-        },
-        {
-          label: '从下向上',
-          value: 'column-reverse',
         },
       ],
     },

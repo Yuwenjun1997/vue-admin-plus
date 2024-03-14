@@ -5,7 +5,7 @@ export const visualRoot: VisualBasic = {
   isRoot: true,
   showTools: false,
   isEditable: false,
-  style: {
+  customStyle: {
     minHeight: '600px',
   },
   children: [],
