@@ -1,5 +1,6 @@
 import { basicOptions } from '@/data/visual.data'
-import { VisualBoxComponents, VisualBasic, VisualBoxTarget } from '@/types/visual-box'
+import { VisualBoxTarget } from '@/helper/visual.helper'
+import { VisualBoxComponents, VisualBasic } from '@/types/visual-box'
 import { ElMessage } from 'element-plus'
 import { cloneDeep } from 'lodash'
 import { defineStore } from 'pinia'

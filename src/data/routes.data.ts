@@ -1,4 +1,4 @@
-import { MenuOption } from './types'
+import { MenuOption } from '@/layout/types'
 
 export const menus: MenuOption[] = [
   {
@@ -74,16 +74,6 @@ export const menus: MenuOption[] = [
           title: '角色权限',
           icon: 'bi:person-lock',
           component: '@/views/components/permission/index.vue',
-        },
-      },
-      {
-        name: 'ComponentSortable',
-        path: '/component/sortable',
-        meta: {
-          menuId: 'ComponentSortable',
-          title: '可拖拽',
-          icon: 'bi:person-lock',
-          component: '@/views/components/sortable/index.vue',
         },
       },
     ],
@@ -164,13 +154,24 @@ export const menus: MenuOption[] = [
   {
     name: 'Others',
     path: '/others',
-    redirect: '/others/permission',
+    redirect: '/others/visualDsigin',
     meta: {
       menuId: 'Others',
       title: '其他',
       icon: 'line-md:coffee-half-empty-twotone-loop',
       layout: 'Layout',
     },
-    children: [],
+    children: [
+      {
+        name: 'OthersVisualDsigin',
+        path: '/others/visualDsigin',
+        meta: {
+          menuId: 'OthersDiyDsigin',
+          title: '可视化设计',
+          icon: 'line-md:discord-twotone',
+          component: '@/views/others/visual-design/index.vue',
+        },
+      },
+    ],
   },
 ]

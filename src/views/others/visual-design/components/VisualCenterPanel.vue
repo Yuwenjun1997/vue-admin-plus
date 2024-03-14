@@ -17,8 +17,8 @@ const { visualBoxTemplates } = storeToRefs(visualBoxStore)
 <style scoped lang="scss">
 .el-scrollbar {
   :deep(.el-scrollbar__view) {
-    padding: 2px;
-    min-height: 100%;
+    margin: 2px;
+    min-height: calc(100% - 4px);
     background-color: var(--el-bg-color);
   }
 }

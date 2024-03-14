@@ -2,7 +2,7 @@ import './styles/index.scss'
 import { useThemeStore } from './store/theme'
 import { useMenuStore } from './store/menu'
 import { useTabsStore } from './store/tabs'
-import { menus } from './data'
+import { menus } from '@/data/routes.data'
 import { sleep } from '@/utils'
 
 export async function setupLayout() {
