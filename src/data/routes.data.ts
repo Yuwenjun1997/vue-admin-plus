@@ -172,6 +172,16 @@ export const menus: MenuOption[] = [
           component: '@/views/others/visual-design/index.vue',
         },
       },
+      {
+        name: 'OthersHighlight',
+        path: '/others/highlight',
+        meta: {
+          menuId: 'OthersHighlight',
+          title: '代码高亮',
+          icon: 'bi:brightness-alt-high',
+          component: '@/views/others/highlight/index.vue',
+        },
+      },
     ],
   },
 ]
