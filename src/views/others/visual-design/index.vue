@@ -37,11 +37,9 @@ import VisualCenterPanel from './components/VisualCenterPanel.vue'
 import VisualHeaderPanel from './components/VisualHeaderPanel.vue'
 import VisualTools from './components/VisualTools.vue'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
-import { visualComponentGroups, templates } from '@/data/visual.data'
 
 const visualBoxStore = useVisualBoxStore()
-visualBoxStore.initVisualBox(templates)
-visualBoxStore.initVisualComponents(visualComponentGroups)
+visualBoxStore.setup()
 </script>
 
 <style lang="scss" scoped>

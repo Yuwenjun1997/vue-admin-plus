@@ -12,26 +12,116 @@
         </div>
       </el-tooltip>
     </div>
-    <div>
+    <div class="flex items-center">
+      <el-tooltip content="清空画布" effect="dark">
+        <div class="visual-tools__control" @click.stop="handleClear()">
+          <Icon icon="ep:delete" />
+          <span>清空</span>
+        </div>
+      </el-tooltip>
+      <el-tooltip content="导入JSON配置" effect="dark">
+        <div class="visual-tools__control" @click.stop="handleShowJsonImportModal()">
+          <Icon icon="line-md:cloud-upload-loop" />
+          <span>导入</span>
+        </div>
+      </el-tooltip>
+      <el-tooltip content="导出JSON配置" effect="dark">
+        <div class="visual-tools__control" @click.stop="handleShowJsonExportModal()">
+          <Icon icon="line-md:cloud-download-loop" />
+          <span>导出</span>
+        </div>
+      </el-tooltip>
+      <el-tooltip content="导出代码" effect="dark">
+        <div class="visual-tools__control" @click.stop="handleShowCodeExportModal()">
+          <Icon icon="ion:code-working" />
+          <span>导出代码</span>
+        </div>
+      </el-tooltip>
       <el-tooltip :content="isFullscreen ? '恢复窗口大小' : '窗口最大化'" effect="dark">
         <div class="visual-tools__control" @click.stop="toggleFullscreen()">
-          <Icon icon="ion:copy-sharp" />
+          <Icon icon="bi:window-fullscreen" />
         </div>
       </el-tooltip>
     </div>
+
+    <el-dialog
+      v-model="showJsonCodeModal"
+      align-center
+      append-to-body
+      destroy-on-close
+      draggable
+      :title="jsonCodeModalTitle"
+      width="1200px"
+    >
+      <VadCodeEditor v-model="jsonCode" mode="json" :readonly="jsonCodeModalType === 'export'" :user-worker="false" />
+      <template #footer>
+        <el-button @click="showJsonCodeModal = false">取消</el-button>
+        <template v-if="jsonCodeModalType === 'import'">
+          <el-button type="primary" @click="handleImportJson">确定导入</el-button>
+        </template>
+        <template v-if="jsonCodeModalType === 'export'">
+          <el-button type="primary" @click="handleCopyJsonCode">复制JSON</el-button>
+          <el-button type="primary" @click="handleSaveJsonAsFile">另存为文件</el-button>
+        </template>
+      </template>
+    </el-dialog>
+
+    <el-dialog
+      v-model="showCodeExportModal"
+      align-center
+      append-to-body
+      destroy-on-close
+      draggable
+      title="导出代码"
+      width="1200px"
+    >
+      <el-tabs v-model="activeCodeExportTab" type="border-card">
+        <el-tab-pane label="html" name="html">
+          <VadCodeEditor v-model="htmlCode" mode="html" :readonly="true" :user-worker="false" />
+        </el-tab-pane>
+        <el-tab-pane label="vue">
+          <VadCodeEditor v-model="vueCode" mode="vue" :readonly="true" :user-worker="false" />
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts" name="VisualHeaderPanel">
+import VadCodeEditor from '@/components/VadCodeEditor/index.vue'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { Icon } from '@iconify/vue'
-import { useToggle } from '@vueuse/core'
+import { useDebouncedRefHistory, useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
+import { useVisualUtils } from '@/hooks/useVisualUtils'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen } = storeToRefs(visualBoxStore)
-const { undo, redo } = visualBoxStore
+const { isFullscreen, visualBoxTemplates } = storeToRefs(visualBoxStore)
 const toggleFullscreen = useToggle(isFullscreen)
+
+const { undo, redo, history } = useDebouncedRefHistory(visualBoxTemplates, { deep: true })
+
+watchEffect(() => {
+  console.log(history.value)
+})
+
+const {
+  jsonCodeModalType,
+  showJsonCodeModal,
+  jsonCodeModalTitle,
+  jsonCode,
+  showCodeExportModal,
+  activeCodeExportTab,
+  htmlCode,
+  vueCode,
+  handleClear,
+  handleShowJsonExportModal,
+  handleShowJsonImportModal,
+  handleCopyJsonCode,
+  handleImportJson,
+  handleSaveJsonAsFile,
+  handleShowCodeExportModal,
+} = useVisualUtils()
 </script>
 
 <style scoped lang="scss">
@@ -42,6 +132,9 @@ const toggleFullscreen = useToggle(isFullscreen)
   color: var(--el-text-color-regular);
 
   .visual-tools__control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     padding: 8px;
     border-radius: var(--el-border-radius-base);
@@ -50,6 +143,11 @@ const toggleFullscreen = useToggle(isFullscreen)
     &:hover {
       background-color: var(--el-color-primary-light-9);
       color: var(--el-color-primary);
+    }
+
+    span {
+      margin-left: 4px;
+      font-size: var(--el-font-size-extra-small);
     }
   }
 }

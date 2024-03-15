@@ -1,4 +1,4 @@
-import { basicOptions } from '@/data/visual.data'
+import { basicOptions, templates, visualComponentGroups } from '@/data/visual.data'
 import { VisualBoxTarget } from '@/helper/visual.helper'
 import { VisualBoxGroup, VisualBasic } from '@/types/visual-box'
 import { ElMessage } from 'element-plus'
@@ -38,6 +38,11 @@ class HsitoryTrack<T> {
       if (key > this.historyNo) this.historyTrack.delete(key)
     })
   }
+
+  clear() {
+    this.historyTrack.clear()
+    this.historyNo = 0
+  }
 }
 
 interface VisualBoxState {
@@ -61,10 +66,23 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
   actions: {
     // 初始化
+    setup() {
+      this.initVisualBox(templates)
+      this.initVisualComponents(visualComponentGroups)
+    },
+
+    // 初始化
     initVisualBox(templates: VisualBasic[]) {
+      this.activeVisualBox = null
+      this.historyTrack.clear()
       this.visualBoxTemplates = templates
       this.reFlatTemplates()
       this.historyTrack.add(this.visualBoxTemplates)
+    },
+
+    // 清空
+    clearAllVisualBox() {
+      this.initVisualBox(templates)
     },
 
     // 锁定or解锁

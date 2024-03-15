@@ -10,7 +10,9 @@ import { setupRouterGuard } from '@/router/guard'
 import { setupLayout } from './layout'
 import { setupIconify } from './plugins/iconify'
 import { setupVxeTable } from './plugins/vxe-table'
+import { setupHighlight } from './plugins/highlight'
 import { setupVisual } from './components/VisualComponents/index'
+import { setupVueQuill } from './plugins/vue-quill'
 
 async function bootstrap() {
   // 加载动画
@@ -25,6 +27,10 @@ async function bootstrap() {
   setupIconify()
 
   setupVxeTable(app)
+
+  setupHighlight(app)
+
+  setupVueQuill(app)
 
   // 配置 store
   setupStore(app)
