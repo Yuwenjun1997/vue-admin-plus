@@ -93,7 +93,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .visual-box {
   $outline-width: 2px;
-  $min-height: 20px;
+  $min-size: 10px;
   position: relative;
   cursor: move;
   user-select: none;
@@ -141,7 +141,8 @@ onMounted(() => {
 
   &__wrap {
     position: relative;
-    min-height: $min-height;
+    min-height: $min-size;
+    min-width: $min-size;
   }
 }
 </style>

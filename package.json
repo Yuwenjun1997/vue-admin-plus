@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.0.3",
+    "@iconify-json/ion": "^1.1.15",
     "@vueuse/core": "^10.9.0",
     "element-plus": "^2.6.0",
+    "highlight.js": "^11.9.0",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",

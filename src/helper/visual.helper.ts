@@ -7,24 +7,50 @@ export class VisualBoxTarget<T = any> {
   target: VisualBasic<T>
   visualBoxKey: string
   visualBoxName?: string
-  options: VisualBoxOption[]
+  basicOptions: VisualBoxOption[]
+  customOptions: VisualBoxOption[]
   propsOptions: VisualBoxOption[]
-  renderOptions: VisualBoxRenderOption[]
+  renderBasicOptions: VisualBoxRenderOption[]
+  renderCustomOptions: VisualBoxRenderOption[]
   renderPropsOptions: VisualBoxRenderOption[] = []
 
   constructor(target: VisualBasic<T>, basicOptions: VisualBoxOption[] = []) {
     this.target = target
     this.visualBoxKey = target.visualBoxKey
     this.visualBoxName = target.visualBoxName
-    this.options = cloneDeep(basicOptions).concat(target.options || [])
+    this.basicOptions = cloneDeep(basicOptions)
+    this.customOptions = target.options || []
     this.propsOptions = target.propsOptions || []
-    this.renderOptions = this.initOptions()
+    this.renderBasicOptions = this.initBasicOptions()
+    this.renderCustomOptions = this.initCustomOptions()
     this.renderPropsOptions = this.initPropsOptions()
   }
 
-  initOptions(): VisualBoxRenderOption[] {
+  initBasicOptions(): VisualBoxRenderOption[] {
     const results: VisualBoxRenderOption[] = []
-    this.options.forEach((option) => {
+    this.basicOptions.forEach((option) => {
+      if (option.target === 'root') {
+        option.value = this.target[option.property as keyof VisualBasic]
+      }
+      if (option.target === 'customStyle' && this.target.customStyle) {
+        option.value = this.target.customStyle[option.property as keyof CSSProperties]
+      }
+      if (option.target === 'layoutStyle' && this.target.layoutStyle) {
+        option.value = this.target.layoutStyle[option.property as keyof CSSProperties]
+      }
+      const group = results.find((r) => r.groupName === option.groupName)
+      if (group) {
+        group.options.push(option)
+      } else {
+        results.push({ groupName: option.groupName, options: [option], groupId: uuidv4() })
+      }
+    })
+    return results
+  }
+
+  initCustomOptions(): VisualBoxRenderOption[] {
+    const results: VisualBoxRenderOption[] = []
+    this.customOptions.forEach((option) => {
       if (option.target === 'root') {
         option.value = this.target[option.property as keyof VisualBasic]
       }
@@ -47,7 +73,8 @@ export class VisualBoxTarget<T = any> {
   applyOptions() {
     this.target.customStyle = {}
     this.target.layoutStyle = {}
-    this.options.forEach((option) => {
+    const allOptions: VisualBoxOption[] = [...this.basicOptions, ...this.customOptions]
+    allOptions.forEach((option) => {
       if (option.target === 'customStyle') {
         // @ts-ignore
         this.target.customStyle[option.property] = option.value

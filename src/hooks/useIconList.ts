@@ -29,7 +29,7 @@ export function useIconList(params: UseIconListParams = {}) {
     ElMessage.success('拷贝成功:' + iconText)
   }
 
-  const sourceIcons = loadIcons(['line-md', 'ep', 'bi'])
+  const sourceIcons = loadIcons(['line-md', 'ep', 'bi', 'ion'])
   const filterIcons = ref<string[]>(sourceIcons)
   const iconTotal = computed(() => filterIcons.value.length)
   const icons = ref<string[]>([])

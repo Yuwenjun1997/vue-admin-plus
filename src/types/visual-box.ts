@@ -47,6 +47,11 @@ export interface VisualBoxOption {
   options?: VisualBoxOptionItem[]
   disabled?: boolean
   required?: boolean
+  trueValue?: any
+  falseValue?: any
+  step?: number
+  min?: number
+  max?: number
 }
 
 export interface VisualBoxGroup {

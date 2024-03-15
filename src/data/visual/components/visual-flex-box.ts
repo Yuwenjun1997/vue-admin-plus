@@ -24,7 +24,7 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
   },
   options: [
     {
-      groupName: '弹性布局',
+      groupName: '布局',
       label: '主轴方向',
       formType: 'select',
       target: 'customStyle',
@@ -49,7 +49,7 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
       ],
     },
     {
-      groupName: '弹性布局',
+      groupName: '布局',
       label: '水平排列方式',
       formType: 'select',
       target: 'customStyle',
@@ -82,7 +82,7 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
       ],
     },
     {
-      groupName: '弹性布局',
+      groupName: '布局',
       label: '垂直排列方式',
       formType: 'select',
       target: 'customStyle',
@@ -111,7 +111,7 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
       ],
     },
     {
-      groupName: '弹性布局',
+      groupName: '布局',
       label: '内容是否换行',
       formType: 'select',
       target: 'customStyle',
@@ -126,6 +126,20 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
           value: 'wrap',
         },
       ],
+    },
+    {
+      groupName: '布局',
+      label: '行间距',
+      formType: 'cssInput',
+      target: 'customStyle',
+      property: 'row-gap',
+    },
+    {
+      groupName: '布局',
+      label: '列间距',
+      formType: 'cssInput',
+      target: 'customStyle',
+      property: 'column-gap',
     },
   ],
 }

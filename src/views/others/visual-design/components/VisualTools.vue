@@ -4,19 +4,32 @@
       <Icon icon="bi:tools" />
     </div>
     <template v-if="!isLocked">
-      <div class="visual-tools__control" @click="handeUp">
-        <Icon icon="line-md:arrow-up" />
-      </div>
-      <div class="visual-tools__control" @click="handleDown">
-        <Icon icon="line-md:arrow-down" />
-      </div>
-      <div class="visual-tools__control" @click="handleDelete">
-        <Icon icon="ep:delete" />
-      </div>
+      <el-tooltip content="上移" effect="dark" placement="left">
+        <div class="visual-tools__control" @click="handeUp">
+          <Icon icon="line-md:arrow-close-up" />
+        </div>
+      </el-tooltip>
+      <el-tooltip content="下移" effect="dark" placement="left">
+        <div class="visual-tools__control" @click="handleDown">
+          <Icon icon="line-md:arrow-close-down" />
+        </div>
+      </el-tooltip>
+      <el-tooltip content="删除" effect="dark" placement="left">
+        <div class="visual-tools__control" @click="handleDelete">
+          <Icon icon="ep:delete" />
+        </div>
+      </el-tooltip>
     </template>
-    <div class="visual-tools__control" @click="toggleLock">
-      <Icon :icon="!isLocked ? 'ep:unlock' : 'ep:lock'" />
-    </div>
+    <el-tooltip :content="isLocked ? '解锁' : '锁定'" effect="dark" placement="left">
+      <div class="visual-tools__control" @click="toggleLock">
+        <Icon :icon="!isLocked ? 'ep:unlock' : 'ep:lock'" />
+      </div>
+    </el-tooltip>
+    <el-tooltip content="选择父级" effect="dark" placement="left">
+      <div class="visual-tools__control" @click="handleCurrentParent">
+        <Icon icon="ep:files" />
+      </div>
+    </el-tooltip>
   </div>
 </template>
 
@@ -27,7 +40,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { storeToRefs } from 'pinia'
 
 const visualBoxStore = useVisualBoxStore()
-const { moveVisualBoxUp, moveVisualBoxDown, deleteVisualBox, toggleLockVisualBox } = visualBoxStore
+const { moveVisualBoxUp, moveVisualBoxDown, deleteVisualBox, toggleLockVisualBox, toggleActiveParent } = visualBoxStore
 const { activeVisualBox } = storeToRefs(visualBoxStore)
 
 const current = computed(() => activeVisualBox.value?.target)
@@ -65,6 +78,12 @@ const handleDelete = async () => {
     console.log(error)
   }
 }
+
+// 父级
+const handleCurrentParent = () => {
+  if (!current.value) return ElMessage.warning('当前未选中组件')
+  toggleActiveParent(current.value)
+}
 </script>
 
 <style scoped lang="scss">
@@ -85,12 +104,12 @@ const handleDelete = async () => {
   }
 
   .visual-tools__control {
+    cursor: pointer;
     padding: 8px;
     border-radius: var(--el-border-radius-base);
-    transition: var(--el-transition-all);
-    background-color: var(--el-color-primary-light-9);
     color: var(--el-color-primary);
-    cursor: pointer;
+    background-color: var(--el-color-primary-light-9);
+    transition: var(--el-transition-all);
 
     &:hover {
       background-color: var(--el-color-primary);
