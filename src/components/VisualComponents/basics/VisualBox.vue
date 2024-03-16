@@ -6,7 +6,7 @@
     :data-visual-box-key="props.template.visualBoxKey"
     :style="props.template.layoutStyle"
     :title="props.template.visualBoxName"
-    @click="handleClick"
+    @click.stop="handleClick"
   >
     <div
       ref="visualBoxWrap"
@@ -23,6 +23,7 @@
 <script setup lang="ts" name="VisualBox">
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { VisualBasic } from '@/types/visual-box'
+import { storeToRefs } from 'pinia'
 import Sortable from 'sortablejs'
 
 interface Props {
@@ -31,12 +32,15 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { toggleActive, moveVisualBox } = useVisualBoxStore()
+const visualBoxStore = useVisualBoxStore()
+const { activeVisualBox } = storeToRefs(visualBoxStore)
+const { toggleActive, moveVisualBox } = visualBoxStore
 
 const isRoot = computed(() => props.template.isRoot)
-const isActive = computed(() => props.template.isActive)
+const isActive = computed(() => {
+  return activeVisualBox.value && props.template.visualBoxKey === activeVisualBox.value.visualBoxKey
+})
 const isDisabled = computed(() => props.template.disabled)
-const isEditable = computed(() => props.template.isEditable)
 const isLocked = computed(() => props.template.isLocked)
 
 const disabled = computed(() => !!(isLocked.value || isDisabled.value))
@@ -53,8 +57,7 @@ const wrapStyles = computed(() => {
 
 const visualBoxWrap = ref<HTMLElement>()
 
-const handleClick = (evt: MouseEvent) => {
-  if (isEditable.value) evt.stopPropagation()
+const handleClick = () => {
   toggleActive(props.template)
 }
 

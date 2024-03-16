@@ -91,19 +91,14 @@
 import VadCodeEditor from '@/components/VadCodeEditor/index.vue'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { Icon } from '@iconify/vue'
-import { useDebouncedRefHistory, useToggle } from '@vueuse/core'
+import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useVisualUtils } from '@/hooks/useVisualUtils'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen, visualBoxTemplates } = storeToRefs(visualBoxStore)
+const { isFullscreen } = storeToRefs(visualBoxStore)
+const { undo, redo } = visualBoxStore
 const toggleFullscreen = useToggle(isFullscreen)
-
-const { undo, redo, history } = useDebouncedRefHistory(visualBoxTemplates, { deep: true })
-
-watchEffect(() => {
-  console.log(history.value)
-})
 
 const {
   jsonCodeModalType,

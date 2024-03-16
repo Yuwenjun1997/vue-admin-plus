@@ -8,6 +8,7 @@ export interface VisualBoxRenderOption {
 
 export interface VisualBasic<T = any> {
   visualBoxKey: string
+  visualBoxParentKey?: string
   visualBoxGroup?: string
   visualBoxName?: string
   visualBoxCover?: string

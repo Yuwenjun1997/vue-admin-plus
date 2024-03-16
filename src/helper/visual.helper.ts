@@ -16,11 +16,11 @@ export class VisualBoxTarget<T = any> {
 
   constructor(target: VisualBasic<T>, basicOptions: VisualBoxOption[] = []) {
     this.target = target
-    this.visualBoxKey = target.visualBoxKey
-    this.visualBoxName = target.visualBoxName
+    this.visualBoxKey = this.target.visualBoxKey
+    this.visualBoxName = this.target.visualBoxName
     this.basicOptions = cloneDeep(basicOptions)
-    this.customOptions = target.options || []
-    this.propsOptions = target.propsOptions || []
+    this.customOptions = this.target.options || []
+    this.propsOptions = this.target.propsOptions || []
     this.renderBasicOptions = this.initBasicOptions()
     this.renderCustomOptions = this.initCustomOptions()
     this.renderPropsOptions = this.initPropsOptions()

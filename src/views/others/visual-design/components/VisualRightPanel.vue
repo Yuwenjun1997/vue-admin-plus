@@ -8,7 +8,7 @@
         </template>
         <el-scrollbar height="100%">
           <div class="overflow-hidden p-2">
-            <template v-if="!activeVisualBox">
+            <template v-if="!activeVisualBox || !isActive">
               <el-empty description="当前未选中组件" />
             </template>
             <template v-else-if="activeVisualBox.renderBasicOptions.length === 0">
@@ -30,7 +30,7 @@
         </template>
         <el-scrollbar height="100%">
           <div class="overflow-hidden p-2">
-            <template v-if="!activeVisualBox">
+            <template v-if="!activeVisualBox || !isActive">
               <el-empty description="当前未选中组件" />
             </template>
             <template v-else-if="activeVisualBox.renderCustomOptions.length === 0">
@@ -52,7 +52,7 @@
         </template>
         <el-scrollbar height="100%">
           <div class="overflow-hidden p-2">
-            <template v-if="!activeVisualBox">
+            <template v-if="!activeVisualBox || !isActive">
               <el-empty description="当前未选中组件" />
             </template>
             <template v-else-if="activeVisualBox.renderPropsOptions.length === 0">
@@ -79,8 +79,13 @@ import { storeToRefs } from 'pinia'
 const activeTab = ref<string>('BasicAttribute')
 
 const visualBoxStore = useVisualBoxStore()
-const { updateVisualBoxProps, updateVisualBoxOption } = visualBoxStore
+const { updateVisualBoxProps, updateVisualBoxOption, getVisualBoxByKey } = visualBoxStore
 const { activeVisualBox } = storeToRefs(visualBoxStore)
+
+const isActive = computed<boolean>(() => {
+  if (!activeVisualBox.value) return false
+  return !!getVisualBoxByKey(activeVisualBox.value.target.visualBoxKey)
+})
 </script>
 
 <style scoped lang="scss">

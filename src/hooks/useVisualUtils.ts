@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver'
 
 export function useVisualUtils() {
   const visualBoxStore = useVisualBoxStore()
-  const { initVisualBox, clearAllVisualBox } = visualBoxStore
+  const { initVisualBoxTemplates, clearAllVisualBox } = visualBoxStore
 
   const handleClear = async () => {
     try {
@@ -52,7 +52,7 @@ export function useVisualUtils() {
       if (!isArray(data)) {
         return ElMessage.error('导入失败，请检查数据格式')
       }
-      initVisualBox(data)
+      initVisualBoxTemplates(data)
       ElMessage.success('导入成功')
       jsonCode.value = ''
       showJsonCodeModal.value = false

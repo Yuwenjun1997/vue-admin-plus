@@ -2,64 +2,76 @@ import { basicOptions, templates, visualComponentGroups } from '@/data/visual.da
 import { VisualBoxTarget } from '@/helper/visual.helper'
 import { VisualBoxGroup, VisualBasic } from '@/types/visual-box'
 import { ElMessage } from 'element-plus'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, debounce } from 'lodash'
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
-
-class HsitoryTrack<T> {
-  historyNo: number = 0
-  historyTrack: Map<number, T> = new Map()
-
-  // 撤销
-  undo(): T | undefined {
-    this.historyNo--
-    if (this.historyNo < 1) {
-      this.historyNo = 1
-      ElMessage.warning('已经是最早的历史记录了')
-    }
-    return this.historyTrack.get(this.historyNo)
-  }
-
-  // 重做
-  redo(): T | undefined {
-    this.historyNo++
-    if (this.historyNo > this.historyTrack.size) {
-      this.historyNo = this.historyTrack.size
-      ElMessage.warning('已经是最新的历史记录了')
-    }
-    return this.historyTrack.get(this.historyNo)
-  }
-
-  // 添加历史记录
-  add(data: T) {
-    this.historyNo++
-    this.historyTrack.set(this.historyNo, cloneDeep(data))
-    this.historyTrack.forEach((_v, key) => {
-      if (key > this.historyNo) this.historyTrack.delete(key)
-    })
-  }
-
-  clear() {
-    this.historyTrack.clear()
-    this.historyNo = 0
-  }
-}
 
 interface VisualBoxState {
   isFullscreen: boolean
   historyTrack: HsitoryTrack<VisualBasic[]>
   visualBoxTemplates: VisualBasic[]
-  flatVisualBoxTemplates: VisualBasic[] // 扁平化的模板数组
+  flatVisualBoxTemplates: VisualBasic[]
   visualBoxComponents: VisualBasic[]
   activeVisualBox: VisualBoxTarget | null
 }
+
+class HsitoryTrack<T> {
+  historyNo: number = -1
+  historyTrack: T[] = []
+
+  // 撤销
+  undo(): T | undefined {
+    if (this.historyNo === 0) {
+      ElMessage.warning('已经是最早的历史记录了')
+      return
+    }
+    return this.historyTrack[--this.historyNo]
+  }
+
+  // 重做
+  redo(): T | undefined {
+    if (this.historyNo === this.historyTrack.length - 1) {
+      ElMessage.warning('已经是最新的历史记录了')
+      return
+    }
+    return this.historyTrack[++this.historyNo]
+  }
+
+  // 添加历史记录
+  add(data: T) {
+    this.historyTrack = this.historyTrack.slice(0, this.historyNo + 1)
+    this.historyTrack.push(cloneDeep(data))
+    this.historyNo = this.historyTrack.length - 1
+    console.log(this.historyTrack)
+  }
+
+  clear() {
+    this.historyTrack = []
+    this.historyNo = 0
+  }
+}
+
+function todoHanlder(source: VisualBasic[], callback: (source: VisualBasic[], flatList: VisualBasic[]) => void) {
+  const templates = cloneDeep(source)
+  const flatTemplates: VisualBasic[] = []
+  const flatHandler = (templates: VisualBasic[]) => {
+    templates.forEach((item) => {
+      flatTemplates.push(item)
+      if (item.children) flatHandler(item.children)
+    })
+  }
+  flatHandler(templates)
+  callback(templates, flatTemplates)
+}
+
+const todoHanlderFn = debounce(todoHanlder, 500)
 
 export const useVisualBoxStore = defineStore('visualBox', {
   state: (): VisualBoxState => ({
     isFullscreen: false,
     historyTrack: new HsitoryTrack<VisualBasic[]>(),
-    flatVisualBoxTemplates: [],
     visualBoxTemplates: [],
+    flatVisualBoxTemplates: [],
     visualBoxComponents: [],
     activeVisualBox: null,
   }),
@@ -67,150 +79,163 @@ export const useVisualBoxStore = defineStore('visualBox', {
   actions: {
     // 初始化
     setup() {
-      this.initVisualBox(templates)
       this.initVisualComponents(visualComponentGroups)
+      this.initVisualBoxTemplates(templates)
     },
 
-    // 初始化
-    initVisualBox(templates: VisualBasic[]) {
+    // 重新刷新列表
+    initVisualBoxTemplates(source: VisualBasic[]) {
       this.activeVisualBox = null
-      this.historyTrack.clear()
-      this.visualBoxTemplates = templates
-      this.reFlatTemplates()
-      this.historyTrack.add(this.visualBoxTemplates)
+      todoHanlder(source, (source) => (this.visualBoxTemplates = source))
+    },
+
+    // 初始化组件列表
+    initVisualComponents(components: VisualBoxGroup[]) {
+      components.forEach((item) => this.visualBoxComponents.push(...item.components))
     },
 
     // 清空
     clearAllVisualBox() {
-      this.initVisualBox(templates)
+      this.initVisualBoxTemplates(templates)
+      this.historyTrack.clear()
     },
 
-    // 锁定or解锁
-    toggleLockVisualBox(template: VisualBasic) {
-      template.isLocked = !template.isLocked
-      this.historyTrack.add(this.visualBoxTemplates)
-    },
-
-    // 删除
-    deleteVisualBox(template: VisualBasic) {
-      const parentItem = this.flatVisualBoxTemplates.find((i) => i.children && i.children.includes(template))
-      if (!parentItem) return
-      parentItem.children = parentItem.children?.filter((i) => i.visualBoxKey !== template.visualBoxKey)
-      this.reFlatTemplates()
-      this.activeVisualBox = null
-      this.historyTrack.add(this.visualBoxTemplates)
-    },
-
-    // 上移
-    moveVisualBoxUp(template: VisualBasic) {
-      const parentItem = this.flatVisualBoxTemplates.find((i) => i.children && i.children.includes(template))
-      if (!parentItem) return
-      parentItem.children = parentItem.children || []
-      const index = parentItem.children.indexOf(template)
-      if (index === 0) {
-        ElMessage.warning('当前元素已经在第一个位置了')
-      } else {
-        parentItem.children = parentItem.children.filter((i) => i !== template)
-        parentItem.children.splice(index - 1, 0, template)
+    flatVisualBoxHandler() {
+      const flatHandler = (templates: VisualBasic[]) => {
+        templates.forEach((item) => {
+          this.flatVisualBoxTemplates.push(item)
+          if (item.children) flatHandler(item.children)
+        })
       }
-      this.historyTrack.add(this.visualBoxTemplates)
-    },
-
-    // 下移
-    moveVisualBoxDown(template: VisualBasic) {
-      const parentItem = this.flatVisualBoxTemplates.find((i) => i.children && i.children.includes(template))
-      if (!parentItem) return
-      parentItem.children = parentItem.children || []
-      const index = parentItem.children.indexOf(template)
-      if (index === parentItem.children.length - 1) {
-        ElMessage.warning('当前元素已经在最后一个位置了')
-      } else {
-        parentItem.children = parentItem.children.filter((i) => i !== template)
-        parentItem.children.splice(index + 1, 0, template)
-      }
-      this.historyTrack.add(this.visualBoxTemplates)
-    },
-
-    // 移动
-    moveVisualBox(currentKey: string, fromKey: string, toKey: string, fromIndex: number, toIndex: number) {
-      const moveItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === currentKey)
-      const fromItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === fromKey)
-      const toItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === toKey)
-      if (!moveItem || !fromItem || !toItem) return
-      fromItem.children = fromItem.children || []
-      toItem.children = toItem.children || []
-      fromItem.children.splice(fromIndex, 1)
-      toItem.children.splice(toIndex, 0, moveItem)
-      this.historyTrack.add(this.visualBoxTemplates)
-    },
-
-    // 扁平化
-    flatTemplatesHandler(templates?: VisualBasic[]) {
-      if (!templates) return
-      templates.forEach((template) => {
-        template.isActive = false
-        this.flatVisualBoxTemplates.push(template)
-        this.flatTemplatesHandler(template.children)
-      })
-    },
-
-    // 重新刷新列表
-    reFlatTemplates() {
       this.flatVisualBoxTemplates = []
-      this.flatTemplatesHandler(this.visualBoxTemplates)
+      flatHandler(this.visualBoxTemplates)
     },
 
     // 选中
     toggleActive(template: VisualBasic) {
-      this.flatVisualBoxTemplates.forEach((t) => (t.isActive = false))
-      template.isActive = true
-      if (this.activeVisualBox && this.activeVisualBox.visualBoxKey === template.visualBoxKey) return
       this.activeVisualBox = new VisualBoxTarget(template, basicOptions)
     },
 
     // 选中父级
     toggleActiveParent(template: VisualBasic) {
-      const parent = this.flatVisualBoxTemplates.find((t) => {
-        const keys = t.children?.map((c) => c.visualBoxKey) || []
-        return keys.includes(template.visualBoxKey)
-      })
-      if (!parent) return
-      this.toggleActive(parent)
+      const parent = this.flatVisualBoxTemplates.find((t) => t.visualBoxKey === template.visualBoxParentKey)
+      if (parent) this.toggleActive(parent)
     },
 
-    // 初始化组件列表
-    initVisualComponents(components: VisualBoxGroup[]) {
-      components.forEach((item) => {
-        this.visualBoxComponents.push(...item.components)
+    // 锁定or解锁
+    toggleLockVisualBox() {
+      if (!this.activeVisualBox) return
+      const target = this.activeVisualBox.target
+      target.isLocked = !target.isLocked
+    },
+
+    // 删除
+    deleteVisualBox(template: VisualBasic) {
+      todoHanlder(this.visualBoxTemplates, (source, flatList) => {
+        const parent = flatList.find((i) => i.visualBoxKey === template.visualBoxParentKey)
+        if (!parent) return
+        parent.children = parent.children?.filter((i) => i.visualBoxKey !== template.visualBoxKey)
+        this.visualBoxTemplates = source
+        this.activeVisualBox = null
+        this.flatVisualBoxHandler()
+      })
+    },
+
+    // 上移
+    moveVisualBoxUp(template: VisualBasic) {
+      todoHanlder(this.visualBoxTemplates, (source, flatList) => {
+        const parent = flatList.find((i) => i.visualBoxKey === template.visualBoxParentKey)
+        if (!parent) return
+        parent.children = parent.children || []
+        const index = parent.children.findIndex((c) => c.visualBoxKey === template.visualBoxKey)
+        if (index === 0) {
+          ElMessage.warning('当前元素已经在第一个位置了')
+        } else {
+          parent.children = parent.children.filter((i) => i.visualBoxKey !== template.visualBoxKey)
+          parent.children.splice(index - 1, 0, cloneDeep(template))
+        }
+        this.visualBoxTemplates = source
+        this.flatVisualBoxHandler()
+      })
+    },
+
+    // 下移
+    moveVisualBoxDown(template: VisualBasic) {
+      todoHanlder(this.visualBoxTemplates, (source, flatList) => {
+        const parent = flatList.find((i) => i.visualBoxKey === template.visualBoxParentKey)
+        if (!parent) return
+        parent.children = parent.children || []
+        const index = parent.children.findIndex((c) => c.visualBoxKey === template.visualBoxKey)
+        if (index === parent.children.length - 1) {
+          ElMessage.warning('当前元素已经在第一个位置了')
+        } else {
+          parent.children = parent.children.filter((i) => i.visualBoxKey !== template.visualBoxKey)
+          parent.children.splice(index + 1, 0, cloneDeep(template))
+        }
+        this.visualBoxTemplates = source
+        this.flatVisualBoxHandler()
+      })
+    },
+
+    // 移动
+    moveVisualBox(currentKey: string, fromKey: string, toKey: string, fromIndex: number, toIndex: number) {
+      if (fromKey === toKey && fromIndex === toIndex) return
+      todoHanlder(this.visualBoxTemplates, (source, flatList) => {
+        const moveItem = flatList.find((i) => i.visualBoxKey === currentKey)
+        const fromItem = flatList.find((i) => i.visualBoxKey === fromKey)
+        const toItem = flatList.find((i) => i.visualBoxKey === toKey)
+        if (!moveItem || !fromItem || !toItem) return
+        moveItem.visualBoxParentKey = toKey
+        if (fromItem.children) fromItem.children.splice(fromIndex, 1)
+        toItem.children = toItem.children || []
+        toItem.children.splice(toIndex, 0, moveItem)
+        this.visualBoxTemplates = source
+        this.flatVisualBoxHandler()
       })
     },
 
     // 添加
     addVisualBox(currentKey: string, toKey: string, toIndex: number) {
-      const moveItem = this.visualBoxComponents.find((i) => i.visualBoxKey === currentKey)
-      const toItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === toKey)
-      if (!moveItem || !toItem) return
-      const addItem = cloneDeep(moveItem)
-      addItem.visualBoxKey = uuidv4()
-      toItem.children = toItem.children || []
-      toItem.children.splice(toIndex, 0, addItem)
-      this.reFlatTemplates()
-      this.historyTrack.add(this.visualBoxTemplates)
-      this.toggleActive(addItem)
+      todoHanlder(this.visualBoxTemplates, (source, flatList) => {
+        const moveItem = this.visualBoxComponents.find((i) => i.visualBoxKey === currentKey)
+        const toItem = flatList.find((i) => i.visualBoxKey === toKey)
+        if (!moveItem || !toItem) return
+        const addItem = cloneDeep(moveItem)
+        addItem.visualBoxKey = uuidv4()
+        addItem.visualBoxParentKey = toItem.visualBoxKey
+        toItem.children = toItem.children || []
+        toItem.children.splice(toIndex, 0, addItem)
+        this.visualBoxTemplates = source
+        this.flatVisualBoxHandler()
+      })
     },
 
     // 更新propOptions
     updateVisualBoxProps() {
-      if (!this.activeVisualBox) return
-      this.activeVisualBox.applyPropsOptions()
-      this.historyTrack.add(this.visualBoxTemplates)
+      console.log('更新propOptions')
+      todoHanlderFn(this.visualBoxTemplates, (source, flatList) => {
+        if (!this.activeVisualBox) return
+        this.activeVisualBox.applyPropsOptions()
+        const target = flatList.find((i) => i.visualBoxKey === this.activeVisualBox?.target.visualBoxKey)
+        if (!target) return
+        Object.assign(target, this.activeVisualBox.target)
+        this.visualBoxTemplates = source
+        this.flatVisualBoxHandler()
+      })
     },
 
     // 更新基本信息
     updateVisualBoxOption() {
-      if (!this.activeVisualBox) return
-      this.activeVisualBox.applyOptions()
-      this.historyTrack.add(this.visualBoxTemplates)
+      todoHanlderFn(this.visualBoxTemplates, (source, flatList) => {
+        console.log('更新基本信息')
+        if (!this.activeVisualBox) return
+        this.activeVisualBox.applyOptions()
+        const target = flatList.find((i) => i.visualBoxKey === this.activeVisualBox?.target.visualBoxKey)
+        if (!target) return
+        Object.assign(target, this.activeVisualBox.target)
+        this.visualBoxTemplates = source
+        this.flatVisualBoxHandler()
+      })
     },
 
     // 根据key获取组件
@@ -220,18 +245,24 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 撤销
     undo() {
-      const templates = this.historyTrack.undo() || []
-      this.visualBoxTemplates = cloneDeep(templates)
-      this.reFlatTemplates()
-      this.activeVisualBox = null
+      const data = this.historyTrack.undo()
+      if (data) {
+        todoHanlder(data, (source) => {
+          this.visualBoxTemplates = source
+          this.flatVisualBoxHandler()
+        })
+      }
     },
 
     // 重做
     redo() {
-      const templates = this.historyTrack.redo() || []
-      this.visualBoxTemplates = cloneDeep(templates)
-      this.reFlatTemplates()
-      this.activeVisualBox = null
+      const data = this.historyTrack.redo()
+      if (data) {
+        todoHanlder(data, (source) => {
+          this.visualBoxTemplates = source
+          this.flatVisualBoxHandler()
+        })
+      }
     },
   },
 })

@@ -60,7 +60,7 @@ const handleDown = () => {
 
 const toggleLock = () => {
   if (!current.value) return ElMessage.warning('当前未选中组件')
-  toggleLockVisualBox(current.value)
+  toggleLockVisualBox()
 }
 
 const handleDelete = async () => {
