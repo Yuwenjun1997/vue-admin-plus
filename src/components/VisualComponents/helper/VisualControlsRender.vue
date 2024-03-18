@@ -5,7 +5,9 @@
         <el-input v-model="item.value" clearable :disabled="item.disabled" @blur="handleChange" />
       </template>
       <template v-if="item.formType === 'cssInput'">
-        <VisualCssInput v-model="item.value" @change="handleChange" />
+        <VadIntersection style="min-height: 26px">
+          <VisualCssInput v-model="item.value" @change="handleChange" />
+        </VadIntersection>
       </template>
       <template v-if="item.formType === 'textarea'">
         <el-input v-model="item.value" clearable :disabled="item.disabled" type="textarea" @blur="handleChange" />
@@ -55,6 +57,7 @@
 </template>
 
 <script setup lang="ts" name="VisualControlsRender">
+import VadIntersection from '@/components/VadIntersection/index.vue'
 import { VisualBoxOption } from '@/types/visual-box'
 
 interface Props {
@@ -67,7 +70,7 @@ const emit = defineEmits<{
 
 const props = defineProps<Props>()
 
-const handleChange = () => {
+const handleChange = async () => {
   emit('change')
 }
 

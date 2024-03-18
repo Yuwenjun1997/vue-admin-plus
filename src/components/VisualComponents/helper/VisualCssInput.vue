@@ -10,7 +10,7 @@
       <el-option label="%" value="%" />
     </el-select>
     <el-popover placement="top-end" trigger="click" :width="200">
-      <el-slider v-model="sliderValue" :max="100" @change="handleSliderChange" />
+      <el-slider v-model.number="sliderValue" :max="100" @change="handleSliderChange" />
       <template #reference>
         <el-button text>
           <Icon icon="line-md:chevron-down" />
@@ -58,7 +58,7 @@ const handleUnitChange = () => {
   emit('change', spliceValue.value)
 }
 
-watchEffect(() => {
+onMounted(() => {
   if (props.modelValue) {
     const result = useExtractValueAndUnit(props.modelValue)
     if (!result) return

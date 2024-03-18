@@ -8,47 +8,10 @@ import { v4 as uuidv4 } from 'uuid'
 
 interface VisualBoxState {
   isFullscreen: boolean
-  historyTrack: HsitoryTrack<VisualBasic[]>
   visualBoxTemplates: VisualBasic[]
   flatVisualBoxTemplates: VisualBasic[]
   visualBoxComponents: VisualBasic[]
   activeVisualBox: VisualBoxTarget | null
-}
-
-class HsitoryTrack<T> {
-  historyNo: number = -1
-  historyTrack: T[] = []
-
-  // 撤销
-  undo(): T | undefined {
-    if (this.historyNo === 0) {
-      ElMessage.warning('已经是最早的历史记录了')
-      return
-    }
-    return this.historyTrack[--this.historyNo]
-  }
-
-  // 重做
-  redo(): T | undefined {
-    if (this.historyNo === this.historyTrack.length - 1) {
-      ElMessage.warning('已经是最新的历史记录了')
-      return
-    }
-    return this.historyTrack[++this.historyNo]
-  }
-
-  // 添加历史记录
-  add(data: T) {
-    this.historyTrack = this.historyTrack.slice(0, this.historyNo + 1)
-    this.historyTrack.push(cloneDeep(data))
-    this.historyNo = this.historyTrack.length - 1
-    console.log(this.historyTrack)
-  }
-
-  clear() {
-    this.historyTrack = []
-    this.historyNo = 0
-  }
 }
 
 function todoHanlder(source: VisualBasic[], callback: (source: VisualBasic[], flatList: VisualBasic[]) => void) {
@@ -69,7 +32,6 @@ const todoHanlderFn = debounce(todoHanlder, 500)
 export const useVisualBoxStore = defineStore('visualBox', {
   state: (): VisualBoxState => ({
     isFullscreen: false,
-    historyTrack: new HsitoryTrack<VisualBasic[]>(),
     visualBoxTemplates: [],
     flatVisualBoxTemplates: [],
     visualBoxComponents: [],
@@ -86,7 +48,10 @@ export const useVisualBoxStore = defineStore('visualBox', {
     // 重新刷新列表
     initVisualBoxTemplates(source: VisualBasic[]) {
       this.activeVisualBox = null
-      todoHanlder(source, (source) => (this.visualBoxTemplates = source))
+      todoHanlder(source, (source, flatList) => {
+        this.visualBoxTemplates = source
+        this.flatVisualBoxTemplates = flatList
+      })
     },
 
     // 初始化组件列表
@@ -97,22 +62,11 @@ export const useVisualBoxStore = defineStore('visualBox', {
     // 清空
     clearAllVisualBox() {
       this.initVisualBoxTemplates(templates)
-      this.historyTrack.clear()
-    },
-
-    flatVisualBoxHandler() {
-      const flatHandler = (templates: VisualBasic[]) => {
-        templates.forEach((item) => {
-          this.flatVisualBoxTemplates.push(item)
-          if (item.children) flatHandler(item.children)
-        })
-      }
-      this.flatVisualBoxTemplates = []
-      flatHandler(this.visualBoxTemplates)
     },
 
     // 选中
     toggleActive(template: VisualBasic) {
+      if (template.visualBoxKey === this.activeVisualBox?.visualBoxKey) return
       this.activeVisualBox = new VisualBoxTarget(template, basicOptions)
     },
 
@@ -134,10 +88,10 @@ export const useVisualBoxStore = defineStore('visualBox', {
       todoHanlder(this.visualBoxTemplates, (source, flatList) => {
         const parent = flatList.find((i) => i.visualBoxKey === template.visualBoxParentKey)
         if (!parent) return
+        this.activeVisualBox = null
         parent.children = parent.children?.filter((i) => i.visualBoxKey !== template.visualBoxKey)
         this.visualBoxTemplates = source
-        this.activeVisualBox = null
-        this.flatVisualBoxHandler()
+        this.flatVisualBoxTemplates = flatList
       })
     },
 
@@ -155,7 +109,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
           parent.children.splice(index - 1, 0, cloneDeep(template))
         }
         this.visualBoxTemplates = source
-        this.flatVisualBoxHandler()
+        this.flatVisualBoxTemplates = flatList
       })
     },
 
@@ -173,7 +127,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
           parent.children.splice(index + 1, 0, cloneDeep(template))
         }
         this.visualBoxTemplates = source
-        this.flatVisualBoxHandler()
+        this.flatVisualBoxTemplates = flatList
       })
     },
 
@@ -190,7 +144,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
         toItem.children = toItem.children || []
         toItem.children.splice(toIndex, 0, moveItem)
         this.visualBoxTemplates = source
-        this.flatVisualBoxHandler()
+        this.flatVisualBoxTemplates = flatList
       })
     },
 
@@ -205,14 +159,15 @@ export const useVisualBoxStore = defineStore('visualBox', {
         addItem.visualBoxParentKey = toItem.visualBoxKey
         toItem.children = toItem.children || []
         toItem.children.splice(toIndex, 0, addItem)
+        flatList.push(addItem)
         this.visualBoxTemplates = source
-        this.flatVisualBoxHandler()
+        this.flatVisualBoxTemplates = flatList
+        this.toggleActive(addItem)
       })
     },
 
     // 更新propOptions
     updateVisualBoxProps() {
-      console.log('更新propOptions')
       todoHanlderFn(this.visualBoxTemplates, (source, flatList) => {
         if (!this.activeVisualBox) return
         this.activeVisualBox.applyPropsOptions()
@@ -220,49 +175,26 @@ export const useVisualBoxStore = defineStore('visualBox', {
         if (!target) return
         Object.assign(target, this.activeVisualBox.target)
         this.visualBoxTemplates = source
-        this.flatVisualBoxHandler()
+        this.flatVisualBoxTemplates = flatList
       })
     },
 
     // 更新基本信息
     updateVisualBoxOption() {
       todoHanlderFn(this.visualBoxTemplates, (source, flatList) => {
-        console.log('更新基本信息')
         if (!this.activeVisualBox) return
         this.activeVisualBox.applyOptions()
         const target = flatList.find((i) => i.visualBoxKey === this.activeVisualBox?.target.visualBoxKey)
         if (!target) return
         Object.assign(target, this.activeVisualBox.target)
         this.visualBoxTemplates = source
-        this.flatVisualBoxHandler()
+        this.flatVisualBoxTemplates = flatList
       })
     },
 
     // 根据key获取组件
     getVisualBoxByKey(key: string) {
       return this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === key)
-    },
-
-    // 撤销
-    undo() {
-      const data = this.historyTrack.undo()
-      if (data) {
-        todoHanlder(data, (source) => {
-          this.visualBoxTemplates = source
-          this.flatVisualBoxHandler()
-        })
-      }
-    },
-
-    // 重做
-    redo() {
-      const data = this.historyTrack.redo()
-      if (data) {
-        todoHanlder(data, (source) => {
-          this.visualBoxTemplates = source
-          this.flatVisualBoxHandler()
-        })
-      }
     },
   },
 })

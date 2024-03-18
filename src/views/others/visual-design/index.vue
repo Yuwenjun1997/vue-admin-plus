@@ -39,6 +39,7 @@ import VisualTools from './components/VisualTools.vue'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 
 const visualBoxStore = useVisualBoxStore()
+
 visualBoxStore.setup()
 </script>
 

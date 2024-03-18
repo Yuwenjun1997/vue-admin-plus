@@ -50,6 +50,7 @@ declare module 'vue' {
     VadCodeEditor: typeof import('./components/VadCodeEditor/index.vue')['default']
     VadFullScreen: typeof import('./components/VadFullScreen/index.vue')['default']
     VadIconPicker: typeof import('./components/VadIconPicker/index.vue')['default']
+    VadIntersection: typeof import('./components/VadIntersection/index.vue')['default']
     VadPermission: typeof import('./components/VadPermission/index.vue')['default']
     VisualBox: typeof import('./components/VisualComponents/basics/VisualBox.vue')['default']
     VisualBoxRender: typeof import('./components/VisualComponents/helper/VisualBoxRender.vue')['default']
@@ -59,5 +60,8 @@ declare module 'vue' {
     VisualCssInput: typeof import('./components/VisualComponents/helper/VisualCssInput.vue')['default']
     VisualGrid: typeof import('./components/VisualComponents/basics/VisualGrid.vue')['default']
     VisualText: typeof import('./components/VisualComponents/basics/VisualText.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

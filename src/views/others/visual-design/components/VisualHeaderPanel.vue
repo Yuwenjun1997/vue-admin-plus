@@ -2,12 +2,12 @@
   <div class="VisualHeaderPanel h-full">
     <div class="flex-1 flex items-center">
       <el-tooltip content="撤销" effect="dark">
-        <div class="visual-tools__control" @click.stop="undo">
+        <div class="visual-tools__control" :class="{ disabled: !canUndo }" @click.stop="undo">
           <Icon icon="ion:ios-undo" />
         </div>
       </el-tooltip>
       <el-tooltip content="重做" effect="dark">
-        <div class="visual-tools__control" @click.stop="redo">
+        <div class="visual-tools__control" :class="{ disabled: !canRedo }" @click.stop="redo">
           <Icon icon="ion:ios-redo" />
         </div>
       </el-tooltip>
@@ -91,14 +91,15 @@
 import VadCodeEditor from '@/components/VadCodeEditor/index.vue'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { Icon } from '@iconify/vue'
-import { useToggle } from '@vueuse/core'
+import { useRefHistory, useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useVisualUtils } from '@/hooks/useVisualUtils'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen } = storeToRefs(visualBoxStore)
-const { undo, redo } = visualBoxStore
+const { isFullscreen, visualBoxTemplates } = storeToRefs(visualBoxStore)
 const toggleFullscreen = useToggle(isFullscreen)
+
+const { undo, redo, canRedo, canUndo } = useRefHistory(visualBoxTemplates, { deep: false, clone: true })
 
 const {
   jsonCodeModalType,
@@ -134,6 +135,11 @@ const {
     padding: 8px;
     border-radius: var(--el-border-radius-base);
     transition: var(--el-transition-all);
+
+    &.disabled {
+      opacity: 0.2;
+      pointer-events: none;
+    }
 
     &:hover {
       background-color: var(--el-color-primary-light-9);

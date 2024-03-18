@@ -39,6 +39,7 @@ export interface VisualBoxOptionItem {
 }
 
 export interface VisualBoxOption {
+  order?: number
   formType: string
   groupName: string
   target: 'props' | 'root' | 'customStyle' | 'layoutStyle'

@@ -4,6 +4,7 @@ import { CSSProperties } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 
 export class VisualBoxTarget<T = any> {
+  orderCount: number = 1
   target: VisualBasic<T>
   visualBoxKey: string
   visualBoxName?: string
@@ -21,36 +22,15 @@ export class VisualBoxTarget<T = any> {
     this.basicOptions = cloneDeep(basicOptions)
     this.customOptions = this.target.options || []
     this.propsOptions = this.target.propsOptions || []
-    this.renderBasicOptions = this.initBasicOptions()
-    this.renderCustomOptions = this.initCustomOptions()
+    this.renderBasicOptions = this.initOptions(this.basicOptions)
+    this.renderCustomOptions = this.initOptions(this.customOptions)
     this.renderPropsOptions = this.initPropsOptions()
   }
 
-  initBasicOptions(): VisualBoxRenderOption[] {
+  initOptions(options: VisualBoxOption[]): VisualBoxRenderOption[] {
     const results: VisualBoxRenderOption[] = []
-    this.basicOptions.forEach((option) => {
-      if (option.target === 'root') {
-        option.value = this.target[option.property as keyof VisualBasic]
-      }
-      if (option.target === 'customStyle' && this.target.customStyle) {
-        option.value = this.target.customStyle[option.property as keyof CSSProperties]
-      }
-      if (option.target === 'layoutStyle' && this.target.layoutStyle) {
-        option.value = this.target.layoutStyle[option.property as keyof CSSProperties]
-      }
-      const group = results.find((r) => r.groupName === option.groupName)
-      if (group) {
-        group.options.push(option)
-      } else {
-        results.push({ groupName: option.groupName, options: [option], groupId: uuidv4() })
-      }
-    })
-    return results
-  }
-
-  initCustomOptions(): VisualBoxRenderOption[] {
-    const results: VisualBoxRenderOption[] = []
-    this.customOptions.forEach((option) => {
+    options.forEach((option) => {
+      option.order = option.order || this.orderCount++
       if (option.target === 'root') {
         option.value = this.target[option.property as keyof VisualBasic]
       }
@@ -93,6 +73,7 @@ export class VisualBoxTarget<T = any> {
   initPropsOptions(): VisualBoxRenderOption[] {
     const results: VisualBoxRenderOption[] = []
     this.propsOptions.forEach((option) => {
+      option.order = option.order || this.orderCount++
       // @ts-ignore
       option.value = this.target.props[option.property]
       const group = results.find((r) => r.groupName === option.groupName)
