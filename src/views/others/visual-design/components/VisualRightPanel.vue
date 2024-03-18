@@ -17,7 +17,7 @@
             <template v-else>
               <div v-for="(item, index) in activeVisualBox.renderBasicOptions" :key="index">
                 <el-divider>{{ item.groupName }}</el-divider>
-                <VisualControlsRender :options="item.options" @change="updateVisualBoxOption" />
+                <VisualControlsRender :key="getKey(index)" :options="item.options" @change="updateVisualBoxOption" />
               </div>
             </template>
           </div>
@@ -39,7 +39,7 @@
             <template v-else>
               <div v-for="(item, index) in activeVisualBox.renderCustomOptions" :key="index">
                 <el-divider>{{ item.groupName }}</el-divider>
-                <VisualControlsRender :options="item.options" @change="updateVisualBoxOption" />
+                <VisualControlsRender :key="getKey(index)" :options="item.options" @change="updateVisualBoxOption" />
               </div>
             </template>
           </div>
@@ -59,9 +59,9 @@
               <el-empty description="暂无配置信息" />
             </template>
             <template v-else>
-              <div v-for="item in activeVisualBox.renderPropsOptions" :key="item.groupId">
+              <div v-for="(item, index) in activeVisualBox.renderPropsOptions" :key="item.groupId">
                 <el-divider>{{ item.groupName }}</el-divider>
-                <VisualControlsRender :options="item.options" @change="updateVisualBoxProps" />
+                <VisualControlsRender :key="getKey(index)" :options="item.options" @change="updateVisualBoxProps" />
               </div>
             </template>
           </div>
@@ -86,6 +86,10 @@ const isActive = computed<boolean>(() => {
   if (!activeVisualBox.value) return false
   return !!getVisualBoxByKey(activeVisualBox.value.target.visualBoxKey)
 })
+
+const getKey = (index: number) => {
+  return `${activeVisualBox.value?.target.visualBoxKey}_${index}`
+}
 </script>
 
 <style scoped lang="scss">

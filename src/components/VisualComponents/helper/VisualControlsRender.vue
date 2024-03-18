@@ -1,6 +1,6 @@
 <template>
   <el-form class="p-2" label-position="left" label-width="100px" size="small">
-    <el-form-item v-for="item in props.options" :key="getKey(item)" :label="item.label" :required="item.required">
+    <el-form-item v-for="item in props.options" :key="item.property" :label="item.label" :required="item.required">
       <template v-if="item.formType === 'input'">
         <el-input v-model="item.value" clearable :disabled="item.disabled" @blur="handleChange" />
       </template>
@@ -34,11 +34,11 @@
       <template v-if="item.formType === 'switch'">
         <div class="w-full text-right">
           <el-switch
-            v-model.number="item.value"
+            v-model="item.value"
             :active-value="item.trueValue"
             :disabled="item.disabled"
             :inactive-value="item.falseValue"
-            @change="handleChange"
+            @change="handleSwitchChange(item)"
           />
         </div>
       </template>
@@ -74,8 +74,13 @@ const handleChange = async () => {
   emit('change')
 }
 
-const getKey = (option: VisualBoxOption) => {
-  return option.property + Date.now().toString()
+const switchProperties = ref<string[]>([])
+const handleSwitchChange = (item: VisualBoxOption) => {
+  if (switchProperties.value.includes(item.property)) {
+    emit('change')
+  } else {
+    switchProperties.value.push(item.property)
+  }
 }
 
 const predefineColors = ref([

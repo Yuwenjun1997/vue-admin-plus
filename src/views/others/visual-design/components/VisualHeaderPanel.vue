@@ -2,12 +2,12 @@
   <div class="VisualHeaderPanel h-full">
     <div class="flex-1 flex items-center">
       <el-tooltip content="撤销" effect="dark">
-        <div class="visual-tools__control" :class="{ disabled: !canUndo }" @click.stop="undo">
+        <div class="visual-tools__control" :class="{ disabled: !canUndo }" @click.stop="handleUndo">
           <Icon icon="ion:ios-undo" />
         </div>
       </el-tooltip>
       <el-tooltip content="重做" effect="dark">
-        <div class="visual-tools__control" :class="{ disabled: !canRedo }" @click.stop="redo">
+        <div class="visual-tools__control" :class="{ disabled: !canRedo }" @click.stop="handleRedo">
           <Icon icon="ion:ios-redo" />
         </div>
       </el-tooltip>
@@ -96,10 +96,25 @@ import { storeToRefs } from 'pinia'
 import { useVisualUtils } from '@/hooks/useVisualUtils'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen, visualBoxTemplates } = storeToRefs(visualBoxStore)
+const { isFullscreen, visualBoxTemplates, activeVisualBox } = storeToRefs(visualBoxStore)
 const toggleFullscreen = useToggle(isFullscreen)
 
-const { undo, redo, canRedo, canUndo } = useRefHistory(visualBoxTemplates, { deep: false, clone: true })
+const { undo, redo, canRedo, canUndo, history, source } = useRefHistory(visualBoxTemplates)
+
+const handleUndo = () => {
+  activeVisualBox.value = null
+  undo()
+}
+
+const handleRedo = () => {
+  activeVisualBox.value = null
+  redo()
+}
+
+watchEffect(() => {
+  console.log(visualBoxTemplates.value === source.value)
+  console.log(history.value)
+})
 
 const {
   jsonCodeModalType,

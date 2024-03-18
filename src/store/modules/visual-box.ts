@@ -47,7 +47,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 重新刷新列表
     initVisualBoxTemplates(source: VisualBasic[]) {
-      this.activeVisualBox = null
       todoHanlder(source, (source, flatList) => {
         this.visualBoxTemplates = source
         this.flatVisualBoxTemplates = flatList

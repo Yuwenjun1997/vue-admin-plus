@@ -61,7 +61,4 @@ declare module 'vue' {
     VisualGrid: typeof import('./components/VisualComponents/basics/VisualGrid.vue')['default']
     VisualText: typeof import('./components/VisualComponents/basics/VisualText.vue')['default']
   }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
-  }
 }
