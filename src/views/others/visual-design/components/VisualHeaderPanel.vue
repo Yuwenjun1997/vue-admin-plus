@@ -97,24 +97,22 @@ import { useVisualUtils } from '@/hooks/useVisualUtils'
 
 const visualBoxStore = useVisualBoxStore()
 const { isFullscreen, visualBoxTemplates, activeVisualBox } = storeToRefs(visualBoxStore)
+const { flatVisualBox } = visualBoxStore
 const toggleFullscreen = useToggle(isFullscreen)
 
-const { undo, redo, canRedo, canUndo, history, source } = useRefHistory(visualBoxTemplates)
+const { undo, redo, canRedo, canUndo } = useRefHistory(visualBoxTemplates, { deep: true })
 
 const handleUndo = () => {
-  activeVisualBox.value = null
   undo()
+  activeVisualBox.value = null
+  flatVisualBox()
 }
 
 const handleRedo = () => {
-  activeVisualBox.value = null
   redo()
+  activeVisualBox.value = null
+  flatVisualBox()
 }
-
-watchEffect(() => {
-  console.log(visualBoxTemplates.value === source.value)
-  console.log(history.value)
-})
 
 const {
   jsonCodeModalType,

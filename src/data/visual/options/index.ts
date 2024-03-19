@@ -20,7 +20,7 @@ export const basicOptions: VisualBoxOption[] = [
   },
   {
     groupName: '基础属性',
-    target: 'customStyle',
+    target: 'layoutStyle',
     label: '宽度',
     property: 'width',
     formType: 'cssInput',
@@ -65,7 +65,8 @@ export const basicOptions: VisualBoxOption[] = [
     label: '启用透明度',
     property: 'opacity',
     trueValue: 'var(--visual-opacity-number,1)',
-    falseValue: '1',
+    falseValue: 'unset',
+    value: 'unset',
   },
   {
     groupName: '基础属性',
@@ -140,6 +141,7 @@ export const basicOptions: VisualBoxOption[] = [
     property: 'fontStyle',
     trueValue: 'italic',
     falseValue: 'normal',
+    value: 'normal',
   },
   {
     groupName: '字体',
@@ -160,6 +162,7 @@ export const basicOptions: VisualBoxOption[] = [
     property: 'textShadow',
     trueValue: TEXT_SHADOW_VALUE,
     falseValue: 'none',
+    value: 'none',
   },
   {
     groupName: '字体阴影',
@@ -333,6 +336,7 @@ export const basicOptions: VisualBoxOption[] = [
     property: 'boxShadow',
     trueValue: BOX_SHADOW_VALUE,
     falseValue: 'none',
+    value: 'none',
   },
   {
     groupName: '阴影',
@@ -369,7 +373,8 @@ export const basicOptions: VisualBoxOption[] = [
     label: '内阴影',
     property: '--visual-box-shadow-inset',
     trueValue: 'inset',
-    falseValue: '',
+    falseValue: 'unset',
+    value: 'unset',
   },
   {
     groupName: 'flex布局子元素',
@@ -415,3 +420,16 @@ export const basicOptions: VisualBoxOption[] = [
     ],
   },
 ]
+
+// export const basicOptions: VisualBoxOption[] = [
+//   {
+//     groupName: '基础属性',
+//     target: 'layoutStyle',
+//     formType: 'switch',
+//     label: '启用透明度',
+//     property: 'opacity',
+//     trueValue: 'var(--visual-opacity-number,1)',
+//     falseValue: 'unset',
+//     value: 'unset',
+//   },
+// ]

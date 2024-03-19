@@ -32,13 +32,13 @@ export class VisualBoxTarget<T = any> {
     options.forEach((option) => {
       option.order = option.order || this.orderCount++
       if (option.target === 'root') {
-        option.value = this.target[option.property as keyof VisualBasic]
+        option.value = this.target[option.property as keyof VisualBasic] || option.value
       }
       if (option.target === 'customStyle' && this.target.customStyle) {
-        option.value = this.target.customStyle[option.property as keyof CSSProperties]
+        option.value = this.target.customStyle[option.property as keyof CSSProperties] || option.value
       }
       if (option.target === 'layoutStyle' && this.target.layoutStyle) {
-        option.value = this.target.layoutStyle[option.property as keyof CSSProperties]
+        option.value = this.target.layoutStyle[option.property as keyof CSSProperties] || option.value
       }
       const group = results.find((r) => r.groupName === option.groupName)
       if (group) {
@@ -47,6 +47,7 @@ export class VisualBoxTarget<T = any> {
         results.push({ groupName: option.groupName, options: [option], groupId: uuidv4() })
       }
     })
+    console.log(results)
     return results
   }
 
@@ -75,7 +76,7 @@ export class VisualBoxTarget<T = any> {
     this.propsOptions.forEach((option) => {
       option.order = option.order || this.orderCount++
       // @ts-ignore
-      option.value = this.target.props[option.property]
+      option.value = this.target.props[option.property] || option.value
       const group = results.find((r) => r.groupName === option.groupName)
       if (group) {
         group.options.push(option)

@@ -1,6 +1,11 @@
 <template>
   <el-form class="p-2" label-position="left" label-width="100px" size="small">
-    <el-form-item v-for="item in props.options" :key="item.property" :label="item.label" :required="item.required">
+    <el-form-item
+      v-for="item in props.options"
+      :key="item.property + Math.random()"
+      :label="item.label"
+      :required="item.required"
+    >
       <template v-if="item.formType === 'input'">
         <el-input v-model="item.value" clearable :disabled="item.disabled" @blur="handleChange" />
       </template>
@@ -38,7 +43,7 @@
             :active-value="item.trueValue"
             :disabled="item.disabled"
             :inactive-value="item.falseValue"
-            @change="handleSwitchChange(item)"
+            @change="handleSwitchChange"
           />
         </div>
       </template>
@@ -74,13 +79,8 @@ const handleChange = async () => {
   emit('change')
 }
 
-const switchProperties = ref<string[]>([])
-const handleSwitchChange = (item: VisualBoxOption) => {
-  if (switchProperties.value.includes(item.property)) {
-    emit('change')
-  } else {
-    switchProperties.value.push(item.property)
-  }
+const handleSwitchChange = () => {
+  emit('change')
 }
 
 const predefineColors = ref([
