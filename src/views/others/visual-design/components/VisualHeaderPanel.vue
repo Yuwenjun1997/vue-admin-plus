@@ -89,6 +89,11 @@
           <VadCodeEditor v-model="vue3Code" mode="vue" :readonly="true" :user-worker="false" />
         </el-tab-pane>
       </el-tabs>
+
+      <template #footer>
+        <el-button type="primary" @click="handleCopyCode">复制代码</el-button>
+        <el-button type="primary" @click="handleSaveAsFile">另存为文件</el-button>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -138,6 +143,8 @@ const {
   handleImportJson,
   handleSaveJsonAsFile,
   handleShowCodeExportModal,
+  handleCopyCode,
+  handleSaveAsFile,
 } = useVisualUtils()
 </script>
 

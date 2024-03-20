@@ -27,7 +27,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { getVisualBoxByKey, reFlatTemplates } = useVisualBoxStore()
+const { getVisualBoxByKey, flatVisualBox } = useVisualBoxStore()
 
 const genVisualBox = (): VisualBasic => ({
   visualBoxKey: uuidv4(),
@@ -91,7 +91,7 @@ watchEffect(() => {
         item.children.push(genVisualBox())
       }
     }
-    reFlatTemplates()
+    flatVisualBox()
   }
 })
 </script>

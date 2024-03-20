@@ -63,7 +63,7 @@ export function useVisualUtils() {
   }
   const handleSaveJsonAsFile = () => {
     const blob = new Blob([jsonCode.value], { type: 'text/plain;charset=utf-8' })
-    saveAs(blob, 'visual-box.json')
+    saveAs(blob, `visual-box-${Date.now()}.json`)
   }
 
   const showCodeExportModal = ref<boolean>(false)
@@ -72,6 +72,20 @@ export function useVisualUtils() {
   const cssCode = ref<string>('')
   const vue2Code = ref<string>('')
   const vue3Code = ref<string>('')
+  const showCode = computed(() => {
+    let code = ''
+    if (activeCodeExportTab.value === 'html') code = htmlCode.value
+    if (activeCodeExportTab.value === 'css') code = cssCode.value
+    if (activeCodeExportTab.value === 'vue2') code = vue2Code.value
+    if (activeCodeExportTab.value === 'vue3') code = vue3Code.value
+    return code
+  })
+  const ext = computed(() => {
+    if (activeCodeExportTab.value === 'html') return 'html'
+    if (activeCodeExportTab.value === 'css') return 'css'
+    if (activeCodeExportTab.value === 'vue2') return 'vue'
+    if (activeCodeExportTab.value === 'vue3') return 'vue'
+  })
   const handleShowCodeExportModal = () => {
     const root = document.querySelector('#root')
 
@@ -85,6 +99,16 @@ export function useVisualUtils() {
       vue3Code.value = vue3
     }
     showCodeExportModal.value = true
+  }
+
+  const handleCopyCode = () => {
+    copyJsonCode(showCode.value).then(() => {
+      ElMessage.success('复制成功')
+    })
+  }
+  const handleSaveAsFile = () => {
+    const blob = new Blob([showCode.value], { type: 'text/plain;charset=utf-8' })
+    saveAs(blob, `visual-box-${Date.now()}.${ext.value}`)
   }
 
   return {
@@ -105,5 +129,7 @@ export function useVisualUtils() {
     handleImportJson,
     handleSaveJsonAsFile,
     handleShowCodeExportModal,
+    handleCopyCode,
+    handleSaveAsFile,
   }
 }

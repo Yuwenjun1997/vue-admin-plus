@@ -47,7 +47,6 @@ export class VisualBoxTarget<T = any> {
         results.push({ groupName: option.groupName, options: [option], groupId: uuidv4() })
       }
     })
-    console.log(results)
     return results
   }
 

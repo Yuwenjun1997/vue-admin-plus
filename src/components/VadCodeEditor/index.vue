@@ -91,9 +91,3 @@ onMounted(() => {
   })
 })
 </script>
-
-<style lang="scss" scoped>
-.ace-editor {
-  min-height: 300px;
-}
-</style>
