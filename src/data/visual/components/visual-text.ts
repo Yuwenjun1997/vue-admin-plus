@@ -10,8 +10,6 @@ export const visualText: VisualBasic<VisualTextProps> = {
   visualBoxGroup: 'basic',
   visualBoxName: '文本',
   visualBoxIcon: 'bi:file-earmark-font',
-  showTools: true,
-  isDraggable: true,
   isDeletable: true,
   isEditable: true,
   disabled: true,

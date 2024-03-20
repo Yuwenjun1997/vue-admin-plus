@@ -11,12 +11,23 @@
           <Icon icon="ion:ios-redo" />
         </div>
       </el-tooltip>
+      <el-radio-group v-model="device" class="ml-2" size="small" @change="handleDeviceChange">
+        <el-radio-button label="PC" value="pc" />
+        <el-radio-button label="Pad" value="pad" />
+        <el-radio-button label="H5" value="h5" />
+      </el-radio-group>
     </div>
     <div class="flex items-center">
       <el-tooltip content="清空画布" effect="dark">
-        <div class="visual-tools__control" @click.stop="handleClear()">
+        <div class="visual-tools__control" @click.stop="handleClearScreen">
           <Icon icon="ep:delete" />
           <span>清空</span>
+        </div>
+      </el-tooltip>
+      <el-tooltip content="预览" effect="dark">
+        <div class="visual-tools__control" @click.stop="handlePreview">
+          <Icon icon="ep:view" />
+          <span>预览</span>
         </div>
       </el-tooltip>
       <el-tooltip content="导入JSON配置" effect="dark">
@@ -95,6 +106,28 @@
         <el-button type="primary" @click="handleSaveAsFile">另存为文件</el-button>
       </template>
     </el-dialog>
+
+    <el-dialog
+      v-model="previewModal"
+      align-center
+      append-to-body
+      center
+      destroy-on-close
+      draggable
+      fullscreen
+      title="预览"
+    >
+      <template #header>
+        <el-radio-group v-model="device" size="small" @change="handleDeviceChange">
+          <el-radio-button label="PC" value="pc" />
+          <el-radio-button label="Pad" value="pad" />
+          <el-radio-button label="H5" value="h5" />
+        </el-radio-group>
+      </template>
+      <div v-loading="isIframeLoading" class="iframe-container">
+        <iframe ref="previewFrame" height="100%" :width="iframeWidth" />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -105,10 +138,11 @@ import { Icon } from '@iconify/vue'
 import { useRefHistory, useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useVisualUtils } from '@/hooks/useVisualUtils'
+import { genPreviewHtml } from '@/utils/visual-box/code-generator'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen, visualBoxTemplates, activeVisualBox } = storeToRefs(visualBoxStore)
-const { flatVisualBox } = visualBoxStore
+const { isFullscreen, visualBoxTemplates, activeVisualBox, device } = storeToRefs(visualBoxStore)
+const { flatVisualBox, setDevice } = visualBoxStore
 const toggleFullscreen = useToggle(isFullscreen)
 
 const { undo, redo, canRedo, canUndo } = useRefHistory(visualBoxTemplates, { deep: true })
@@ -123,6 +157,36 @@ const handleRedo = () => {
   redo()
   activeVisualBox.value = null
   flatVisualBox()
+}
+
+const handleClearScreen = () => {
+  handleClear()
+}
+
+const handleDeviceChange = (name: string | number | boolean | undefined) => {
+  setDevice(name as string)
+}
+
+const previewFrame = ref<HTMLIFrameElement | null>(null)
+const previewModal = ref<boolean>(false)
+const isIframeLoading = ref<boolean>(true)
+const iframeWidth = computed(() => {
+  if (device.value === 'pc') return '100%'
+  if (device.value === 'pad') return '768px'
+  if (device.value === 'h5') return '390px'
+})
+const handlePreview = async () => {
+  const root = document.querySelector('#root')
+  if (!root) return
+  previewModal.value = true
+  isIframeLoading.value = true
+  await nextTick()
+  const html = genPreviewHtml(root.innerHTML).html
+  if (!previewFrame.value) return
+  previewFrame.value.srcdoc = html
+  previewFrame.value.onload = () => {
+    isIframeLoading.value = false
+  }
 }
 
 const {
@@ -178,6 +242,16 @@ const {
       margin-left: 4px;
       font-size: var(--el-font-size-extra-small);
     }
+  }
+}
+
+.iframe-container {
+  width: 100%;
+  height: calc(100vh - var(--el-dialog-padding-primary) - var(--el-dialog-padding-primary) - 50px);
+
+  iframe {
+    margin: 0 auto;
+    border: 1px solid var(--el-border-color);
   }
 }
 </style>

@@ -2,7 +2,7 @@
   <div
     :key="props.template.visualBoxKey"
     class="visual-box"
-    :class="{ active: isActive, 'visual-box-ignore': isLocked || isRoot }"
+    :class="{ active: isActive, 'visual-box-ignore': isLocked || isRoot, 'is-root': isRoot }"
     :data-visual-box-key="props.template.visualBoxKey"
     :style="props.template.layoutStyle"
     :title="props.template.visualBoxName"
@@ -101,6 +101,17 @@ onMounted(() => {
   position: relative;
   cursor: move;
   user-select: none;
+
+  &.is-root {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    & > .visual-box__wrap {
+      flex: 1;
+    }
+  }
 
   &-ignore {
     cursor: pointer;

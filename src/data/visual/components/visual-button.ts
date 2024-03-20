@@ -16,8 +16,6 @@ export const visualButton: VisualBasic<VisualButtonProps> = {
   visualBoxGroup: 'basic',
   visualBoxName: '按钮',
   visualBoxIcon: 'ep:switch-button',
-  showTools: true,
-  isDraggable: true,
   isDeletable: true,
   isEditable: true,
   disabled: true,

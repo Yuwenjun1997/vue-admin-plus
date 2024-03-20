@@ -8,8 +8,6 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
   visualBoxGroup: 'container',
   visualBoxName: '弹性盒子',
   visualBoxIcon: 'bi:grid-1x2',
-  showTools: true,
-  isDraggable: true,
   isDeletable: true,
   isEditable: true,
   disabled: false,

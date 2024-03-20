@@ -120,3 +120,26 @@ export function genVue(htmlStr: string) {
           `,
   }
 }
+
+export function genPreviewHtml(htmlStr: string) {
+  CLASS_NAME_INDEX = 0
+  styleSheetMap.clear()
+  const rootNode: Parse5Node = parse5.parseFragment(htmlStr, {}) as unknown as Parse5Node
+  traverseAST(rootNode)
+  return {
+    html: `
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css">
+              <style>body{margin: 0;}</style>
+              <style>${genCssSheet()}</style>
+            </head>
+            <body>
+              ${parse5.serialize(rootNode as any)}
+            </body>
+          </html>
+          `,
+    css: genCssSheet(),
+  }
+}

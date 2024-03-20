@@ -7,6 +7,7 @@ import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
 
 interface VisualBoxState {
+  device: string
   isFullscreen: boolean
   visualBoxTemplates: VisualBasic[]
   flatVisualBoxTemplates: VisualBasic[]
@@ -16,6 +17,7 @@ interface VisualBoxState {
 
 export const useVisualBoxStore = defineStore('visualBox', {
   state: (): VisualBoxState => ({
+    device: 'pc',
     isFullscreen: false,
     visualBoxTemplates: [],
     flatVisualBoxTemplates: [],
@@ -28,6 +30,10 @@ export const useVisualBoxStore = defineStore('visualBox', {
     setup() {
       this.initVisualComponents(visualComponentGroups)
       this.initVisualBoxTemplates(templates)
+    },
+
+    setDevice(name: string) {
+      this.device = name
     },
 
     // 重新刷新列表
@@ -58,10 +64,12 @@ export const useVisualBoxStore = defineStore('visualBox', {
     // 清空
     clearAllVisualBox() {
       this.initVisualBoxTemplates(templates)
+      this.setDevice(this.device)
     },
 
     // 选中
     toggleActive(template: VisualBasic) {
+      if (!template.isEditable) return
       if (template.visualBoxKey === this.activeVisualBox?.visualBoxKey) return
       this.activeVisualBox = new VisualBoxTarget(template, basicOptions)
     },

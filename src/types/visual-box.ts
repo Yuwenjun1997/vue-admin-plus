@@ -13,12 +13,9 @@ export interface VisualBasic<T = any> {
   visualBoxName?: string
   visualBoxCover?: string
   visualBoxIcon?: string
-  showTools?: boolean
-  isDraggable?: boolean
   isDeletable?: boolean
   isEditable?: boolean
   isRoot?: boolean
-  isActive?: boolean
   isLocked?: boolean
   disabled?: boolean
   style?: CSSProperties // 不可修改的样式
