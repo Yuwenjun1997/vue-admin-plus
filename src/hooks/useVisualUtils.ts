@@ -1,8 +1,9 @@
+import { isArray } from 'lodash'
+import { saveAs } from 'file-saver'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { useClipboard } from '@vueuse/core'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { isArray } from 'lodash'
-import { saveAs } from 'file-saver'
+import { genHtml, genVue } from '@/utils/visual-box/code-generator'
 
 export function useVisualUtils() {
   const visualBoxStore = useVisualBoxStore()
@@ -68,11 +69,21 @@ export function useVisualUtils() {
   const showCodeExportModal = ref<boolean>(false)
   const activeCodeExportTab = ref<string>('html')
   const htmlCode = ref<string>('')
-  const vueCode = ref<string>('')
+  const cssCode = ref<string>('')
+  const vue2Code = ref<string>('')
+  const vue3Code = ref<string>('')
   const handleShowCodeExportModal = () => {
-    // 后期需要更换
-    htmlCode.value = '<div>导出的html</div>'
-    vueCode.value = '<div>导出的vue</div>'
+    const root = document.querySelector('#root')
+
+    if (root) {
+      const { html, css } = genHtml(root.innerHTML)
+      const { vue2, vue3 } = genVue(root.innerHTML)
+      // 后期需要更换
+      htmlCode.value = html
+      cssCode.value = css
+      vue2Code.value = vue2
+      vue3Code.value = vue3
+    }
     showCodeExportModal.value = true
   }
 
@@ -84,7 +95,9 @@ export function useVisualUtils() {
     showCodeExportModal,
     activeCodeExportTab,
     htmlCode,
-    vueCode,
+    cssCode,
+    vue2Code,
+    vue3Code,
     handleClear,
     handleShowJsonExportModal,
     handleShowJsonImportModal,

@@ -9,6 +9,7 @@
     @click.stop="handleClick"
   >
     <div
+      :id="props.template.visualBoxKey"
       ref="visualBoxWrap"
       class="visual-box__wrap"
       :class="classList"

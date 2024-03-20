@@ -79,8 +79,14 @@
         <el-tab-pane label="html" name="html">
           <VadCodeEditor v-model="htmlCode" mode="html" :readonly="true" :user-worker="false" />
         </el-tab-pane>
-        <el-tab-pane label="vue">
-          <VadCodeEditor v-model="vueCode" mode="vue" :readonly="true" :user-worker="false" />
+        <el-tab-pane label="css" name="css">
+          <VadCodeEditor v-model="cssCode" mode="css" :readonly="true" :user-worker="false" />
+        </el-tab-pane>
+        <el-tab-pane label="vue2" name="vue2">
+          <VadCodeEditor v-model="vue2Code" mode="vue" :readonly="true" :user-worker="false" />
+        </el-tab-pane>
+        <el-tab-pane label="vue3" name="vue3">
+          <VadCodeEditor v-model="vue3Code" mode="vue" :readonly="true" :user-worker="false" />
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
@@ -122,7 +128,9 @@ const {
   showCodeExportModal,
   activeCodeExportTab,
   htmlCode,
-  vueCode,
+  cssCode,
+  vue2Code,
+  vue3Code,
   handleClear,
   handleShowJsonExportModal,
   handleShowJsonImportModal,

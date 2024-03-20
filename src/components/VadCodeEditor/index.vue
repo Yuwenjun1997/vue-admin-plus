@@ -8,12 +8,14 @@
 <script lang="ts" setup name="VadCodeEditor">
 import ace from 'ace-builds'
 
+import 'ace-builds/src-min-noconflict/ext-beautify'
 import 'ace-builds/src-min-noconflict/theme-github' // 默认设置的主题
 import 'ace-builds/src-min-noconflict/theme-github_dark' // 默认设置的主题
 import 'ace-builds/src-min-noconflict/mode-javascript' // 默认设置的语言模式
 import 'ace-builds/src-min-noconflict/mode-json' //
 import 'ace-builds/src-min-noconflict/mode-css' //
 import 'ace-builds/src-min-noconflict/mode-html' //
+import 'ace-builds/src-min-noconflict/mode-vue' //
 import 'ace-builds/src-min-noconflict/ext-language_tools'
 import { useDark } from '@vueuse/core'
 
@@ -50,7 +52,7 @@ onMounted(() => {
   if (!aceDom.value) return
   aceEditor.value = ace.edit(aceDom.value, {
     maxLines: 40, // 最大行数，超过会自动出现滚动条
-    minLines: 5, // 最小行数，还未到最大行数时，编辑器会自动伸缩大小
+    minLines: 40, // 最小行数，还未到最大行数时，编辑器会自动伸缩大小
     fontSize: 12, // 编辑器内字体大小
     theme: themePath.value, // 默认设置的主题
     mode: modePath.value, // 默认设置的语言模式
@@ -72,11 +74,15 @@ onMounted(() => {
     aceEditor.value.getSession().setMode('ace/mode/css')
   } else if (props.mode === 'html') {
     aceEditor.value.getSession().setMode('ace/mode/html')
+  } else if (props.mode === 'vue') {
+    aceEditor.value.getSession().setMode('ace/mode/vue')
   }
 
   if (!props.userWorker) {
     aceEditor.value.getSession().setUseWorker(false)
   }
+
+  ace.require('ace/ext/beautify').beautify(aceEditor.value.session)
 
   //编辑时同步数据
   aceEditor.value.getSession().on('change', () => {
