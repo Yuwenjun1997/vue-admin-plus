@@ -9,7 +9,6 @@
     @click.stop="handleClick"
   >
     <div
-      :id="props.template.visualBoxKey"
       ref="visualBoxWrap"
       class="visual-box__wrap"
       :class="classList"
@@ -49,7 +48,7 @@ const disabled = computed(() => !!(isLocked.value || isDisabled.value))
 const classList = computed(() => {
   const layoutClassList = props.template.layoutClassList || []
   const customClassList = props.template.customClassList || []
-  return [...layoutClassList, ...customClassList]
+  return [...layoutClassList, ...customClassList, { 'visual-root-wrap': isRoot.value }]
 })
 
 const wrapStyles = computed(() => {

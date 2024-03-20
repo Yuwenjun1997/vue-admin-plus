@@ -138,7 +138,7 @@ import { Icon } from '@iconify/vue'
 import { useRefHistory, useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useVisualUtils } from '@/hooks/useVisualUtils'
-import { genPreviewHtml } from '@/utils/visual-box/code-generator'
+import { genPreviewHtml } from '@/plugins/visual-box'
 
 const visualBoxStore = useVisualBoxStore()
 const { isFullscreen, visualBoxTemplates, activeVisualBox, device } = storeToRefs(visualBoxStore)
@@ -167,6 +167,7 @@ const handleDeviceChange = (name: string | number | boolean | undefined) => {
   setDevice(name as string)
 }
 
+// 预览
 const previewFrame = ref<HTMLIFrameElement | null>(null)
 const previewModal = ref<boolean>(false)
 const isIframeLoading = ref<boolean>(true)
@@ -176,14 +177,11 @@ const iframeWidth = computed(() => {
   if (device.value === 'h5') return '390px'
 })
 const handlePreview = async () => {
-  const root = document.querySelector('#root')
-  if (!root) return
   previewModal.value = true
   isIframeLoading.value = true
   await nextTick()
-  const html = genPreviewHtml(root.innerHTML).html
   if (!previewFrame.value) return
-  previewFrame.value.srcdoc = html
+  previewFrame.value.srcdoc = genPreviewHtml()
   previewFrame.value.onload = () => {
     isIframeLoading.value = false
   }

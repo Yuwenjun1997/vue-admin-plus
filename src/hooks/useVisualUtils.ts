@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { useClipboard } from '@vueuse/core'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { genHtml, genVue } from '@/utils/visual-box/code-generator'
+import { genHtml, genVue } from '@/plugins/visual-box'
 
 export function useVisualUtils() {
   const visualBoxStore = useVisualBoxStore()
@@ -22,6 +22,7 @@ export function useVisualUtils() {
     }
   }
 
+  // 导入导出json
   const showJsonCodeModal = ref<boolean>(false)
   const jsonCodeModalTitle = ref<string>('导出Json')
   const jsonCode = ref<string>('')
@@ -66,6 +67,7 @@ export function useVisualUtils() {
     saveAs(blob, `visual-box-${Date.now()}.json`)
   }
 
+  // 导出代码
   const showCodeExportModal = ref<boolean>(false)
   const activeCodeExportTab = ref<string>('html')
   const htmlCode = ref<string>('')
@@ -87,17 +89,13 @@ export function useVisualUtils() {
     if (activeCodeExportTab.value === 'vue3') return 'vue'
   })
   const handleShowCodeExportModal = () => {
-    const root = document.querySelector('#root')
-
-    if (root) {
-      const { html, css } = genHtml(root.innerHTML)
-      const { vue2, vue3 } = genVue(root.innerHTML)
-      // 后期需要更换
-      htmlCode.value = html
-      cssCode.value = css
-      vue2Code.value = vue2
-      vue3Code.value = vue3
-    }
+    const { html, css } = genHtml()
+    const { vue2, vue3 } = genVue()
+    // 后期需要更换
+    htmlCode.value = html
+    cssCode.value = css
+    vue2Code.value = vue2
+    vue3Code.value = vue3
     showCodeExportModal.value = true
   }
 
