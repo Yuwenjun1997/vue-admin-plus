@@ -5,6 +5,7 @@ export function getPreviewTemplate(templateStr: string, styleSheet: string) {
     <head>
       <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css">
       <style>
+        *{box-sizing: border-box;}
         body{margin: 0;}
       </style>
       <style>${styleSheet}</style>

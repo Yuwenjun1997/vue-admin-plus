@@ -93,6 +93,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
       if (!parent) return
       parent.children = parent.children?.filter((i) => i.visualBoxKey !== template.visualBoxKey)
       this.activeVisualBox = null
+      this.flatVisualBox()
     },
 
     // 上移
@@ -147,6 +148,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
       addItem.visualBoxParentKey = toItem.visualBoxKey
       toItem.children = toItem.children || []
       toItem.children.splice(toIndex, 0, addItem)
+      this.flatVisualBox()
       this.toggleActive(addItem)
     },
 

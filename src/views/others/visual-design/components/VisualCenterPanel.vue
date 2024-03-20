@@ -18,11 +18,13 @@ const { visualBoxTemplates, device } = storeToRefs(visualBoxStore)
 
 <style scoped lang="scss">
 .VisualCenterPanel-wrap {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: var(--el-bg-color);
+  padding: 2px;
 
   &.pc {
     width: 100%;
@@ -39,9 +41,7 @@ const { visualBoxTemplates, device } = storeToRefs(visualBoxStore)
 
 .el-scrollbar {
   :deep(.el-scrollbar__view) {
-    margin: 2px;
     min-height: calc(100% - 4px);
-    // background-color: var(--el-bg-color);
     display: flex;
     flex-direction: column;
     align-items: center;

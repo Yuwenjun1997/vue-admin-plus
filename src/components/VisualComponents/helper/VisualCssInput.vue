@@ -1,6 +1,6 @@
 <template>
   <div class="VisualCssPxInput">
-    <el-input v-model.number="inputValue" type="number" @blur="handleInputBlur" />
+    <el-input v-model.number="inputValue" clearable type="number" @blur="handleInputBlur" />
     <el-select v-model="unit" style="width: 80px" @change="handleUnitChange">
       <el-option label="px" value="px" />
       <el-option label="vw" value="vw" />
@@ -37,9 +37,12 @@ const emit = defineEmits<{
 
 const unit = ref<string>('px')
 const sliderValue = ref<number>(0)
-const inputValue = ref<number>()
+const inputValue = ref<number | string>()
 
-const spliceValue = computed(() => (inputValue.value ? `${inputValue.value}${unit.value}` : ''))
+const spliceValue = computed(() => {
+  if (inputValue.value === '') return ''
+  return inputValue.value ? `${inputValue.value}${unit.value}` : ''
+})
 
 const handleSliderChange = () => {
   inputValue.value = sliderValue.value

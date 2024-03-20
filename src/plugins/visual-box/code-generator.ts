@@ -60,7 +60,7 @@ export function genHtml() {
   CLASS_NAME_INDEX = 0
   styleSheetMap.clear()
   const htmlStr = renderVisualBox()
-  const rootNode: Parse5Node = parse5.parseFragment(htmlStr, {}) as unknown as Parse5Node
+  const rootNode: Parse5Node = parse5.parseFragment(htmlStr) as unknown as Parse5Node
   traverseAST(rootNode)
   return {
     html: getHtmlTemplate(parse5.serialize(rootNode as any)),
@@ -72,7 +72,7 @@ export function genVue() {
   CLASS_NAME_INDEX = 0
   styleSheetMap.clear()
   const htmlStr = renderVisualBox()
-  const rootNode: Parse5Node = parse5.parseFragment(htmlStr, {}) as unknown as Parse5Node
+  const rootNode: Parse5Node = parse5.parseFragment(htmlStr) as unknown as Parse5Node
   traverseAST(rootNode)
   const templateStr = parse5.serialize(rootNode as any)
   const styleSheet = genCssSheet()
@@ -86,7 +86,7 @@ export function genPreviewHtml() {
   CLASS_NAME_INDEX = 0
   styleSheetMap.clear()
   const htmlStr = renderVisualBox()
-  const rootNode: Parse5Node = parse5.parseFragment(htmlStr, {}) as unknown as Parse5Node
+  const rootNode: Parse5Node = parse5.parseFragment(htmlStr) as unknown as Parse5Node
   traverseAST(rootNode)
   const templateStr = parse5.serialize(rootNode as any)
   const styleSheet = genCssSheet()

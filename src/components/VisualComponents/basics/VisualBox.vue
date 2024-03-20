@@ -114,6 +114,10 @@ onMounted(() => {
 
   &-ignore {
     cursor: pointer;
+
+    &.is-root{
+      cursor: default;
+    }
   }
 
   &::before {
