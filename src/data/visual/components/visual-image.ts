@@ -16,22 +16,15 @@ export const visualImage: VisualBasic<VisualImageProps> = {
   disabled: true,
   component: 'VisualImage',
   layoutStyle: {
-    width: '320px',
+    width: '300px',
   },
   customStyle: {
-    height: '240px',
+    height: '300px',
   },
   props: {
-    src: 'https://picsum.photos/320/240',
+    src: 'https://static-mp-c0f2ea90-b7eb-4763-9dcb-64820c2f7a60.next.bspapp.com/static/default-empty.png',
   },
-  propsOptions: [
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'input',
-      label: '图片的源地址',
-      property: 'src',
-    },
+  options: [
     {
       groupName: '基础信息',
       target: 'props',
@@ -46,6 +39,15 @@ export const visualImage: VisualBasic<VisualImageProps> = {
         { label: ' none', value: 'none' },
         { label: ' scale-down', value: 'scale-down' },
       ],
+    },
+  ],
+  propsOptions: [
+    {
+      groupName: '基础信息',
+      target: 'props',
+      formType: 'input',
+      label: '图片的源地址',
+      property: 'src',
     },
   ],
 }

@@ -14,12 +14,7 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
   style: {
     display: 'flex !important',
   },
-  customStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexWrap: 'nowrap',
-    flexDirection: 'row',
-  },
+  customStyle: {},
   options: [
     {
       groupName: '布局',

@@ -132,9 +132,12 @@ export const useVisualBoxStore = defineStore('visualBox', {
       const toItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === toKey)
       if (!moveItem || !fromItem || !toItem) return
       moveItem.visualBoxParentKey = toKey
-      if (fromItem.children) fromItem.children.splice(fromIndex, 1)
+      if (fromItem.children) {
+        fromItem.children = fromItem.children.filter((i) => i.visualBoxKey !== currentKey)
+      }
       toItem.children = toItem.children || []
       toItem.children.splice(toIndex, 0, moveItem)
+      this.flatVisualBox()
     },
 
     // 添加
@@ -143,22 +146,39 @@ export const useVisualBoxStore = defineStore('visualBox', {
       const toItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === toKey)
       if (!moveItem || !toItem) return
       const addItem = cloneDeep(moveItem)
-      this.flatVisualBoxTemplates.push(addItem)
-      addItem.visualBoxKey = uuidv4()
-      addItem.visualBoxParentKey = toItem.visualBoxKey
+      this.handleVisualBoxKey(addItem, toItem.visualBoxKey)
       toItem.children = toItem.children || []
       toItem.children.splice(toIndex, 0, addItem)
       this.flatVisualBox()
       this.toggleActive(addItem)
     },
 
-    // 更新propOptions
-    updateVisualBoxProps() {
-      if (!this.activeVisualBox) return
-      this.activeVisualBox.applyPropsOptions()
+    // 复制
+    copyVisualBox(currentKey?: string) {
+      if (!currentKey) currentKey = this.activeVisualBox?.target.visualBoxKey
+      if (!currentKey) return
+      const current = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === currentKey)
+      const parent = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === current?.visualBoxParentKey)
+      if (!current || !parent) return
+      if (!parent.children) return
+      const index = parent.children.findIndex((i) => i.visualBoxKey === currentKey)
+      const copyItem = cloneDeep(current)
+      this.handleVisualBoxKey(copyItem, parent.visualBoxKey)
+      parent.children.splice(index + 1, 0, copyItem)
+      this.flatVisualBox()
+      this.toggleActive(copyItem)
     },
 
-    // 更新基本信息
+    // 处理添加组件的key及其子组件key
+    handleVisualBoxKey(template: VisualBasic, parentKey: string) {
+      template.visualBoxKey = uuidv4()
+      template.visualBoxParentKey = parentKey
+      if (template.children && template.children.length > 0) {
+        template.children.forEach((i) => this.handleVisualBoxKey(i, template.visualBoxKey))
+      }
+    },
+
+    // 更新信息
     updateVisualBoxOption() {
       if (!this.activeVisualBox) return
       this.activeVisualBox.applyOptions()

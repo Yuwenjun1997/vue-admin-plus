@@ -8,5 +8,6 @@ export function renderVisualBox() {
   })
   setupVisual(app)
   app.mount(mountEl)
-  return mountEl.innerHTML
+  // 清除所有的注释
+  return mountEl.innerHTML.replace(/<!--[\s\S]*?-->/g, '')
 }

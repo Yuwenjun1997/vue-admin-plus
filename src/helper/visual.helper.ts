@@ -24,7 +24,7 @@ export class VisualBoxTarget<T = any> {
     this.propsOptions = this.target.propsOptions || []
     this.renderBasicOptions = this.initOptions(this.basicOptions)
     this.renderCustomOptions = this.initOptions(this.customOptions)
-    this.renderPropsOptions = this.initPropsOptions()
+    this.renderPropsOptions = this.initOptions(this.propsOptions)
   }
 
   initOptions(options: VisualBoxOption[]): VisualBoxRenderOption[] {
@@ -40,6 +40,10 @@ export class VisualBoxTarget<T = any> {
       if (option.target === 'layoutStyle' && this.target.layoutStyle) {
         option.value = this.target.layoutStyle[option.property as keyof CSSProperties] || option.value
       }
+      if (option.target === 'props' && this.target.props) {
+        // @ts-ignore
+        option.value = this.target.props[option.property] || option.value
+      }
       const group = results.find((r) => r.groupName === option.groupName)
       if (group) {
         group.options.push(option)
@@ -53,7 +57,7 @@ export class VisualBoxTarget<T = any> {
   applyOptions() {
     this.target.customStyle = {}
     this.target.layoutStyle = {}
-    const allOptions: VisualBoxOption[] = [...this.basicOptions, ...this.customOptions]
+    const allOptions: VisualBoxOption[] = [...this.basicOptions, ...this.customOptions, ...this.propsOptions]
     allOptions.forEach((option) => {
       if (option.target === 'customStyle') {
         // @ts-ignore
@@ -67,27 +71,6 @@ export class VisualBoxTarget<T = any> {
         // @ts-ignore
         this.target[option.property] = option.value
       }
-    })
-  }
-
-  initPropsOptions(): VisualBoxRenderOption[] {
-    const results: VisualBoxRenderOption[] = []
-    this.propsOptions.forEach((option) => {
-      option.order = option.order || this.orderCount++
-      // @ts-ignore
-      option.value = this.target.props[option.property] || option.value
-      const group = results.find((r) => r.groupName === option.groupName)
-      if (group) {
-        group.options.push(option)
-      } else {
-        results.push({ groupName: option.groupName, options: [option], groupId: uuidv4() })
-      }
-    })
-    return results
-  }
-
-  applyPropsOptions() {
-    this.propsOptions.forEach((option) => {
       if (option.target === 'props') {
         // @ts-ignore
         this.target.props[option.property] = option.value

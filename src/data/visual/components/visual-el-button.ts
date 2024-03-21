@@ -1,17 +1,7 @@
 import { VisualBasic } from '@/types/visual-box'
 import { v4 as uuidv4 } from 'uuid'
 
-export interface VisualButtonProps {
-  content: string
-  color: string
-  plain: boolean
-  text: boolean
-  link: boolean
-  round: boolean
-  circle: boolean
-}
-
-export const visualButton: VisualBasic<VisualButtonProps> = {
+export const visualElButton: VisualBasic = {
   visualBoxKey: uuidv4(),
   visualBoxGroup: 'basic',
   visualBoxName: '按钮',
@@ -19,24 +9,12 @@ export const visualButton: VisualBasic<VisualButtonProps> = {
   isDeletable: true,
   isEditable: true,
   disabled: true,
-  component: 'VisualButton',
+  component: 'el-button',
+  componentType: 'element',
   props: {
-    content: '按钮',
-    color: '#007DFF',
-    plain: false,
-    text: false,
-    link: false,
-    round: false,
-    circle: false,
+    color: '#409eff',
   },
-  propsOptions: [
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'input',
-      label: '按钮内容',
-      property: 'content',
-    },
+  options: [
     {
       groupName: '基础信息',
       target: 'props',
@@ -80,6 +58,31 @@ export const visualButton: VisualBasic<VisualButtonProps> = {
       property: 'circle',
     },
   ],
+  children: [
+    {
+      visualBoxKey: uuidv4(),
+      visualBoxName: '按钮内容',
+      isEditable: true,
+      isLocked: true,
+      disabled: true,
+      component: 'VisualText',
+      customStyle: {
+        color: '#ffffff',
+      },
+      props: {
+        content: '按钮',
+      },
+      propsOptions: [
+        {
+          groupName: '基础信息',
+          target: 'props',
+          formType: 'textarea',
+          label: '文本内容',
+          property: 'content',
+        },
+      ],
+    },
+  ],
 }
 
-export default visualButton
+export default visualElButton

@@ -2,7 +2,13 @@
   <div
     :key="props.template.visualBoxKey"
     class="visual-box"
-    :class="{ active: isActive, 'visual-box-ignore': isLocked || isRoot, 'is-root': isRoot }"
+    :class="{
+      active: isActive,
+      'visual-box-darggable': isDraggable,
+      'visual-box-locked': isLocked,
+      'visual-box-disabled': isDisabled,
+      'is-root': isRoot,
+    }"
     :data-visual-box-key="props.template.visualBoxKey"
     :style="props.template.layoutStyle"
     :title="props.template.visualBoxName"
@@ -42,6 +48,7 @@ const isActive = computed(() => {
 })
 const isDisabled = computed(() => props.template.disabled)
 const isLocked = computed(() => props.template.isLocked)
+const isDraggable = computed(() => !isRoot.value && !isLocked.value)
 
 const disabled = computed(() => !!(isLocked.value || isDisabled.value))
 
@@ -67,19 +74,23 @@ watchEffect(() => {
   sortableInstance.value?.option('disabled', disabled.value)
 })
 
+onBeforeUnmount(() => {
+  sortableInstance.value?.destroy()
+})
+
 onMounted(() => {
   if (!visualBoxWrap.value) return
   sortableInstance.value = new Sortable(visualBoxWrap.value, {
     group: 'shared',
     animation: 100,
     fallbackOnBody: true,
-    disabled: isDisabled.value,
-    draggable: '.visual-box',
+    disabled: disabled.value,
+    draggable: '.visual-box-darggable',
     chosenClass: 'visual-box-chosen',
     ghostClass: 'visual-box-ghost',
-    filter: '.visual-box-ignore',
+    dragClass: 'visual-box-drag',
 
-    onEnd: (evt: Sortable.SortableEvent) => {
+    onEnd: async (evt: Sortable.SortableEvent) => {
       const currentKey = evt.item.dataset.visualBoxKey || ''
       const fromKey = evt.from.dataset.visualBoxKey || ''
       const toKey = evt.to.dataset.visualBoxKey || ''
@@ -98,25 +109,26 @@ onMounted(() => {
   $outline-width: 2px;
   $min-size: 10px;
   position: relative;
-  cursor: move;
   user-select: none;
+  cursor: pointer;
+
+  &-darggable {
+    cursor: move !important;
+
+    * {
+      cursor: move !important;
+    }
+  }
 
   &.is-root {
     width: 100%;
     flex: 1;
     display: flex;
     flex-direction: column;
+    cursor: default;
 
     & > .visual-box__wrap {
       flex: 1;
-    }
-  }
-
-  &-ignore {
-    cursor: pointer;
-
-    &.is-root{
-      cursor: default;
     }
   }
 
@@ -150,10 +162,6 @@ onMounted(() => {
       position: absolute;
       inset: 0;
       background-color: var(--el-color-primary);
-    }
-
-    .visual-box__tools {
-      display: none;
     }
   }
 

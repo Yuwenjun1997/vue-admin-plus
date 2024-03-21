@@ -13,6 +13,7 @@ import { setupVxeTable } from './plugins/vxe-table'
 import { setupHighlight } from './plugins/highlight'
 import { setupVisual } from './components/VisualComponents/index'
 import { setupVueQuill } from './plugins/vue-quill'
+import { setupElementPlus } from './plugins/element-ui'
 
 async function bootstrap() {
   // 加载动画
@@ -25,6 +26,8 @@ async function bootstrap() {
   setupVisual(app)
 
   setupIconify()
+
+  setupElementPlus(app)
 
   setupVxeTable(app)
 

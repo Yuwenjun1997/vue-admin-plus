@@ -25,6 +25,11 @@
         <Icon :icon="!isLocked ? 'ep:unlock' : 'ep:lock'" />
       </div>
     </el-tooltip>
+    <el-tooltip content="复制" effect="dark" placement="left">
+      <div class="visual-tools__control" @click="handleCopy">
+        <Icon icon="bi:copy" />
+      </div>
+    </el-tooltip>
     <el-tooltip content="选择父级" effect="dark" placement="left">
       <div class="visual-tools__control" @click="handleCurrentParent">
         <Icon icon="ep:files" />
@@ -40,7 +45,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { storeToRefs } from 'pinia'
 
 const visualBoxStore = useVisualBoxStore()
-const { moveVisualBoxUp, moveVisualBoxDown, deleteVisualBox, toggleLockVisualBox, toggleActiveParent } = visualBoxStore
+const { moveVisualBoxUp, moveVisualBoxDown, deleteVisualBox, toggleLockVisualBox, toggleActiveParent, copyVisualBox } =
+  visualBoxStore
 const { activeVisualBox } = storeToRefs(visualBoxStore)
 
 const current = computed(() => activeVisualBox.value?.target)
@@ -61,6 +67,11 @@ const handleDown = () => {
 const toggleLock = () => {
   if (!current.value) return ElMessage.warning('当前未选中组件')
   toggleLockVisualBox()
+}
+
+const handleCopy = () => {
+  if (!current.value) return ElMessage.warning('当前未选中组件')
+  copyVisualBox()
 }
 
 const handleDelete = async () => {

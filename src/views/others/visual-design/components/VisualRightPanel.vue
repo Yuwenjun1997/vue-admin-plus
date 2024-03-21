@@ -61,7 +61,7 @@
             <template v-else>
               <div v-for="(item, index) in activeVisualBox.renderPropsOptions" :key="item.groupId">
                 <el-divider>{{ item.groupName }}</el-divider>
-                <VisualControlsRender :key="getKey(index)" :options="item.options" @change="updateVisualBoxProps" />
+                <VisualControlsRender :key="getKey(index)" :options="item.options" @change="updateVisualBoxOption" />
               </div>
             </template>
           </div>
@@ -79,7 +79,7 @@ import { storeToRefs } from 'pinia'
 const activeTab = ref<string>('BasicAttribute')
 
 const visualBoxStore = useVisualBoxStore()
-const { updateVisualBoxProps, updateVisualBoxOption, getVisualBoxByKey } = visualBoxStore
+const { updateVisualBoxOption, getVisualBoxByKey } = visualBoxStore
 const { activeVisualBox } = storeToRefs(visualBoxStore)
 
 const isActive = computed<boolean>(() => {

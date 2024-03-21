@@ -24,6 +24,7 @@ export interface VisualBasic<T = any> {
   customStyle?: CSSProperties // 自定义的样式
   customClassList?: string[]
   component?: string
+  componentType?: 'element' | 'visual'
   props?: T
   propsOptions?: VisualBoxOption[]
   options?: VisualBoxOption[]

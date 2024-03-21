@@ -62,8 +62,9 @@ declare module 'vue' {
     VisualButton: typeof import('./components/VisualComponents/basics/VisualButton.vue')['default']
     VisualControlsRender: typeof import('./components/VisualComponents/helper/VisualControlsRender.vue')['default']
     VisualCssInput: typeof import('./components/VisualComponents/helper/VisualCssInput.vue')['default']
+    VisualElement: typeof import('./components/VisualComponents/render/VisualElement.vue')['default']
+    VisualElment: typeof import('./components/VisualComponents/render/VisualElment.vue')['default']
     VisualImage: typeof import('./components/VisualComponents/basics/VisualImage.vue')['default']
-    VisualInput: typeof import('./components/VisualComponents/basics/VisualInput.vue')['default']
     VisualText: typeof import('./components/VisualComponents/basics/VisualText.vue')['default']
   }
   export interface ComponentCustomProperties {

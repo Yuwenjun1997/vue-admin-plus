@@ -4,6 +4,8 @@ export function getPreviewTemplate(templateStr: string, styleSheet: string) {
   <html lang="en">
     <head>
       <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css">
+      <script src="//unpkg.com/vue@3"></script>
+      <script src="//unpkg.com/element-plus"></script>
       <style>
         *{box-sizing: border-box;}
         body{margin: 0;}
@@ -12,7 +14,17 @@ export function getPreviewTemplate(templateStr: string, styleSheet: string) {
     </head>
 
     <body>
-      ${templateStr}
+      <div id="app">${templateStr}</div>
+      <script>
+        const App = {
+          setup(){
+            console.log(123);
+          }
+        };
+        const app = Vue.createApp(App);
+        app.use(ElementPlus);
+        app.mount("#app");
+      </script>
     </body>
   </html>
   `

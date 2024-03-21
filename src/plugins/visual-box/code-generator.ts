@@ -4,6 +4,7 @@ import { getHtmlTemplate } from './template/html-code'
 import { getVue2Template } from './template/vue2-code'
 import { getVue3Template } from './template/vue3-code'
 import { getPreviewTemplate } from './template/preview-code'
+import { isNumberStr } from '@/utils'
 
 interface Parse5Node {
   mode?: string
@@ -20,20 +21,23 @@ const FILTER_ATTR_NAMES = ['data-visual-box-key', 'style', 'id', 'title', 'dragg
 const CLASS_NAME_PREFIX = 'gen_'
 let CLASS_NAME_INDEX = 0
 
-const styleSheetMap = new Map()
+let styleSheetList: Record<string, string>[] = []
 
-const nodeList: Parse5Node[] = []
+let nodeList: Parse5Node[] = []
 
 function handleClassAndStyle(node: Parse5Node) {
   const style = node.attrs.find((attr) => attr.name === 'style')
   if (!style || !style.value) return
   style.value = style.value.replace(/(^|[\s;])\S+:\s*(normal|none|unset);/g, '')
   if (!style.value.trim()) return
-  const className = `${CLASS_NAME_PREFIX}${++CLASS_NAME_INDEX}`
+  const item = styleSheetList.find((item) => item.style === style.value)
+  const className = item ? item.className : `${CLASS_NAME_PREFIX}${++CLASS_NAME_INDEX}`
   const classAttr = node.attrs.find((attr) => attr.name === 'class')
-  styleSheetMap.set(className, style.value)
+  if (!item) {
+    styleSheetList.push({ className: className, style: style.value })
+  }
   if (classAttr) {
-    classAttr.value = `${classAttr.value} ${className}`
+    classAttr.value = `${classAttr.value} ${className}`.trim()
   } else {
     node.attrs.push({ name: 'class', value: className })
   }
@@ -44,6 +48,12 @@ function traverseAST(node: Parse5Node) {
   if (node.attrs) {
     handleClassAndStyle(node)
     node.attrs = node.attrs.filter((attr) => attr.value && !FILTER_ATTR_NAMES.includes(attr.name))
+    node.attrs = node.attrs.filter((attr) => attr.value !== 'false')
+    node.attrs.forEach((attr) => {
+      if (attr.value === 'true' || isNumberStr(attr.value)) {
+        attr.name = `:${attr.name}`
+      }
+    })
   }
   if (node.childNodes) {
     node.childNodes.forEach((childNode) => traverseAST(childNode))
@@ -51,14 +61,13 @@ function traverseAST(node: Parse5Node) {
 }
 
 function genCssSheet() {
-  return Array.from(styleSheetMap.keys())
-    .map((className) => `.${className} { \n ${styleSheetMap.get(className)} }`)
-    .join('')
+  return styleSheetList.map((item) => `.${item.className} { \n ${item.style} }`).join('')
 }
 
 export function genHtml() {
   CLASS_NAME_INDEX = 0
-  styleSheetMap.clear()
+  styleSheetList = []
+  nodeList = []
   const htmlStr = renderVisualBox()
   const rootNode: Parse5Node = parse5.parseFragment(htmlStr) as unknown as Parse5Node
   traverseAST(rootNode)
@@ -70,7 +79,8 @@ export function genHtml() {
 
 export function genVue() {
   CLASS_NAME_INDEX = 0
-  styleSheetMap.clear()
+  styleSheetList = []
+  nodeList = []
   const htmlStr = renderVisualBox()
   const rootNode: Parse5Node = parse5.parseFragment(htmlStr) as unknown as Parse5Node
   traverseAST(rootNode)
@@ -84,7 +94,8 @@ export function genVue() {
 
 export function genPreviewHtml() {
   CLASS_NAME_INDEX = 0
-  styleSheetMap.clear()
+  styleSheetList = []
+  nodeList = []
   const htmlStr = renderVisualBox()
   const rootNode: Parse5Node = parse5.parseFragment(htmlStr) as unknown as Parse5Node
   traverseAST(rootNode)

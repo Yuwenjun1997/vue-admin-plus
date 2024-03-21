@@ -1,7 +1,14 @@
 <template>
   <VisualBox :template="props.template">
     <template v-if="props.template.component">
-      <component :is="props.template.component" :template="props.template" />
+      <template v-if="props.template.componentType === 'element'">
+        <component :is="props.template.component" v-bind="props.template.props">
+          <template v-if="props.template.children && props.template.children.length">
+            <VisualBoxRender v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
+          </template>
+        </component>
+      </template>
+      <component :is="props.template.component" v-else :template="props.template" />
     </template>
     <template v-else-if="props.template.children && props.template.children.length">
       <VisualBoxRender v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
