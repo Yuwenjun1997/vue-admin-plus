@@ -141,7 +141,8 @@ import { useVisualUtils } from '@/hooks/useVisualUtils'
 import { genPreviewHtml } from '@/plugins/visual-box'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen, visualBoxTemplates, activeVisualBox, device } = storeToRefs(visualBoxStore)
+const { isFullscreen, visualBoxTemplates, activeVisualBox, device, flatVisualBoxTemplates } =
+  storeToRefs(visualBoxStore)
 const { flatVisualBox, setDevice } = visualBoxStore
 const toggleFullscreen = useToggle(isFullscreen)
 
@@ -181,7 +182,7 @@ const handlePreview = async () => {
   isIframeLoading.value = true
   await nextTick()
   if (!previewFrame.value) return
-  previewFrame.value.srcdoc = genPreviewHtml()
+  previewFrame.value.srcdoc = genPreviewHtml(flatVisualBoxTemplates.value)
   previewFrame.value.onload = () => {
     isIframeLoading.value = false
   }

@@ -44,6 +44,9 @@ export class VisualBoxTarget<T = any> {
         // @ts-ignore
         option.value = this.target.props[option.property] || option.value
       }
+      if (option.target === 'methods' && this.target.methods) {
+        option.value = this.target.methods[option.property] || option.value
+      }
       const group = results.find((r) => r.groupName === option.groupName)
       if (group) {
         group.options.push(option)
@@ -74,6 +77,10 @@ export class VisualBoxTarget<T = any> {
       if (option.target === 'props') {
         // @ts-ignore
         this.target.props[option.property] = option.value
+      }
+      if (option.target === 'methods') {
+        // @ts-ignore
+        this.target.methods[option.property] = option.value
       }
     })
   }

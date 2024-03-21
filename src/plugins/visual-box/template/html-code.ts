@@ -1,4 +1,4 @@
-export function getHtmlTemplate(templateStr: string) {
+export function getHtmlTemplate(templateStr: string, methodStr: string, methodNames: string[]) {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -12,9 +12,14 @@ export function getHtmlTemplate(templateStr: string) {
       <div id="app">${templateStr}</div>
       <script>
         const App = {
-          data() {
-            return {};
-          },
+          setup(){
+
+            ${methodStr}
+
+            return {
+              ${methodNames.join(',')}
+            }
+          }
         };
         const app = Vue.createApp(App);
         app.use(ElementPlus);

@@ -1,8 +1,8 @@
 <template>
-  <div :class="classList" :style="wrapStyles">
+  <div :class="classList" :data-visual-box-key="props.template.component ? '' : visualBoxKey" :style="wrapStyles">
     <!-- 渲染组件 -->
     <template v-if="props.template.component">
-      <VisualElement v-if="templateType === 'element'" :template="props.template" />
+      <VisualElement v-if="templateType === 'element'" :data-visual-box-key="visualBoxKey" :template="props.template" />
       <component :is="props.template.component" v-else :template="props.template" />
     </template>
     <!-- 渲染子元素 -->
@@ -32,4 +32,6 @@ const classList = computed(() => {
 const wrapStyles = computed(() => {
   return [props.template.style, props.template.layoutStyle, props.template.customStyle]
 })
+
+const visualBoxKey = computed(() => props.template.visualBoxKey)
 </script>

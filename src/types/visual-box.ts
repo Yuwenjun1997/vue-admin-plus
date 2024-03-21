@@ -6,6 +6,8 @@ export interface VisualBoxRenderOption {
   options: VisualBoxOption[]
 }
 
+export interface VisualBoxMethod extends Record<string, any> {}
+
 export interface VisualBasic<T = any> {
   visualBoxKey: string
   visualBoxParentKey?: string
@@ -29,6 +31,7 @@ export interface VisualBasic<T = any> {
   propsOptions?: VisualBoxOption[]
   options?: VisualBoxOption[]
   children?: VisualBasic[]
+  methods?: VisualBoxMethod
 }
 
 export interface VisualBoxOptionItem {
@@ -40,7 +43,7 @@ export interface VisualBoxOption {
   order?: number
   formType: string
   groupName: string
-  target: 'props' | 'root' | 'customStyle' | 'layoutStyle'
+  target: 'props' | 'root' | 'customStyle' | 'layoutStyle' | 'methods'
   label: string
   property: string
   value?: any

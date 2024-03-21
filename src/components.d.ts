@@ -7,7 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -34,7 +33,6 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
@@ -54,17 +52,15 @@ declare module 'vue' {
     VadIconPicker: typeof import('./components/VadIconPicker/index.vue')['default']
     VadIntersection: typeof import('./components/VadIntersection/index.vue')['default']
     VadPermission: typeof import('./components/VadPermission/index.vue')['default']
-    VisualAvatar: typeof import('./components/VisualComponents/basics/VisualAvatar.vue')['default']
     VisualBox: typeof import('./components/VisualComponents/basics/VisualBox.vue')['default']
     VisualBox2: typeof import('./components/VisualComponents/render/VisualBox2.vue')['default']
     VisualBox2Render: typeof import('./components/VisualComponents/render/VisualBox2Render.vue')['default']
     VisualBoxRender: typeof import('./components/VisualComponents/helper/VisualBoxRender.vue')['default']
-    VisualButton: typeof import('./components/VisualComponents/basics/VisualButton.vue')['default']
     VisualControlsRender: typeof import('./components/VisualComponents/helper/VisualControlsRender.vue')['default']
     VisualCssInput: typeof import('./components/VisualComponents/helper/VisualCssInput.vue')['default']
     VisualElement: typeof import('./components/VisualComponents/render/VisualElement.vue')['default']
-    VisualElment: typeof import('./components/VisualComponents/render/VisualElment.vue')['default']
     VisualImage: typeof import('./components/VisualComponents/basics/VisualImage.vue')['default']
+    VisualMethodInput: typeof import('./components/VisualComponents/helper/VisualMethodInput.vue')['default']
     VisualText: typeof import('./components/VisualComponents/basics/VisualText.vue')['default']
   }
   export interface ComponentCustomProperties {

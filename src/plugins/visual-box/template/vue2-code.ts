@@ -1,4 +1,4 @@
-export function getVue2Template(templateStr: string, styleSheet: string) {
+export function getVue2Template(templateStr: string, styleSheet: string, methodStr: string) {
   return `
   <template>
     <div>
@@ -18,7 +18,9 @@ export function getVue2Template(templateStr: string, styleSheet: string) {
         console.log('created')
       },
 
-      methods:{}
+      methods:{
+        ${methodStr}
+      }
     }
   </script>
 

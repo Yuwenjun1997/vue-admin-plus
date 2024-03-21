@@ -11,6 +11,7 @@ export const visualElButton: VisualBasic = {
   disabled: true,
   component: 'el-button',
   componentType: 'element',
+  methods: {},
   props: {
     color: '#409eff',
   },
@@ -56,6 +57,16 @@ export const visualElButton: VisualBasic = {
       formType: 'switch',
       label: '是否为圆形按钮',
       property: 'circle',
+    },
+  ],
+  propsOptions: [
+    {
+      groupName: '事件',
+      target: 'methods',
+      formType: 'methodInput',
+      label: '监听按钮点击',
+      property: 'click:handleClick',
+      value: '',
     },
   ],
   children: [

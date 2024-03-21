@@ -89,8 +89,8 @@ export function useVisualUtils() {
     if (activeCodeExportTab.value === 'vue3') return 'vue'
   })
   const handleShowCodeExportModal = () => {
-    const { html, css } = genHtml()
-    const { vue2, vue3 } = genVue()
+    const { html, css } = genHtml(visualBoxStore.flatVisualBoxTemplates)
+    const { vue2, vue3 } = genVue(visualBoxStore.flatVisualBoxTemplates)
     // 后期需要更换
     htmlCode.value = html
     cssCode.value = css

@@ -15,7 +15,20 @@
         </VadIntersection>
       </template>
       <template v-if="item.formType === 'textarea'">
-        <el-input v-model="item.value" clearable :disabled="item.disabled" type="textarea" @blur="handleChange" />
+        <el-input
+          v-model="item.value"
+          clearable
+          :disabled="item.disabled"
+          :rows="5"
+          type="textarea"
+          @blur="handleChange"
+        />
+      </template>
+      <template v-if="item.formType === 'methodInput'">
+        <el-input v-model="item.value" clearable disabled type="textarea" />
+        <el-button class="!w-full mt-1" size="small" type="primary" @click="handleShowCodeEditor(item)">
+          打开编辑器
+        </el-button>
       </template>
       <template v-if="item.formType === 'colorPicker'">
         <el-color-picker
@@ -58,6 +71,23 @@
         />
       </template>
     </el-form-item>
+
+    <el-dialog
+      v-if="showCodeModal"
+      v-model="showCodeModal"
+      align-center
+      append-to-body
+      destroy-on-close
+      draggable
+      title="代码片段"
+      width="1200px"
+    >
+      <VadCodeEditor v-model="methodCode" :user-worker="false" />
+      <template #footer>
+        <el-button type="primary" @click="handleCancelCode">取消</el-button>
+        <el-button type="primary" @click="handleSaveCode">保存</el-button>
+      </template>
+    </el-dialog>
   </el-form>
 </template>
 
@@ -99,6 +129,26 @@ const predefineColors = ref([
   'hsla(209, 100%, 56%, 0.73)',
   '#c7158577',
 ])
+
+const showCodeModal = ref(false)
+const methodCode = ref<string>('')
+const currentOption = ref<VisualBoxOption>()
+const handleShowCodeEditor = (item: VisualBoxOption) => {
+  currentOption.value = item
+  methodCode.value = item.value || ''
+  showCodeModal.value = true
+}
+const handleCancelCode = () => {
+  showCodeModal.value = false
+  methodCode.value = ''
+}
+const handleSaveCode = () => {
+  showCodeModal.value = false
+  if (!currentOption.value) return
+  currentOption.value.value = methodCode.value
+  emit('change')
+  console.log(currentOption.value)
+}
 </script>
 
 <style scoped></style>

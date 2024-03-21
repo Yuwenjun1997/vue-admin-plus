@@ -1,4 +1,4 @@
-export function getPreviewTemplate(templateStr: string, styleSheet: string) {
+export function getPreviewTemplate(templateStr: string, styleSheet: string, methodStr: string, methodNames: string[]) {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -18,7 +18,12 @@ export function getPreviewTemplate(templateStr: string, styleSheet: string) {
       <script>
         const App = {
           setup(){
-            console.log(123);
+
+            ${methodStr}
+
+            return {
+              ${methodNames.join(',')}
+            }
           }
         };
         const app = Vue.createApp(App);
