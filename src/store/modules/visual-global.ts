@@ -19,6 +19,7 @@ export const useVisualGlobal = defineStore('visualGlobal', {
       this.methods = this.methods.filter((m) => m.name !== method.name)
     },
     addVariable(variable: VisualBoxGlobalVariable) {
+      if (variable.valueType === 'number') variable.defaultValue = Number(variable.defaultValue)
       const oldVariable = this.variables.find((v) => v.name === variable.name)
       if (oldVariable) {
         Object.assign(oldVariable, variable)

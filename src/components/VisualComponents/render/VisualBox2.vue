@@ -1,7 +1,12 @@
 <template>
   <div :class="classList" :data-visual-box-key="props.template.component ? '' : visualBoxKey" :style="wrapStyles">
+    <!-- 直接渲染内容 -->
+    <template v-if="props.template.content">
+      <template v-if="isBindContentProp">{{ bindPropStr }}</template>
+      <template v-else>{{ props.template.content }}</template>
+    </template>
     <!-- 渲染组件 -->
-    <template v-if="props.template.component">
+    <template v-else-if="props.template.component">
       <VisualElement v-if="templateType === 'element'" :data-visual-box-key="visualBoxKey" :template="props.template" />
       <component :is="props.template.component" v-else :data-visual-box-key="visualBoxKey" :template="props.template" />
     </template>
@@ -34,4 +39,13 @@ const wrapStyles = computed(() => {
 })
 
 const visualBoxKey = computed(() => props.template.visualBoxKey)
+
+const isBindContentProp = computed(() => {
+  if (!props.template.bindProps) return false
+  return Object.keys(props.template.bindProps).some((key) => key === 'content')
+})
+
+const bindPropStr = computed(() => {
+  return `{{${props.template.bindProps?.content}}}`
+})
 </script>

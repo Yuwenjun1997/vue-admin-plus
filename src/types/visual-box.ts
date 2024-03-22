@@ -78,6 +78,7 @@ export interface VisualBasic<T = any> {
   children?: VisualBasic[]
   methods?: VisualBoxMethod
   bindProps?: VisualBoxBindProp
+  content?: string
 }
 
 export interface VisualBoxOptionItem {

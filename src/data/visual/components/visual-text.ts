@@ -14,16 +14,16 @@ export const visualText: VisualBasic<VisualTextProps> = {
   isEditable: true,
   disabled: true,
   component: 'VisualText',
-  props: {
-    content: '这是一行文本',
-  },
-  bindOptions: [
+  content: '这是一行文本',
+  options: [
     {
       groupName: '基础信息',
-      target: 'props',
+      target: 'root',
       formType: 'textarea',
       label: '文本内容',
       property: 'content',
+      bindAble: true,
+      bindProps: '',
     },
   ],
 }

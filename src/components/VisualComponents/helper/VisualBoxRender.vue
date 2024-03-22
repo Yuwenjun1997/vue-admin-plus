@@ -1,6 +1,7 @@
 <template>
   <VisualBox :template="props.template">
-    <template v-if="props.template.component">
+    <template v-if="props.template.content">{{ props.template.content }}</template>
+    <template v-else-if="props.template.component">
       <template v-if="props.template.componentType === 'element'">
         <component :is="props.template.component" v-bind="props.template.props">
           <template v-if="props.template.children && props.template.children.length">

@@ -17,7 +17,7 @@
         </el-popover>
       </template>
       <template v-if="item.formType === 'input'">
-        <el-input v-model="item.value" clearable :disabled="item.disabled" @blur="handleChange" />
+        <el-input v-model="item.value" clearable :disabled="isDisabled(item)" @blur="handleChange" />
       </template>
       <template v-if="item.formType === 'cssInput'">
         <VadIntersection style="min-height: 26px">
@@ -28,14 +28,14 @@
         <el-input
           v-model="item.value"
           clearable
-          :disabled="item.disabled"
+          :disabled="isDisabled(item)"
           :rows="5"
           type="textarea"
           @blur="handleChange"
         />
       </template>
       <template v-if="item.formType === 'methodSelect'">
-        <el-select v-model="item.value" clearable :disabled="item.disabled" @change="handleChange">
+        <el-select v-model="item.value" clearable :disabled="isDisabled(item)" @change="handleChange">
           <el-option v-for="(m, index) in methods" :key="index" :label="m.name" :value="m.methodName" />
         </el-select>
       </template>
@@ -48,20 +48,20 @@
       <template v-if="item.formType === 'colorPicker'">
         <el-color-picker
           v-model="item.value"
-          :disabled="item.disabled"
+          :disabled="isDisabled(item)"
           :predefine="predefineColors"
           show-alpha
           @change="handleChange"
         />
       </template>
       <template v-if="item.formType === 'select'">
-        <el-select v-model="item.value" clearable :disabled="item.disabled" @change="handleChange">
+        <el-select v-model="item.value" clearable :disabled="isDisabled(item)" @change="handleChange">
           <el-option v-for="option in item.options" :key="option.value" :label="option.label" :value="option.value" />
         </el-select>
       </template>
       <template v-if="item.formType === 'numberInput'">
         <div class="w-full text-right">
-          <el-input-number v-model.number="item.value" clearable :disabled="item.disabled" @change="handleChange" />
+          <el-input-number v-model.number="item.value" clearable :disabled="isDisabled(item)" @change="handleChange" />
         </div>
       </template>
       <template v-if="item.formType === 'switch'">
@@ -69,7 +69,7 @@
           <el-switch
             v-model="item.value"
             :active-value="item.trueValue"
-            :disabled="item.disabled"
+            :disabled="isDisabled(item)"
             :inactive-value="item.falseValue"
             @change="handleSwitchChange"
           />
@@ -186,6 +186,10 @@ const handleSaveCode = () => {
 const getBindTip = (item: VisualBoxOption) => {
   if (!item.bindProps) return '暂未绑定任何属性'
   return `已绑定属性名{${item.bindProps}}`
+}
+
+const isDisabled = (item: VisualBoxOption) => {
+  return item.disabled || !!(item.bindAble && item.bindProps)
 }
 </script>
 

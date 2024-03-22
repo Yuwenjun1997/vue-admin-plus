@@ -2,6 +2,7 @@ import { VisualBasic, VisualBoxOption, VisualBoxRenderOption } from '@/types/vis
 import { cloneDeep } from 'lodash'
 import { CSSProperties } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
+import { useVisualGlobal } from '@/store/modules/visual-global'
 
 export class VisualBoxTarget<T = any> {
   orderCount: number = 1
@@ -47,6 +48,13 @@ export class VisualBoxTarget<T = any> {
       if (option.target === 'methods' && this.target.methods) {
         option.value = this.target.methods[option.property] || option.value
       }
+      if (option.bindAble && option.bindProps) {
+        const { variables } = useVisualGlobal()
+        const variable = variables.find((v) => v.variableName === option.bindProps)
+        if (variable) {
+          option.value = variable.defaultValue
+        }
+      }
       const group = results.find((r) => r.groupName === option.groupName)
       if (group) {
         group.options.push(option)
@@ -68,6 +76,13 @@ export class VisualBoxTarget<T = any> {
     this.target.bindProps = {}
     const allOptions: VisualBoxOption[] = [...this.basicOptions, ...this.customOptions, ...this.bindOptions]
     allOptions.forEach((option) => {
+      if (option.bindAble && option.bindProps) {
+        const { variables } = useVisualGlobal()
+        const variable = variables.find((v) => v.variableName === option.bindProps)
+        if (variable) {
+          option.value = variable.defaultValue
+        }
+      }
       if (option.target === 'customStyle') {
         // @ts-ignore
         this.target.customStyle[option.property] = option.value
@@ -83,15 +98,14 @@ export class VisualBoxTarget<T = any> {
       if (option.target === 'props') {
         // @ts-ignore
         this.target.props[option.property] = option.value
-
-        if (option.bindAble) {
-          // @ts-ignore
-          this.target.bindProps[option.property] = option.bindProps
-        }
       }
       if (option.target === 'methods') {
         // @ts-ignore
         this.target.methods[option.property] = option.value
+      }
+      if (option.bindAble) {
+        // @ts-ignore
+        this.target.bindProps[option.property] = option.bindProps
       }
     })
     console.log(this.target)
