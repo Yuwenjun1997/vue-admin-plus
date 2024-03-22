@@ -11,9 +11,13 @@ export const visualElProgress: VisualBasic = {
   disabled: true,
   component: 'el-progress',
   componentType: 'element',
-  methods: {
-    'change:handleProgressChange': '',
-  },
+  bindProps: [
+    {
+      propName: 'percentage',
+      propType: 'number',
+      defaultValue: 0,
+    },
+  ],
   props: {
     percentage: 10,
     type: 'line',
@@ -135,14 +139,6 @@ export const visualElProgress: VisualBasic = {
       formType: 'numberInput',
       label: '进度',
       property: 'percentage',
-    },
-    {
-      groupName: '事件',
-      target: 'methods',
-      formType: 'methodInput',
-      label: '监听进度变化',
-      property: 'change:handleProgressChange',
-      value: '',
     },
   ],
 }

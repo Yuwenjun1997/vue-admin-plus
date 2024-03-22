@@ -11,11 +11,17 @@
           <Icon icon="ion:ios-redo" />
         </div>
       </el-tooltip>
-      <el-radio-group v-model="device" class="ml-2" size="small" @change="handleDeviceChange">
+      <el-radio-group v-model="device" class="mx-2" size="small" @change="handleDeviceChange">
         <el-radio-button label="PC" value="pc" />
         <el-radio-button label="Pad" value="pad" />
         <el-radio-button label="H5" value="h5" />
       </el-radio-group>
+      <el-tooltip content="页面全局设置" effect="dark">
+        <div class="visual-tools__control" @click.stop="handleShowGlobalSettingModal">
+          <Icon icon="ion:ios-settings-strong" />
+          <span>页面全局设置</span>
+        </div>
+      </el-tooltip>
     </div>
     <div class="flex items-center">
       <el-tooltip content="清空画布" effect="dark">
@@ -63,6 +69,9 @@
 
     <!-- 预览 -->
     <VisualPreviewModal ref="previewModal" />
+
+    <!-- 全局设置 -->
+    <VisualGlobalSettingModal ref="golbalSettingModal" />
   </div>
 </template>
 
@@ -70,6 +79,7 @@
 import VisualJsonCodeModal from './VisualJsonCodeModal.vue'
 import VisualCodeExportModal from './VisualCodeExportModal.vue'
 import VisualPreviewModal from './VisualPreviewModal.vue'
+import VisualGlobalSettingModal from './VisualGlobalSettingModal/index.vue'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { Icon } from '@iconify/vue'
 import { useRefHistory, useToggle } from '@vueuse/core'
@@ -138,6 +148,13 @@ const handlePreview = () => {
   if (!previewModal.value) return
   previewModal.value.showPreviewModal()
 }
+
+// 全局设置
+const golbalSettingModal = ref<InstanceType<typeof VisualGlobalSettingModal>>()
+const handleShowGlobalSettingModal = () => {
+  if (!golbalSettingModal.value) return
+  golbalSettingModal.value.showModal()
+}
 </script>
 
 <style scoped lang="scss">
@@ -155,6 +172,7 @@ const handlePreview = () => {
     padding: 8px;
     border-radius: var(--el-border-radius-base);
     transition: var(--el-transition-all);
+    user-select: none;
 
     &.disabled {
       opacity: 0.2;

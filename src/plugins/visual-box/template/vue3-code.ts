@@ -1,12 +1,20 @@
-export function getVue3Template(templateStr: string, styleSheet: string, methodStr: string) {
+import { VisualBoxBindProp } from '@/types/visual-box'
+
+export function getVue3Template(
+  template: string,
+  styleSheet: string,
+  bindProps: VisualBoxBindProp[],
+  bindMethodTokens: string[]
+) {
   return `
   <template>
-    ${templateStr || '<!-- empty template -->'}
+    ${template || '<!-- empty template -->'}
   </template>
 
   <script lang="ts" setup>
+    ${bindProps.map((item) => `const ${item.bindPropName} = ${item.defaultValue}`).join('\n')}
+    ${bindMethodTokens.join('\n')}
     // TODO anything...
-    ${methodStr}
   </script>
 
   <style scoped>

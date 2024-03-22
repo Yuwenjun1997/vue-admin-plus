@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import VadCodeEditor from '@/components/VadCodeEditor/index.vue'
-import { genHtml, genVue } from '@/plugins/visual-box'
+import { genHtml, genVue2, genVue3 } from '@/plugins/visual-box'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { useClipboard } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
@@ -79,12 +79,12 @@ const handleSaveAsFile = () => {
 }
 
 const showCodeExportModal = () => {
+  activeCodeExportTab.value = 'html'
   const { html, css } = genHtml(visualBoxStore.flatVisualBoxTemplates)
-  const { vue2, vue3 } = genVue(visualBoxStore.flatVisualBoxTemplates)
   htmlCode.value = html
   cssCode.value = css
-  vue2Code.value = vue2
-  vue3Code.value = vue3
+  vue2Code.value = genVue2(visualBoxStore.flatVisualBoxTemplates)
+  vue3Code.value = genVue3(visualBoxStore.flatVisualBoxTemplates)
   showCodeModal.value = true
 }
 

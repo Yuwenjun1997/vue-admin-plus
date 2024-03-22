@@ -8,6 +8,22 @@ export interface VisualBoxRenderOption {
 
 export interface VisualBoxMethod extends Record<string, any> {}
 
+export interface VisualBoxBindProp {
+  propName: string
+  propType: 'string' | 'number' | 'boolean' | 'object' | 'array' | 'function'
+  defaultValue?: any
+  bindPropName?: string
+  visualBoxKey?: string
+}
+
+export interface VisualBoxBindMethod {
+  trigger: string
+  methodName: string
+  bindMethodName?: string
+  methodToken: string
+  visualBoxKey: string
+}
+
 export interface VisualBasic<T = any> {
   visualBoxKey: string
   visualBoxParentKey?: string
@@ -32,6 +48,7 @@ export interface VisualBasic<T = any> {
   options?: VisualBoxOption[]
   children?: VisualBasic[]
   methods?: VisualBoxMethod
+  bindProps?: VisualBoxBindProp[]
 }
 
 export interface VisualBoxOptionItem {

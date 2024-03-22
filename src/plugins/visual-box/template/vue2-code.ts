@@ -1,25 +1,28 @@
-export function getVue2Template(templateStr: string, styleSheet: string, methodStr: string) {
+import { VisualBoxBindProp } from '@/types/visual-box'
+
+export function getVue2Template(
+  template: string,
+  styleSheet: string,
+  bindProps: VisualBoxBindProp[],
+  bindMethodTokens: string[]
+) {
   return `
   <template>
     <div>
-    ${templateStr || '<!-- empty template -->'}
+    ${template || '<!-- empty template -->'}
     </div>
   </template>
 
   <script>
     export default {
-      props:{},
-
       data(){
-        return {}
-      },
-
-      created(){
-        console.log('created')
+        return {
+          ${bindProps.map((item) => `${item.bindPropName}:${item.defaultValue || '\'\''}`)}
+        }
       },
 
       methods:{
-        ${methodStr}
+        ${bindMethodTokens.join(',')}
       }
     }
   </script>

@@ -1,4 +1,16 @@
-export function getPreviewTemplate(templateStr: string, styleSheet: string, methodStr: string, methodNames: string[]) {
+import { VisualBoxBindProp } from '@/types/visual-box'
+
+export function getPreviewTemplate(
+  template: string,
+  styleSheet: string,
+  bindProps: VisualBoxBindProp[],
+  bindMethodNames: string[],
+  bindMethodTokens: string[]
+) {
+  const genReturnTokens = () => {
+    const bindPropNames = bindProps.map((item) => item.bindPropName)
+    return bindPropNames.concat(bindMethodNames).join(',')
+  }
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -14,15 +26,15 @@ export function getPreviewTemplate(templateStr: string, styleSheet: string, meth
     </head>
 
     <body>
-      <div id="app">${templateStr}</div>
+      <div id="app">${template}</div>
+
       <script>
         const App = {
           setup(){
-
-            ${methodStr}
-
+            ${bindProps.map((item) => `const ${item.bindPropName} = Vue.ref(${item.defaultValue});`).join('\n')}
+            ${bindMethodTokens.join('\n')}
             return {
-              ${methodNames.join(',')}
+              ${genReturnTokens()}
             }
           }
         };

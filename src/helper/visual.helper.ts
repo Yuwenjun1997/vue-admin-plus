@@ -60,6 +60,10 @@ export class VisualBoxTarget<T = any> {
   applyOptions() {
     this.target.customStyle = {}
     this.target.layoutStyle = {}
+    // @ts-ignore
+    this.target.props = {}
+    // @ts-ignore
+    this.target.methods = {}
     const allOptions: VisualBoxOption[] = [...this.basicOptions, ...this.customOptions, ...this.propsOptions]
     allOptions.forEach((option) => {
       if (option.target === 'customStyle') {
