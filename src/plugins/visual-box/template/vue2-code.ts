@@ -1,9 +1,10 @@
-import { VisualBoxBindProp } from '@/types/visual-box'
+import { VisualBoxBindPropOption } from '@/types/visual-box'
+import { genPropValue } from '../code-generator'
 
 export function getVue2Template(
   template: string,
   styleSheet: string,
-  bindProps: VisualBoxBindProp[],
+  bindProps: VisualBoxBindPropOption[],
   bindMethodTokens: string[]
 ) {
   return `
@@ -17,7 +18,7 @@ export function getVue2Template(
     export default {
       data(){
         return {
-          ${bindProps.map((item) => `${item.bindPropName}:${item.defaultValue || '\'\''}`)}
+          ${bindProps.map((item) => `${item.bindPropName}:${genPropValue(item) || '\'\''}`)}
         }
       },
 

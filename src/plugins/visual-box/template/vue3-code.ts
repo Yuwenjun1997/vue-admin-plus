@@ -1,9 +1,10 @@
-import { VisualBoxBindProp } from '@/types/visual-box'
+import { VisualBoxBindPropOption } from '@/types/visual-box'
+import { genPropValue } from '../code-generator'
 
 export function getVue3Template(
   template: string,
   styleSheet: string,
-  bindProps: VisualBoxBindProp[],
+  bindProps: VisualBoxBindPropOption[],
   bindMethodTokens: string[]
 ) {
   return `
@@ -12,7 +13,7 @@ export function getVue3Template(
   </template>
 
   <script lang="ts" setup>
-    ${bindProps.map((item) => `const ${item.bindPropName} = ${item.defaultValue}`).join('\n')}
+    ${bindProps.map((item) => `const ${item.bindPropName} = ref(${genPropValue(item)})`).join('\n')}
     ${bindMethodTokens.join('\n')}
     // TODO anything...
   </script>

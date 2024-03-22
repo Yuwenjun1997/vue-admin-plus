@@ -8,7 +8,7 @@
           </el-select>
           <template #reference>
             <div class="flex items-center gap-1 cursor-pointer">
-              <el-tooltip :content="getBindTip(item.value)" effect="dark">
+              <el-tooltip :content="getBindTip(item)" effect="dark">
                 <Icon class="text-base" icon="bi:link" />
               </el-tooltip>
               <span>{{ item.label }}</span>
@@ -185,7 +185,7 @@ const handleSaveCode = () => {
 
 const getBindTip = (item: VisualBoxOption) => {
   if (!item.bindProps) return '暂未绑定任何属性'
-  return `已绑定props${item.bindProps}`
+  return `已绑定属性名{${item.bindProps}}`
 }
 </script>
 

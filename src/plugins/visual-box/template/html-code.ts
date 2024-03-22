@@ -1,8 +1,9 @@
-import { VisualBoxBindProp } from '@/types/visual-box'
+import { VisualBoxBindPropOption } from '@/types/visual-box'
+import { genPropValue } from '../code-generator'
 
 export function getHtmlTemplate(
   template: string,
-  bindProps: VisualBoxBindProp[],
+  bindProps: VisualBoxBindPropOption[],
   bindMethodNames: string[],
   bindMethodTokens: string[]
 ) {
@@ -10,6 +11,7 @@ export function getHtmlTemplate(
     const bindPropNames = bindProps.map((item) => item.bindPropName)
     return bindPropNames.concat(bindMethodNames).join(',')
   }
+
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -25,7 +27,7 @@ export function getHtmlTemplate(
       <script>
         const App = {
           setup(){
-            ${bindProps.map((item) => `const ${item.bindPropName} = Vue.ref(${item.defaultValue});`).join('\n')}
+            ${bindProps.map((item) => `const ${item.bindPropName} = Vue.ref(${genPropValue(item)});`).join('\n')}
             ${bindMethodTokens.join('\n')}
             return {
               ${genReturnTokens()}

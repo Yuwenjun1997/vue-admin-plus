@@ -36,6 +36,14 @@ export interface VisualBoxMethod extends Record<string, any> {}
 
 export interface VisualBoxBindProp extends Record<string, any> {}
 
+export interface VisualBoxBindPropOption {
+  propName: string
+  bindPropName: string
+  propType: VariableType
+  defaultValue: any
+  visualBoxKey: string
+}
+
 export interface VisualBoxBindMethod {
   trigger: string
   methodName: string

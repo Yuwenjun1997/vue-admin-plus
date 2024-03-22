@@ -1,9 +1,10 @@
-import { VisualBoxBindProp } from '@/types/visual-box'
+import { VisualBoxBindPropOption } from '@/types/visual-box'
+import { genPropValue } from '../code-generator'
 
 export function getPreviewTemplate(
   template: string,
   styleSheet: string,
-  bindProps: VisualBoxBindProp[],
+  bindProps: VisualBoxBindPropOption[],
   bindMethodNames: string[],
   bindMethodTokens: string[]
 ) {
@@ -31,7 +32,7 @@ export function getPreviewTemplate(
       <script>
         const App = {
           setup(){
-            ${bindProps.map((item) => `const ${item.bindPropName} = Vue.ref(${item.defaultValue});`).join('\n')}
+            ${bindProps.map((item) => `const ${item.bindPropName} = Vue.ref(${genPropValue(item)});`).join('\n')}
             ${bindMethodTokens.join('\n')}
             return {
               ${genReturnTokens()}

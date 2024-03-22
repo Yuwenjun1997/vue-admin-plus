@@ -5,11 +5,10 @@ import { getVue2Template } from './template/vue2-code'
 import { getVue3Template } from './template/vue3-code'
 import { getPreviewTemplate } from './template/preview-code'
 import { isNumberStr } from '@/utils'
-import { VisualBasic, VisualBoxBindMethod, VisualBoxBindProp } from '@/types/visual-box'
+import { VisualBasic, VisualBoxBindMethod, VisualBoxBindPropOption } from '@/types/visual-box'
 import { storeToRefs } from 'pinia'
 import { useVisualGlobal } from '@/store/modules/visual-global'
 import { groupBy, map, unionBy } from 'lodash'
-// import { useVisualBoxStore } from '@/store/modules/visual-box'
 
 interface Parse5Node {
   mode?: string
@@ -22,8 +21,7 @@ interface Parse5Node {
   value?: string
 }
 
-const { methods: globalMethods } = storeToRefs(useVisualGlobal())
-// const { flatVisualBoxTemplates } = storeToRefs(useVisualBoxStore())
+const { methods: globalMethods, variables: globalVariables } = storeToRefs(useVisualGlobal())
 
 const FILTER_ATTR_NAMES = ['style', 'id', 'title', 'data-visual-box-key']
 const CLASS_NAME_PREFIX = 'gen_'
@@ -31,8 +29,7 @@ let CLASS_NAME_INDEX = 0
 
 let styleSheetList: Record<string, string>[] = []
 
-let BIND_PROP_INDEX = 0
-let bindProps: VisualBoxBindProp[] = []
+let bindProps: VisualBoxBindPropOption[] = []
 
 let BIND_METHOD_INDEX = 0
 let bindMethods: VisualBoxBindMethod[] = []
@@ -140,21 +137,31 @@ function handleBindMethods(template: VisualBasic) {
 // 处理属性绑定
 function handleBindProps(template: VisualBasic) {
   if (!template.bindProps) return
-  template.bindProps.forEach((item) => {
+  Object.keys(template.bindProps).forEach((key) => {
+    const bindPropName = template.bindProps && template.bindProps[key]
+    if (!bindPropName) return
+    const globalVariable = globalVariables.value.find((v) => v.variableName === bindPropName)
+    if (!globalVariable) return
     bindProps.push({
-      propName: item.propName,
-      bindPropName: `${item.propName}_${++BIND_PROP_INDEX}`,
-      propType: item.propType,
-      defaultValue: item.defaultValue,
+      propName: key,
+      bindPropName: bindPropName,
+      propType: globalVariable.valueType,
+      defaultValue: globalVariable.defaultValue,
       visualBoxKey: template.visualBoxKey,
     })
   })
 }
 
+// 处理属性值
+export function genPropValue(prop: VisualBoxBindPropOption) {
+  const { defaultValue, propType } = prop
+  if (propType === 'string') return `'${defaultValue}'`
+  return defaultValue
+}
+
 // 初始化并返回处理后的node
 function genSetup(templates: VisualBasic[]): Parse5Node {
   BIND_METHOD_INDEX = 0
-  BIND_PROP_INDEX = 0
   CLASS_NAME_INDEX = 0
   styleSheetList = []
   bindProps = []
