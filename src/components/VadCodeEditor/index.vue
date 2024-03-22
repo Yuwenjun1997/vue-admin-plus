@@ -26,6 +26,8 @@ interface Props {
   readonly?: boolean
   mode?: string
   userWorker?: boolean
+  maxLines?: number
+  minLines?: number
 }
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>()
@@ -34,6 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: false,
   mode: 'javascript',
   userWorker: false,
+  maxLines: 40,
+  minLines: 40,
 })
 
 const aceDom = ref<HTMLElement>()
@@ -51,8 +55,8 @@ onMounted(() => {
   ace.config.set('basePath', '/lib/ace/src-min-noconflict')
   if (!aceDom.value) return
   aceEditor.value = ace.edit(aceDom.value, {
-    maxLines: 40, // 最大行数，超过会自动出现滚动条
-    minLines: 40, // 最小行数，还未到最大行数时，编辑器会自动伸缩大小
+    maxLines: props.maxLines, // 最大行数，超过会自动出现滚动条
+    minLines: props.minLines, // 最小行数，还未到最大行数时，编辑器会自动伸缩大小
     fontSize: 12, // 编辑器内字体大小
     theme: themePath.value, // 默认设置的主题
     mode: modePath.value, // 默认设置的语言模式

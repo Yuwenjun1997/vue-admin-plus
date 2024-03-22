@@ -79,3 +79,29 @@ export interface VisualBoxGroup {
   groupName: string
   components: VisualBasic[]
 }
+
+export type VariableType = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'function'
+
+export interface VisualBoxGlobalVariable {
+  name: string
+  variableName: string
+  valueType: VariableType
+  defaultValue?: any
+  description?: string
+}
+
+export type MethodTriggerType = 'click' | 'hover' | 'change' | 'input' | 'focus' | 'blur'
+
+export interface VisualBoxGlobalMethod {
+  name: string
+  methodName: string
+  trigger: MethodTriggerType
+  methodToken: string
+  params?: string
+  description?: string
+}
+
+export interface VisualBoxGlobal {
+  variables: VisualBoxGlobalVariable[]
+  methods: VisualBoxGlobalMethod[]
+}
