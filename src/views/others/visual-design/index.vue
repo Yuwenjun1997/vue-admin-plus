@@ -34,7 +34,7 @@ import VisualLogo from './components/VisualLogo.vue'
 import VisualLeftPanel from './components/VisualLeftPanel.vue'
 import VisualRightPanel from './components/VisualRightPanel.vue'
 import VisualCenterPanel from './components/VisualCenterPanel.vue'
-import VisualHeaderPanel from './components/VisualHeaderPanel.vue'
+import VisualHeaderPanel from './components/VisualHeaderPanel/index.vue'
 import VisualTools from './components/VisualTools.vue'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 

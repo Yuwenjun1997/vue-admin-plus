@@ -45,6 +45,7 @@ onMounted(() => {
       animation: 100,
       fallbackOnBody: true,
       onEnd: (evt: Sortable.SortableEvent) => {
+        visualBoxStore.start()
         const visualboxkey = evt.item.dataset.visualBoxKey || ''
         const toKey = evt.to.dataset.visualBoxKey || ''
         const toIndex = evt.newIndex || 0
@@ -54,6 +55,7 @@ onMounted(() => {
           nextTick(() => evt.item.remove())
         }
         visualBoxStore.addVisualBox(visualboxkey, toKey, toIndex)
+        visualBoxStore.done()
       },
     })
   })

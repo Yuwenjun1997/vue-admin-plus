@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { useClipboard } from '@vueuse/core'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { genHtml, genVue } from '@/plugins/visual-box'
+import { genHtml, genPreviewHtml, genVue } from '@/plugins/visual-box'
 
 export function useVisualUtils() {
   const visualBoxStore = useVisualBoxStore()
@@ -109,6 +109,26 @@ export function useVisualUtils() {
     saveAs(blob, `visual-box-${Date.now()}.${ext.value}`)
   }
 
+  // 预览
+  const previewFrame = ref<HTMLIFrameElement | null>(null)
+  const previewModal = ref<boolean>(false)
+  const isIframeLoading = ref<boolean>(true)
+  const iframeWidth = computed(() => {
+    if (visualBoxStore.device === 'pc') return '100%'
+    if (visualBoxStore.device === 'pad') return '768px'
+    if (visualBoxStore.device === 'h5') return '390px'
+  })
+  const handlePreview = async () => {
+    previewModal.value = true
+    isIframeLoading.value = true
+    await nextTick()
+    if (!previewFrame.value) return
+    previewFrame.value.srcdoc = genPreviewHtml(visualBoxStore.flatVisualBoxTemplates)
+    previewFrame.value.onload = () => {
+      isIframeLoading.value = false
+    }
+  }
+
   return {
     jsonCodeModalType,
     showJsonCodeModal,
@@ -120,6 +140,11 @@ export function useVisualUtils() {
     cssCode,
     vue2Code,
     vue3Code,
+    previewFrame,
+    previewModal,
+    isIframeLoading,
+    iframeWidth,
+    handlePreview,
     handleClear,
     handleShowJsonExportModal,
     handleShowJsonImportModal,

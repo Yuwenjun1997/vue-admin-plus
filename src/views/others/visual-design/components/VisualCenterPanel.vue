@@ -1,7 +1,7 @@
 <template>
   <div class="VisualCenterPanel p-2 h-full">
     <el-scrollbar height="100%">
-      <div class="VisualCenterPanel-wrap" :class="device">
+      <div v-loading="isLoading" class="VisualCenterPanel-wrap" :class="device">
         <VisualBoxRender v-for="template in visualBoxTemplates" :key="template.visualBoxKey" :template="template" />
       </div>
     </el-scrollbar>
@@ -13,7 +13,7 @@ import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { storeToRefs } from 'pinia'
 
 const visualBoxStore = useVisualBoxStore()
-const { visualBoxTemplates, device } = storeToRefs(visualBoxStore)
+const { visualBoxTemplates, device, isLoading } = storeToRefs(visualBoxStore)
 </script>
 
 <style scoped lang="scss">
@@ -37,6 +37,10 @@ const { visualBoxTemplates, device } = storeToRefs(visualBoxStore)
   &.pad {
     width: 768px;
   }
+}
+
+:deep(.el-loading-mask) {
+  background-color: transparent !important;
 }
 
 .el-scrollbar {

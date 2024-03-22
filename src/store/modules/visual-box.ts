@@ -1,12 +1,14 @@
 import { basicOptions, templates, visualComponentGroups } from '@/data/visual.data'
 import { VisualBoxTarget } from '@/helper/visual.helper'
 import { VisualBoxGroup, VisualBasic } from '@/types/visual-box'
+import { sleep } from '@/utils'
 import { ElMessage } from 'element-plus'
 import { cloneDeep } from 'lodash'
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
 
 interface VisualBoxState {
+  isLoading: boolean
   device: string
   isFullscreen: boolean
   visualBoxTemplates: VisualBasic[]
@@ -17,6 +19,7 @@ interface VisualBoxState {
 
 export const useVisualBoxStore = defineStore('visualBox', {
   state: (): VisualBoxState => ({
+    isLoading: false,
     device: 'pc',
     isFullscreen: false,
     visualBoxTemplates: [],
@@ -26,6 +29,14 @@ export const useVisualBoxStore = defineStore('visualBox', {
   }),
 
   actions: {
+    start() {
+      this.isLoading = true
+    },
+
+    done() {
+      sleep(300).then(() => (this.isLoading = false))
+    },
+
     // 初始化
     setup() {
       this.initVisualComponents(visualComponentGroups)
@@ -71,7 +82,9 @@ export const useVisualBoxStore = defineStore('visualBox', {
     toggleActive(template: VisualBasic) {
       if (!template.isEditable) return
       if (template.visualBoxKey === this.activeVisualBox?.visualBoxKey) return
+      this.start()
       this.activeVisualBox = new VisualBoxTarget(template, basicOptions)
+      this.done()
     },
 
     // 选中父级

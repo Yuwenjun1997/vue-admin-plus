@@ -40,7 +40,7 @@ const props = defineProps<Props>()
 
 const visualBoxStore = useVisualBoxStore()
 const { activeVisualBox } = storeToRefs(visualBoxStore)
-const { toggleActive, moveVisualBox } = visualBoxStore
+const { toggleActive, moveVisualBox, start, done } = visualBoxStore
 
 const isRoot = computed(() => props.template.isRoot)
 const isActive = computed(() => {
@@ -91,6 +91,7 @@ onMounted(() => {
     dragClass: 'visual-box-drag',
 
     onEnd: async (evt: Sortable.SortableEvent) => {
+      start()
       const currentKey = evt.item.dataset.visualBoxKey || ''
       const fromKey = evt.from.dataset.visualBoxKey || ''
       const toKey = evt.to.dataset.visualBoxKey || ''
@@ -99,6 +100,7 @@ onMounted(() => {
         nextTick(() => evt.item.remove())
       }
       moveVisualBox(currentKey, fromKey, toKey, oldIndex, newIndex)
+      done()
     },
   })
 })
