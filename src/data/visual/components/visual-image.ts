@@ -41,7 +41,7 @@ export const visualImage: VisualBasic<VisualImageProps> = {
       ],
     },
   ],
-  propsOptions: [
+  bindOptions: [
     {
       groupName: '基础信息',
       target: 'props',

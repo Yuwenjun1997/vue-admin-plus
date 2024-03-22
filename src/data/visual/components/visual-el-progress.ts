@@ -35,6 +35,14 @@ export const visualElProgress: VisualBasic = {
     {
       groupName: '基础信息',
       target: 'props',
+      formType: 'numberInput',
+      label: '进度',
+      property: 'percentage',
+      bindAble: true,
+    },
+    {
+      groupName: '基础信息',
+      target: 'props',
       formType: 'select',
       label: '进度条类型',
       property: 'type',
@@ -132,15 +140,7 @@ export const visualElProgress: VisualBasic = {
       property: 'striped-flow',
     },
   ],
-  propsOptions: [
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'numberInput',
-      label: '进度',
-      property: 'percentage',
-    },
-  ],
+  bindOptions: [],
 }
 
 export default visualElProgress

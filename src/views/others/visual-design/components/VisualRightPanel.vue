@@ -55,11 +55,11 @@
             <template v-if="!activeVisualBox || !isActive">
               <el-empty description="当前未选中组件" />
             </template>
-            <template v-else-if="activeVisualBox.renderPropsOptions.length === 0">
+            <template v-else-if="activeVisualBox.renderBindOptions.length === 0">
               <el-empty description="暂无配置信息" />
             </template>
             <template v-else>
-              <div v-for="(item, index) in activeVisualBox.renderPropsOptions" :key="item.groupId">
+              <div v-for="(item, index) in activeVisualBox.renderBindOptions" :key="item.groupId">
                 <el-divider>{{ item.groupName }}</el-divider>
                 <VisualControlsRender :key="getKey(index)" :options="item.options" @change="updateVisualBoxOption" />
               </div>

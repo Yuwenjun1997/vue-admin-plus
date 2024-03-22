@@ -10,10 +10,10 @@ export class VisualBoxTarget<T = any> {
   visualBoxName?: string
   basicOptions: VisualBoxOption[]
   customOptions: VisualBoxOption[]
-  propsOptions: VisualBoxOption[]
+  bindOptions: VisualBoxOption[]
   renderBasicOptions: VisualBoxRenderOption[]
   renderCustomOptions: VisualBoxRenderOption[]
-  renderPropsOptions: VisualBoxRenderOption[] = []
+  renderBindOptions: VisualBoxRenderOption[] = []
 
   constructor(target: VisualBasic<T>, basicOptions: VisualBoxOption[] = []) {
     this.target = target
@@ -21,10 +21,10 @@ export class VisualBoxTarget<T = any> {
     this.visualBoxName = this.target.visualBoxName
     this.basicOptions = cloneDeep(basicOptions)
     this.customOptions = this.target.options || []
-    this.propsOptions = this.target.propsOptions || []
+    this.bindOptions = this.target.bindOptions || []
     this.renderBasicOptions = this.initOptions(this.basicOptions)
     this.renderCustomOptions = this.initOptions(this.customOptions)
-    this.renderPropsOptions = this.initOptions(this.propsOptions)
+    this.renderBindOptions = this.initOptions(this.bindOptions)
   }
 
   initOptions(options: VisualBoxOption[]): VisualBoxRenderOption[] {
@@ -64,7 +64,9 @@ export class VisualBoxTarget<T = any> {
     this.target.props = {}
     // @ts-ignore
     this.target.methods = {}
-    const allOptions: VisualBoxOption[] = [...this.basicOptions, ...this.customOptions, ...this.propsOptions]
+    // @ts-ignore
+    this.target.bindProps = {}
+    const allOptions: VisualBoxOption[] = [...this.basicOptions, ...this.customOptions, ...this.bindOptions]
     allOptions.forEach((option) => {
       if (option.target === 'customStyle') {
         // @ts-ignore
@@ -81,11 +83,17 @@ export class VisualBoxTarget<T = any> {
       if (option.target === 'props') {
         // @ts-ignore
         this.target.props[option.property] = option.value
+
+        if (option.bindAble) {
+          // @ts-ignore
+          this.target.bindProps[option.property] = option.bindProps
+        }
       }
       if (option.target === 'methods') {
         // @ts-ignore
         this.target.methods[option.property] = option.value
       }
     })
+    console.log(this.target)
   }
 }

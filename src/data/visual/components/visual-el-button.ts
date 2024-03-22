@@ -59,7 +59,7 @@ export const visualElButton: VisualBasic = {
       property: 'circle',
     },
   ],
-  propsOptions: [
+  bindOptions: [
     {
       groupName: '绑定事件',
       target: 'methods',
@@ -91,15 +91,16 @@ export const visualElButton: VisualBasic = {
       props: {
         content: '按钮',
       },
-      propsOptions: [
+      options: [
         {
           groupName: '基础信息',
           target: 'props',
-          formType: 'textarea',
+          formType: 'input',
           label: '文本内容',
           property: 'content',
         },
       ],
+      bindOptions: [],
     },
   ],
 }

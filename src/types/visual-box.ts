@@ -34,13 +34,7 @@ export interface VisualBoxGlobal {
 
 export interface VisualBoxMethod extends Record<string, any> {}
 
-export interface VisualBoxBindProp {
-  propName: string
-  propType: VariableType
-  defaultValue?: any
-  bindPropName?: string
-  visualBoxKey?: string
-}
+export interface VisualBoxBindProp extends Record<string, any> {}
 
 export interface VisualBoxBindMethod {
   trigger: string
@@ -71,11 +65,11 @@ export interface VisualBasic<T = any> {
   component?: string
   componentType?: 'element' | 'visual'
   props?: T
-  propsOptions?: VisualBoxOption[]
+  bindOptions?: VisualBoxOption[]
   options?: VisualBoxOption[]
   children?: VisualBasic[]
   methods?: VisualBoxMethod
-  bindProps?: VisualBoxBindProp[]
+  bindProps?: VisualBoxBindProp
 }
 
 export interface VisualBoxOptionItem {
@@ -99,6 +93,8 @@ export interface VisualBoxOption {
   step?: number
   min?: number
   max?: number
+  bindAble?: boolean
+  bindProps?: string
 }
 
 export interface VisualBoxGroup {

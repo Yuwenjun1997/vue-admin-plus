@@ -17,7 +17,7 @@ export const visualText: VisualBasic<VisualTextProps> = {
   props: {
     content: '这是一行文本',
   },
-  propsOptions: [
+  bindOptions: [
     {
       groupName: '基础信息',
       target: 'props',

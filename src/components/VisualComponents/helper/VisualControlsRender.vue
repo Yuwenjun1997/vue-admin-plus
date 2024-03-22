@@ -1,11 +1,21 @@
 <template>
   <el-form class="p-2" label-position="left" label-width="100px" size="small">
-    <el-form-item
-      v-for="item in props.options"
-      :key="item.property + Math.random()"
-      :label="item.label"
-      :required="item.required"
-    >
+    <el-form-item v-for="item in props.options" :key="item.property + Math.random()" :label="item.label">
+      <template #label v-if="item.bindAble">
+        <el-popover title="绑定属性" trigger="click">
+          <el-select v-model="item.bindProps" clearable @change="handleChange">
+            <el-option v-for="(v, index) in variables" :key="index" :label="v.name" :value="v.variableName" />
+          </el-select>
+          <template #reference>
+            <div class="flex items-center gap-1 cursor-pointer">
+              <el-tooltip :content="getBindTip(item.value)" effect="dark">
+                <Icon class="text-base" icon="bi:link" />
+              </el-tooltip>
+              <span>{{ item.label }}</span>
+            </div>
+          </template>
+        </el-popover>
+      </template>
       <template v-if="item.formType === 'input'">
         <el-input v-model="item.value" clearable :disabled="item.disabled" @blur="handleChange" />
       </template>
@@ -109,6 +119,7 @@
 </template>
 
 <script setup lang="ts" name="VisualControlsRender">
+import { Icon } from '@iconify/vue'
 import VadIntersection from '@/components/VadIntersection/index.vue'
 import { useVisualGlobal } from '@/store/modules/visual-global'
 import { VisualBoxOption } from '@/types/visual-box'
@@ -170,6 +181,11 @@ const handleSaveCode = () => {
   currentOption.value.value = methodCode.value
   emit('change')
   console.log(currentOption.value)
+}
+
+const getBindTip = (item: VisualBoxOption) => {
+  if (!item.bindProps) return '暂未绑定任何属性'
+  return `已绑定props${item.bindProps}`
 }
 </script>
 

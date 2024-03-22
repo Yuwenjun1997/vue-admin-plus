@@ -99,7 +99,7 @@ export const visualElTag: VisualBasic = {
       props: {
         content: '标签内容',
       },
-      propsOptions: [
+      bindOptions: [
         {
           groupName: '基础信息',
           target: 'props',
