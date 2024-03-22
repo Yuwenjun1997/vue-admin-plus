@@ -24,8 +24,13 @@
           @blur="handleChange"
         />
       </template>
-      <template v-if="item.formType === 'methodInput'">
-        <el-input v-model="item.value" clearable disabled type="textarea" />
+      <template v-if="item.formType === 'methodSelect'">
+        <el-select v-model="item.value" clearable :disabled="item.disabled" @change="handleChange">
+          <el-option v-for="(m, index) in methods" :key="index" :label="m.name" :value="m.methodName" />
+        </el-select>
+      </template>
+      <template v-if="item.formType === 'codeInput'">
+        <el-input v-model="item.value" clearable disabled placeholder="请输入代码片段" type="textarea" />
         <el-button class="!w-full mt-1" size="small" type="primary" @click="handleShowCodeEditor(item)">
           打开编辑器
         </el-button>
@@ -82,6 +87,18 @@
       title="代码片段"
       width="1200px"
     >
+      <div v-if="variables.length" class="flex items-center mb-2">
+        <span>已设置变量：</span>
+        <el-tag v-for="(item, index) in variables" :key="index" type="primary">
+          {{ item.name }}：{{ item.variableName }}
+        </el-tag>
+      </div>
+      <div v-if="methods.length" class="flex items-center mb-2">
+        <span>已设置事件：</span>
+        <el-tag v-for="(item, index) in methods" :key="index" type="primary">
+          {{ item.name }}：{{ item.methodName }}
+        </el-tag>
+      </div>
       <VadCodeEditor v-model="methodCode" :user-worker="false" />
       <template #footer>
         <el-button type="primary" @click="handleCancelCode">取消</el-button>
@@ -93,7 +110,12 @@
 
 <script setup lang="ts" name="VisualControlsRender">
 import VadIntersection from '@/components/VadIntersection/index.vue'
+import { useVisualGlobal } from '@/store/modules/visual-global'
 import { VisualBoxOption } from '@/types/visual-box'
+import { storeToRefs } from 'pinia'
+
+const visualGlobalStore = useVisualGlobal()
+const { methods, variables } = storeToRefs(visualGlobalStore)
 
 interface Props {
   options: VisualBoxOption[]

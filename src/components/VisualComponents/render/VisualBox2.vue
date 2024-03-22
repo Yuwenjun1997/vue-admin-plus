@@ -3,7 +3,7 @@
     <!-- 渲染组件 -->
     <template v-if="props.template.component">
       <VisualElement v-if="templateType === 'element'" :data-visual-box-key="visualBoxKey" :template="props.template" />
-      <component :is="props.template.component" v-else :template="props.template" />
+      <component :is="props.template.component" v-else :data-visual-box-key="visualBoxKey" :template="props.template" />
     </template>
     <!-- 渲染子元素 -->
     <template v-else-if="props.template.children">

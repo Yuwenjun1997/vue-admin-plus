@@ -6,6 +6,10 @@ import { getVue3Template } from './template/vue3-code'
 import { getPreviewTemplate } from './template/preview-code'
 import { isNumberStr } from '@/utils'
 import { VisualBasic, VisualBoxBindMethod, VisualBoxBindProp } from '@/types/visual-box'
+import { storeToRefs } from 'pinia'
+import { useVisualGlobal } from '@/store/modules/visual-global'
+import { groupBy, map, unionBy } from 'lodash'
+// import { useVisualBoxStore } from '@/store/modules/visual-box'
 
 interface Parse5Node {
   mode?: string
@@ -17,6 +21,9 @@ interface Parse5Node {
   parentNode?: Parse5Node
   value?: string
 }
+
+const { methods: globalMethods } = storeToRefs(useVisualGlobal())
+// const { flatVisualBoxTemplates } = storeToRefs(useVisualBoxStore())
 
 const FILTER_ATTR_NAMES = ['style', 'id', 'title', 'data-visual-box-key']
 const CLASS_NAME_PREFIX = 'gen_'
@@ -58,6 +65,8 @@ function handleEvents(node: Parse5Node) {
     if (!method.bindMethodName) return
     node.attrs.push({ name: `@${method.trigger}`, value: method.bindMethodName })
   })
+  // 合并同名属性
+  node.attrs = map(groupBy(node.attrs, 'name'), (values, name) => ({ name, value: map(values, 'value').join(',') }))
 }
 
 // 递归处理ast
@@ -89,12 +98,57 @@ function genCssSheet() {
 
 // 生成vue对应版本的method tokens并返回全部methodNames
 function genVueMethodTokens(type: 'vue2' | 'vue3') {
-  const methodNames: string[] = bindMethods.map((item) => item.bindMethodName || '').filter((item) => item)
-  const methodTokens = bindMethods.map((item) => {
+  const methods = unionBy(bindMethods, 'methodName') // 去重
+  const methodNames: string[] = methods.map((item) => item.methodName || '').filter((item) => item)
+  const methodTokens = methods.map((item) => {
     if (!item.bindMethodName) return ''
-    return `${type === 'vue3' ? 'function ' : ''}${item.bindMethodName}(evt){${item.methodToken}}`
+    return `${type === 'vue3' ? 'function ' : ''}${item.bindMethodName}{${item.methodToken}\n}`
   })
   return { methodNames, methodTokens: methodTokens.filter((item) => item.length > 0) }
+}
+
+// 处理函数绑定
+function handleBindMethods(template: VisualBasic) {
+  if (!template.methods) return
+  Object.keys(template.methods).forEach((key) => {
+    const [prefix, suffix] = key.split(':')
+    const value = template.methods && template.methods[key]
+    if (!value) return
+    if (prefix === '#bind') {
+      const globalMethod = globalMethods.value.find((m) => m.methodName === value)
+      if (!globalMethod) return
+      bindMethods.push({
+        trigger: globalMethod.trigger,
+        methodName: globalMethod.methodName,
+        bindMethodName: `${globalMethod.methodName}($evt${globalMethod.params})`,
+        visualBoxKey: template.visualBoxKey,
+        methodToken: globalMethod.methodToken,
+      })
+    } else {
+      const methodName = `${suffix}_${++BIND_METHOD_INDEX}`
+      bindMethods.push({
+        trigger: prefix,
+        methodName: methodName,
+        bindMethodName: `${methodName}($evt)`,
+        visualBoxKey: template.visualBoxKey,
+        methodToken: value,
+      })
+    }
+  })
+}
+
+// 处理属性绑定
+function handleBindProps(template: VisualBasic) {
+  if (!template.bindProps) return
+  template.bindProps.forEach((item) => {
+    bindProps.push({
+      propName: item.propName,
+      bindPropName: `${item.propName}_${++BIND_PROP_INDEX}`,
+      propType: item.propType,
+      defaultValue: item.defaultValue,
+      visualBoxKey: template.visualBoxKey,
+    })
+  })
 }
 
 // 初始化并返回处理后的node
@@ -106,29 +160,8 @@ function genSetup(templates: VisualBasic[]): Parse5Node {
   bindProps = []
   bindMethods = []
   templates.forEach((template) => {
-    if (template.bindProps) {
-      template.bindProps.forEach((item) => {
-        bindProps.push({
-          propName: item.propName,
-          bindPropName: `${item.propName}_${++BIND_PROP_INDEX}`,
-          propType: item.propType,
-          defaultValue: item.defaultValue,
-          visualBoxKey: template.visualBoxKey,
-        })
-      })
-    }
-    if (template.methods) {
-      Object.keys(template.methods).forEach((key) => {
-        const [trigger, methodName] = key.split(':')
-        bindMethods.push({
-          trigger,
-          methodName,
-          bindMethodName: `${methodName}_${++BIND_METHOD_INDEX}`,
-          visualBoxKey: template.visualBoxKey,
-          methodToken: template.methods && template.methods[key],
-        })
-      })
-    }
+    handleBindMethods(template)
+    handleBindProps(template)
   })
   const htmlStr = renderVisualBox()
   const rootNode: Parse5Node = parse5.parseFragment(htmlStr) as unknown as Parse5Node

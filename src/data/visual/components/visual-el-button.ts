@@ -61,10 +61,18 @@ export const visualElButton: VisualBasic = {
   ],
   propsOptions: [
     {
-      groupName: '事件',
+      groupName: '绑定事件',
       target: 'methods',
-      formType: 'methodInput',
-      label: '监听按钮点击',
+      formType: 'methodSelect',
+      label: '点击事件',
+      property: '#bind:handleClick',
+      value: '',
+    },
+    {
+      groupName: '自定义事件',
+      target: 'methods',
+      formType: 'codeInput',
+      label: '点击事件',
       property: 'click:handleClick',
       value: '',
     },

@@ -6,11 +6,37 @@ export interface VisualBoxRenderOption {
   options: VisualBoxOption[]
 }
 
+export type VariableType = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'function'
+
+export interface VisualBoxGlobalVariable {
+  name: string
+  variableName: string
+  valueType: VariableType
+  defaultValue?: any
+  description?: string
+}
+
+export type MethodTriggerType = 'click' | 'hover' | 'change' | 'input' | 'focus' | 'blur'
+
+export interface VisualBoxGlobalMethod {
+  name: string
+  methodName: string
+  trigger: MethodTriggerType
+  methodToken: string
+  params?: string
+  description?: string
+}
+
+export interface VisualBoxGlobal {
+  variables: VisualBoxGlobalVariable[]
+  methods: VisualBoxGlobalMethod[]
+}
+
 export interface VisualBoxMethod extends Record<string, any> {}
 
 export interface VisualBoxBindProp {
   propName: string
-  propType: 'string' | 'number' | 'boolean' | 'object' | 'array' | 'function'
+  propType: VariableType
   defaultValue?: any
   bindPropName?: string
   visualBoxKey?: string
@@ -22,6 +48,7 @@ export interface VisualBoxBindMethod {
   bindMethodName?: string
   methodToken: string
   visualBoxKey: string
+  params?: string
 }
 
 export interface VisualBasic<T = any> {
@@ -78,30 +105,4 @@ export interface VisualBoxGroup {
   group: string
   groupName: string
   components: VisualBasic[]
-}
-
-export type VariableType = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'function'
-
-export interface VisualBoxGlobalVariable {
-  name: string
-  variableName: string
-  valueType: VariableType
-  defaultValue?: any
-  description?: string
-}
-
-export type MethodTriggerType = 'click' | 'hover' | 'change' | 'input' | 'focus' | 'blur'
-
-export interface VisualBoxGlobalMethod {
-  name: string
-  methodName: string
-  trigger: MethodTriggerType
-  methodToken: string
-  params?: string
-  description?: string
-}
-
-export interface VisualBoxGlobal {
-  variables: VisualBoxGlobalVariable[]
-  methods: VisualBoxGlobalMethod[]
 }
