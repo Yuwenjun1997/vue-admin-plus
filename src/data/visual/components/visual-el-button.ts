@@ -1,5 +1,6 @@
 import { VisualBasic } from '@/types/visual-box'
 import { v4 as uuidv4 } from 'uuid'
+import { customBindMehotdDesc } from '../options/constant'
 
 export const visualElButton: VisualBasic = {
   visualBoxKey: uuidv4(),
@@ -11,10 +12,20 @@ export const visualElButton: VisualBasic = {
   disabled: true,
   component: 'el-button',
   componentType: 'element',
+  content: '按钮',
   props: {
     color: '#409eff',
   },
   options: [
+    {
+      groupName: '基础信息',
+      target: 'root',
+      formType: 'input',
+      label: '文本内容',
+      property: 'content',
+      bindAble: true,
+      bindProp: '',
+    },
     {
       groupName: '基础信息',
       target: 'props',
@@ -26,8 +37,8 @@ export const visualElButton: VisualBasic = {
       groupName: '基础信息',
       target: 'props',
       formType: 'switch',
-      label: '是否为朴素按钮',
-      property: 'plain',
+      label: '是否禁用',
+      property: 'disabled',
     },
     {
       groupName: '基础信息',
@@ -40,14 +51,7 @@ export const visualElButton: VisualBasic = {
       groupName: '基础信息',
       target: 'props',
       formType: 'switch',
-      label: '是否为链接按钮',
-      property: 'link',
-    },
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'switch',
-      label: '是否为链接按钮',
+      label: '是否为圆角按钮',
       property: 'round',
     },
     {
@@ -74,28 +78,7 @@ export const visualElButton: VisualBasic = {
       label: '点击事件',
       property: 'click:handleClick',
       value: '',
-    },
-  ],
-  children: [
-    {
-      visualBoxKey: uuidv4(),
-      visualBoxName: '按钮内容',
-      isEditable: true,
-      isLocked: true,
-      disabled: true,
-      customStyle: {
-        color: '#ffffff',
-      },
-      options: [
-        {
-          groupName: '基础信息',
-          target: 'root',
-          formType: 'input',
-          label: '文本内容',
-          property: 'content',
-        },
-      ],
-      content: '按钮',
+      description: customBindMehotdDesc,
     },
   ],
 }

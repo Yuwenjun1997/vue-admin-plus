@@ -28,6 +28,13 @@ export const visualImage: VisualBasic<VisualImageProps> = {
     {
       groupName: '基础信息',
       target: 'props',
+      formType: 'input',
+      label: '图片的源地址',
+      property: 'src',
+    },
+    {
+      groupName: '基础信息',
+      target: 'props',
       formType: 'select',
       label: '填充',
       property: 'fit',
@@ -39,15 +46,6 @@ export const visualImage: VisualBasic<VisualImageProps> = {
         { label: ' none', value: 'none' },
         { label: ' scale-down', value: 'scale-down' },
       ],
-    },
-  ],
-  bindOptions: [
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'input',
-      label: '图片的源地址',
-      property: 'src',
     },
   ],
 }

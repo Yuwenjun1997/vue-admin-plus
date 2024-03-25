@@ -80,7 +80,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 选中
     toggleActive(template: VisualBasic) {
-      if (!template.isEditable) return
+      if (!template.isEditable) return this.toggleActiveParent(template)
       if (template.visualBoxKey === this.activeVisualBox?.visualBoxKey) return
       this.start()
       this.activeVisualBox = new VisualBoxTarget(template, basicOptions)

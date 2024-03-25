@@ -1,7 +1,6 @@
 import * as parse5 from 'parse5'
 import { renderVisualBox } from './render'
 import { getHtmlTemplate } from './template/html-code'
-import { getVue2Template } from './template/vue2-code'
 import { getVue3Template } from './template/vue3-code'
 import { getPreviewTemplate } from './template/preview-code'
 import { isNumberStr } from '@/utils'
@@ -60,7 +59,8 @@ function handleEvents(node: Parse5Node) {
   const bindMethodList = bindMethodOptions.filter((item) => item.visualBoxKey === visualBoxKey)
   bindMethodList.forEach((method) => {
     if (!method.bindMethodName) return
-    node.attrs.push({ name: `@${method.trigger}`, value: method.bindMethodName })
+
+    node.attrs.push({ name: `@${method.trigger}`, value: method.params ? method.bindMethodName : method.methodName })
   })
   // 合并同名属性
   node.attrs = map(groupBy(node.attrs, 'name'), (values, name) => ({ name, value: map(values, 'value').join(',') }))
@@ -117,7 +117,7 @@ function handleBindMethods(template: VisualBasic) {
       bindMethodOptions.push({
         trigger: globalMethod.trigger,
         methodName: globalMethod.methodName,
-        bindMethodName: `${globalMethod.methodName}($evt${globalMethod.params})`,
+        bindMethodName: `${globalMethod.methodName}(${globalMethod.params})`,
         visualBoxKey: template.visualBoxKey,
         methodToken: globalMethod.methodToken,
       })
@@ -126,7 +126,7 @@ function handleBindMethods(template: VisualBasic) {
       bindMethodOptions.push({
         trigger: prefix,
         methodName: methodName,
-        bindMethodName: `${methodName}($evt)`,
+        bindMethodName: `${methodName}($event)`,
         visualBoxKey: template.visualBoxKey,
         methodToken: value,
       })
@@ -185,15 +185,6 @@ export function genHtml(templates: VisualBasic[]) {
     html: getHtmlTemplate(template, bindPropOptions, methodNames, methodTokens),
     css: genCssSheet(),
   }
-}
-
-// 生成工程化vue2 sfc文件
-export function genVue2(templates: VisualBasic[]) {
-  const rootNode = genSetup(templates)
-  const { methodTokens } = genVueMethodTokens('vue2')
-  const template = parse5.serialize(rootNode as any)
-  const styleSheet = genCssSheet()
-  return getVue2Template(template, styleSheet, bindPropOptions, methodTokens)
 }
 
 // 生成工程化vue3 sfc文件

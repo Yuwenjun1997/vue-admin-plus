@@ -60,4 +60,14 @@ defineExpose({
 })
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.iframe-container {
+  width: 100%;
+  height: calc(100vh - var(--el-dialog-padding-primary) - var(--el-dialog-padding-primary) - 50px);
+
+  iframe {
+    margin: 0 auto;
+    border: 1px solid var(--el-border-color);
+  }
+}
+</style>

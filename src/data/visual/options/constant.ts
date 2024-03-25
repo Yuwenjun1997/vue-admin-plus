@@ -21,3 +21,5 @@ export const BOX_SHADOW_VALUE =
 
 export const TEXT_SHADOW_VALUE =
   'var(--visual-text-shadow-x,0px) var(--visual-text-shadow-y,0px) var(--visual-text-shadow-offset,0px) var(--visual-text-shadow-color,rgba(0,0,0,.1))'
+
+export const customBindMehotdDesc = '该自定义事件会与绑定事件同时绑定到dom上，建议复杂业务仅使用自定义事件'

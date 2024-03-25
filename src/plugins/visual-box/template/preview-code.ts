@@ -21,7 +21,7 @@ export function getPreviewTemplate(
       <script src="//unpkg.com/element-plus"></script>
       <style>
         *{box-sizing: border-box;}
-        body{margin: 0;}
+        body{margin: 0;font-size: 14px;}
       </style>
       <style>${styleSheet}</style>
     </head>

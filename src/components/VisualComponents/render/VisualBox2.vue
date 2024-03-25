@@ -1,18 +1,33 @@
+<!-- eslint-disable vue/no-multiple-template-root -->
 <template>
-  <div :class="classList" :data-visual-box-key="props.template.component ? '' : visualBoxKey" :style="wrapStyles">
-    <!-- 直接渲染内容 -->
+  <!-- 渲染组件 -->
+  <template v-if="props.template.component">
+    <component
+      :is="props.template.component"
+      :class="classList"
+      :data-visual-box-key="visualBoxKey"
+      :style="wrapStyles"
+      :template="templateType === 'visual' ? props.template : undefined"
+      v-bind="templateType === 'visual' ? undefined : props.template.props"
+    >
+      <template v-if="props.template.children">
+        <VisualBox2 v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
+      </template>
+      <template v-else-if="props.template.content">
+        <template v-if="isBindContentProp">{{ bindPropStr }}</template>
+        <template v-else>{{ props.template.content }}</template>
+      </template>
+    </component>
+  </template>
+  <!-- 渲染子元素 -->
+  <div v-else-if="props.template.children" :class="classList" :data-visual-box-key="visualBoxKey" :style="wrapStyles">
+    <VisualBox2 v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
+  </div>
+  <!-- 渲染内容 -->
+  <div v-else :class="classList" :data-visual-box-key="visualBoxKey" :style="wrapStyles">
     <template v-if="props.template.content">
       <template v-if="isBindContentProp">{{ bindPropStr }}</template>
       <template v-else>{{ props.template.content }}</template>
-    </template>
-    <!-- 渲染组件 -->
-    <template v-else-if="props.template.component">
-      <VisualElement v-if="templateType === 'element'" :data-visual-box-key="visualBoxKey" :template="props.template" />
-      <component :is="props.template.component" v-else :data-visual-box-key="visualBoxKey" :template="props.template" />
-    </template>
-    <!-- 渲染子元素 -->
-    <template v-else-if="props.template.children">
-      <VisualBox2 v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
     </template>
   </div>
 </template>

@@ -63,20 +63,22 @@ export interface VisualBasic<T = any> {
   isRoot?: boolean
   isLocked?: boolean
   disabled?: boolean
+  visualLayoutStyle?: CSSProperties // 不可修改且不会出现在生成的代码之中的样式
+  visualStyle?: CSSProperties // 不可修改且不会出现在生成的代码之中的样式
   style?: CSSProperties // 不可修改的样式
   layoutStyle?: CSSProperties // 用于控制布局的样式
-  layoutClassList?: string[]
   customStyle?: CSSProperties // 自定义的样式
+  layoutClassList?: string[]
   customClassList?: string[]
-  component?: string
-  componentType?: 'element' | 'visual'
   props?: T
   options?: VisualBoxOption[]
   bindOptions?: VisualBoxOption[]
-  children?: VisualBasic[]
-  content?: any
   bindMethodMap?: Record<string, any>
   bindPropMap?: Record<string, any>
+  componentType?: 'element' | 'visual'
+  component?: string // 优先级最高
+  children?: VisualBasic[] // 第二优先级
+  content?: any // 第三优先级
 }
 
 export interface VisualBoxOptionItem {
@@ -102,6 +104,7 @@ export interface VisualBoxOption {
   max?: number
   bindAble?: boolean
   bindProp?: string
+  description?: string
 }
 
 export interface VisualBoxGroup {

@@ -12,8 +12,10 @@ Object.keys(modules).forEach((key) => {
 
 export const visualBasicGroupItems = visualComponents.filter((item) => item.visualBoxGroup === 'basic')
 export const visualContainerGroupItems = visualComponents.filter((item) => item.visualBoxGroup === 'container')
+export const visualFormGroupItems = visualComponents.filter((item) => item.visualBoxGroup === 'form')
 
 export const visualComponentGroups: VisualBoxGroup[] = [
   { group: 'container', groupName: '容器组件', components: visualContainerGroupItems },
   { group: 'basic', groupName: '基础组件', components: visualBasicGroupItems },
+  { group: 'form', groupName: '表单组件', components: visualFormGroupItems },
 ]

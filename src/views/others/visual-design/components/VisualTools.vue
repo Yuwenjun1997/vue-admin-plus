@@ -14,6 +14,11 @@
           <Icon icon="line-md:arrow-close-down" />
         </div>
       </el-tooltip>
+      <el-tooltip content="复制" effect="dark" placement="left">
+        <div class="visual-tools__control" @click="handleCopy">
+          <Icon icon="bi:copy" />
+        </div>
+      </el-tooltip>
       <el-tooltip content="删除" effect="dark" placement="left">
         <div class="visual-tools__control" @click="handleDelete">
           <Icon icon="ep:delete" />
@@ -23,11 +28,6 @@
     <el-tooltip :content="isLocked ? '解锁' : '锁定'" effect="dark" placement="left">
       <div class="visual-tools__control" @click="toggleLock">
         <Icon :icon="!isLocked ? 'ep:unlock' : 'ep:lock'" />
-      </div>
-    </el-tooltip>
-    <el-tooltip content="复制" effect="dark" placement="left">
-      <div class="visual-tools__control" @click="handleCopy">
-        <Icon icon="bi:copy" />
       </div>
     </el-tooltip>
     <el-tooltip content="选择父级" effect="dark" placement="left">

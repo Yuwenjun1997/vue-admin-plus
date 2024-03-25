@@ -16,6 +16,11 @@
           </template>
         </el-popover>
       </template>
+      <template v-if="item.formType === 'propSelect'">
+        <el-select v-model="item.bindProp" clearable @change="handleChange">
+          <el-option v-for="(v, index) in variables" :key="index" :label="v.name" :value="v.variableName" />
+        </el-select>
+      </template>
       <template v-if="item.formType === 'input'">
         <el-input v-model="item.value" clearable :disabled="isDisabled(item)" @blur="handleChange" />
       </template>
@@ -85,6 +90,8 @@
           @change="handleChange"
         />
       </template>
+
+      <div v-if="item.description" class="text-xs mt-2 vad-text-color-placeholder">{{ item.description }}</div>
     </el-form-item>
 
     <el-dialog

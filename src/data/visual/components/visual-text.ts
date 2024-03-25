@@ -13,7 +13,6 @@ export const visualText: VisualBasic<VisualTextProps> = {
   isDeletable: true,
   isEditable: true,
   disabled: true,
-  component: 'VisualText',
   content: '这是一行文本',
   options: [
     {

@@ -10,16 +10,13 @@
     width="1200px"
   >
     <el-tabs v-model="activeCodeExportTab" type="border-card">
-      <el-tab-pane label="html" name="html">
+      <el-tab-pane label="HTML" name="html">
         <VadCodeEditor v-model="htmlCode" mode="html" :readonly="true" :user-worker="false" />
       </el-tab-pane>
-      <el-tab-pane label="css" name="css">
+      <el-tab-pane label="CSS" name="css">
         <VadCodeEditor v-model="cssCode" mode="css" :readonly="true" :user-worker="false" />
       </el-tab-pane>
-      <el-tab-pane label="vue2" name="vue2">
-        <VadCodeEditor v-model="vue2Code" mode="vue" :readonly="true" :user-worker="false" />
-      </el-tab-pane>
-      <el-tab-pane label="vue3" name="vue3">
+      <el-tab-pane label="VUE3" name="vue3">
         <VadCodeEditor v-model="vue3Code" mode="vue" :readonly="true" :user-worker="false" />
       </el-tab-pane>
     </el-tabs>
@@ -33,7 +30,7 @@
 
 <script setup lang="ts">
 import VadCodeEditor from '@/components/VadCodeEditor/index.vue'
-import { genHtml, genVue2, genVue3 } from '@/plugins/visual-box'
+import { genHtml, genVue3 } from '@/plugins/visual-box'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { useClipboard } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
@@ -48,14 +45,12 @@ const activeCodeExportTab = ref<string>('html')
 
 const htmlCode = ref<string>('')
 const cssCode = ref<string>('')
-const vue2Code = ref<string>('')
 const vue3Code = ref<string>('')
 
 const showCode = computed(() => {
   let code = ''
   if (activeCodeExportTab.value === 'html') code = htmlCode.value
   if (activeCodeExportTab.value === 'css') code = cssCode.value
-  if (activeCodeExportTab.value === 'vue2') code = vue2Code.value
   if (activeCodeExportTab.value === 'vue3') code = vue3Code.value
   return code
 })
@@ -63,7 +58,6 @@ const showCode = computed(() => {
 const ext = computed(() => {
   if (activeCodeExportTab.value === 'html') return 'html'
   if (activeCodeExportTab.value === 'css') return 'css'
-  if (activeCodeExportTab.value === 'vue2') return 'vue'
   if (activeCodeExportTab.value === 'vue3') return 'vue'
 })
 
@@ -83,7 +77,6 @@ const showCodeExportModal = () => {
   const { html, css } = genHtml(visualBoxStore.flatVisualBoxTemplates)
   htmlCode.value = html
   cssCode.value = css
-  vue2Code.value = genVue2(visualBoxStore.flatVisualBoxTemplates)
   vue3Code.value = genVue3(visualBoxStore.flatVisualBoxTemplates)
   showCodeModal.value = true
 }

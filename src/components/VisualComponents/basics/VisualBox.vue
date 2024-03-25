@@ -10,9 +10,9 @@
       'is-root': isRoot,
     }"
     :data-visual-box-key="props.template.visualBoxKey"
-    :style="props.template.layoutStyle"
+    :style="layoutStyles"
     :title="props.template.visualBoxName"
-    @click.stop="handleClick"
+    @click="handleClick"
   >
     <div
       ref="visualBoxWrap"
@@ -59,12 +59,17 @@ const classList = computed(() => {
 })
 
 const wrapStyles = computed(() => {
-  return [props.template.style, props.template.customStyle]
+  return [props.template.visualStyle, props.template.style, props.template.customStyle]
+})
+
+const layoutStyles = computed(() => {
+  return [props.template.visualLayoutStyle, props.template.layoutStyle]
 })
 
 const visualBoxWrap = ref<HTMLElement>()
 
-const handleClick = () => {
+const handleClick = (event: MouseEvent) => {
+  if (props.template.isEditable) event.stopPropagation()
   toggleActive(props.template)
 }
 
@@ -140,6 +145,7 @@ onMounted(() => {
     inset: 0;
     display: block;
     border: 1px dotted var(--el-border-color);
+    // z-index: 10;
   }
 
   &.active {

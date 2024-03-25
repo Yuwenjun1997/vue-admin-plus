@@ -1,1 +1,1 @@
-export { genHtml, genVue2, genVue3, genPreviewHtml } from './code-generator.ts'
+export { genHtml, genVue3, genPreviewHtml } from './code-generator.ts'

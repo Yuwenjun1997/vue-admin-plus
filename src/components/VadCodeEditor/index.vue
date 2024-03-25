@@ -7,7 +7,6 @@
 
 <script lang="ts" setup name="VadCodeEditor">
 import ace from 'ace-builds'
-
 import 'ace-builds/src-min-noconflict/ext-beautify'
 import 'ace-builds/src-min-noconflict/theme-github' // 默认设置的主题
 import 'ace-builds/src-min-noconflict/theme-github_dark' // 默认设置的主题

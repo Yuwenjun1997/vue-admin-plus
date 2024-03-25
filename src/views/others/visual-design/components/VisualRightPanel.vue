@@ -45,10 +45,10 @@
           </div>
         </el-scrollbar>
       </el-tab-pane>
-      <el-tab-pane label="组件内容" lazy name="ComponentData">
+      <el-tab-pane label="动作" lazy name="ComponentData">
         <template #label>
           <Icon icon="line-md:telegram" />
-          <span class="ml-1">组件内容</span>
+          <span class="ml-1">动作</span>
         </template>
         <el-scrollbar height="100%">
           <div class="overflow-hidden p-2">

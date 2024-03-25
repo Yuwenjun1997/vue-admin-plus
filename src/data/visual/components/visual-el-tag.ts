@@ -11,6 +11,7 @@ export const visualElTag: VisualBasic = {
   disabled: true,
   component: 'el-tag',
   componentType: 'element',
+  content: '标签',
   props: {
     type: 'primary',
     size: 'default',
@@ -20,6 +21,15 @@ export const visualElTag: VisualBasic = {
     round: false,
   },
   options: [
+    {
+      groupName: '基础信息',
+      target: 'root',
+      formType: 'input',
+      label: '文本内容',
+      property: 'content',
+      bindAble: true,
+      bindProp: ''
+    },
     {
       groupName: '基础信息',
       target: 'props',
@@ -85,29 +95,6 @@ export const visualElTag: VisualBasic = {
       formType: 'switch',
       label: '是否为圆形',
       property: 'round',
-    },
-  ],
-  children: [
-    {
-      visualBoxKey: uuidv4(),
-      visualBoxName: '标签内容',
-      isEditable: true,
-      isLocked: true,
-      disabled: true,
-      component: 'VisualText',
-      customStyle: {},
-      props: {
-        content: '标签内容',
-      },
-      bindOptions: [
-        {
-          groupName: '基础信息',
-          target: 'props',
-          formType: 'textarea',
-          label: '文本内容',
-          property: 'content',
-        },
-      ],
     },
   ],
 }
