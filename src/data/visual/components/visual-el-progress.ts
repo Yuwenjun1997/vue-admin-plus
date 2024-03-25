@@ -11,13 +11,6 @@ export const visualElProgress: VisualBasic = {
   disabled: true,
   component: 'el-progress',
   componentType: 'element',
-  bindProps: [
-    {
-      propName: 'percentage',
-      propType: 'number',
-      defaultValue: 0,
-    },
-  ],
   props: {
     percentage: 10,
     type: 'line',
@@ -140,7 +133,6 @@ export const visualElProgress: VisualBasic = {
       property: 'striped-flow',
     },
   ],
-  bindOptions: [],
 }
 
 export default visualElProgress

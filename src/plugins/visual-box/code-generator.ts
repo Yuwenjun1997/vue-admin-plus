@@ -5,7 +5,7 @@ import { getVue2Template } from './template/vue2-code'
 import { getVue3Template } from './template/vue3-code'
 import { getPreviewTemplate } from './template/preview-code'
 import { isNumberStr } from '@/utils'
-import { VisualBasic, VisualBoxBindMethod, VisualBoxBindPropOption } from '@/types/visual-box'
+import { VisualBasic, VisualBoxBindMethodOption, VisualBoxBindPropOption } from '@/types/visual-box'
 import { storeToRefs } from 'pinia'
 import { useVisualGlobal } from '@/store/modules/visual-global'
 import { groupBy, map, unionBy } from 'lodash'
@@ -29,10 +29,10 @@ let CLASS_NAME_INDEX = 0
 
 let styleSheetList: Record<string, string>[] = []
 
-let bindProps: VisualBoxBindPropOption[] = []
-
 let BIND_METHOD_INDEX = 0
-let bindMethods: VisualBoxBindMethod[] = []
+
+let bindPropOptions: VisualBoxBindPropOption[] = []
+let bindMethodOptions: VisualBoxBindMethodOption[] = []
 
 // 将style抽离出来生成class
 function handleClassAndStyle(node: Parse5Node) {
@@ -57,7 +57,7 @@ function handleClassAndStyle(node: Parse5Node) {
 function handleEvents(node: Parse5Node) {
   const visualBoxKey = node.attrs.find((attr) => attr.name === 'data-visual-box-key')?.value
   if (!visualBoxKey) return
-  const bindMethodList = bindMethods.filter((item) => item.visualBoxKey === visualBoxKey)
+  const bindMethodList = bindMethodOptions.filter((item) => item.visualBoxKey === visualBoxKey)
   bindMethodList.forEach((method) => {
     if (!method.bindMethodName) return
     node.attrs.push({ name: `@${method.trigger}`, value: method.bindMethodName })
@@ -74,7 +74,7 @@ function traverseAST(node: Parse5Node) {
     node.attrs = node.attrs.filter((attr) => attr.value && !FILTER_ATTR_NAMES.includes(attr.name))
     node.attrs = node.attrs.filter((attr) => attr.value !== 'false')
     node.attrs.forEach((attr) => {
-      const bindProp = bindProps.find((item) => item.propName === attr.name)
+      const bindProp = bindPropOptions.find((item) => item.propName === attr.name)
       if (bindProp && bindProp.bindPropName) {
         attr.name = `:${attr.name}`
         attr.value = bindProp.bindPropName
@@ -95,7 +95,7 @@ function genCssSheet() {
 
 // 生成vue对应版本的method tokens并返回全部methodNames
 function genVueMethodTokens(type: 'vue2' | 'vue3') {
-  const methods = unionBy(bindMethods, 'methodName') // 去重
+  const methods = unionBy(bindMethodOptions, 'methodName') // 去重
   const methodNames: string[] = methods.map((item) => item.methodName || '').filter((item) => item)
   const methodTokens = methods.map((item) => {
     if (!item.bindMethodName) return ''
@@ -106,15 +106,15 @@ function genVueMethodTokens(type: 'vue2' | 'vue3') {
 
 // 处理函数绑定
 function handleBindMethods(template: VisualBasic) {
-  if (!template.methods) return
-  Object.keys(template.methods).forEach((key) => {
+  if (!template.bindMethodMap) return
+  Object.keys(template.bindMethodMap).forEach((key) => {
     const [prefix, suffix] = key.split(':')
-    const value = template.methods && template.methods[key]
+    const value = template.bindMethodMap && template.bindMethodMap[key]
     if (!value) return
     if (prefix === '#bind') {
       const globalMethod = globalMethods.value.find((m) => m.methodName === value)
       if (!globalMethod) return
-      bindMethods.push({
+      bindMethodOptions.push({
         trigger: globalMethod.trigger,
         methodName: globalMethod.methodName,
         bindMethodName: `${globalMethod.methodName}($evt${globalMethod.params})`,
@@ -123,7 +123,7 @@ function handleBindMethods(template: VisualBasic) {
       })
     } else {
       const methodName = `${suffix}_${++BIND_METHOD_INDEX}`
-      bindMethods.push({
+      bindMethodOptions.push({
         trigger: prefix,
         methodName: methodName,
         bindMethodName: `${methodName}($evt)`,
@@ -136,13 +136,13 @@ function handleBindMethods(template: VisualBasic) {
 
 // 处理属性绑定
 function handleBindProps(template: VisualBasic) {
-  if (!template.bindProps) return
-  Object.keys(template.bindProps).forEach((key) => {
-    const bindPropName = template.bindProps && template.bindProps[key]
+  if (!template.bindPropMap) return
+  Object.keys(template.bindPropMap).forEach((key) => {
+    const bindPropName = template.bindPropMap && template.bindPropMap[key]
     if (!bindPropName) return
     const globalVariable = globalVariables.value.find((v) => v.variableName === bindPropName)
     if (!globalVariable) return
-    bindProps.push({
+    bindPropOptions.push({
       propName: key,
       bindPropName: bindPropName,
       propType: globalVariable.valueType,
@@ -164,8 +164,8 @@ function genSetup(templates: VisualBasic[]): Parse5Node {
   BIND_METHOD_INDEX = 0
   CLASS_NAME_INDEX = 0
   styleSheetList = []
-  bindProps = []
-  bindMethods = []
+  bindPropOptions = []
+  bindMethodOptions = []
   templates.forEach((template) => {
     handleBindMethods(template)
     handleBindProps(template)
@@ -182,7 +182,7 @@ export function genHtml(templates: VisualBasic[]) {
   const { methodNames, methodTokens } = genVueMethodTokens('vue3')
   const template = parse5.serialize(rootNode as any)
   return {
-    html: getHtmlTemplate(template, bindProps, methodNames, methodTokens),
+    html: getHtmlTemplate(template, bindPropOptions, methodNames, methodTokens),
     css: genCssSheet(),
   }
 }
@@ -193,7 +193,7 @@ export function genVue2(templates: VisualBasic[]) {
   const { methodTokens } = genVueMethodTokens('vue2')
   const template = parse5.serialize(rootNode as any)
   const styleSheet = genCssSheet()
-  return getVue2Template(template, styleSheet, bindProps, methodTokens)
+  return getVue2Template(template, styleSheet, bindPropOptions, methodTokens)
 }
 
 // 生成工程化vue3 sfc文件
@@ -202,7 +202,7 @@ export function genVue3(templates: VisualBasic[]) {
   const { methodTokens } = genVueMethodTokens('vue3')
   const template = parse5.serialize(rootNode as any)
   const styleSheet = genCssSheet()
-  return getVue3Template(template, styleSheet, bindProps, methodTokens)
+  return getVue3Template(template, styleSheet, bindPropOptions, methodTokens)
 }
 
 // 生成预览(html版本)
@@ -211,5 +211,5 @@ export function genPreviewHtml(templates: VisualBasic[]) {
   const { methodNames, methodTokens } = genVueMethodTokens('vue3')
   const template = parse5.serialize(rootNode as any)
   const styleSheet = genCssSheet()
-  return getPreviewTemplate(template, styleSheet, bindProps, methodNames, methodTokens)
+  return getPreviewTemplate(template, styleSheet, bindPropOptions, methodNames, methodTokens)
 }

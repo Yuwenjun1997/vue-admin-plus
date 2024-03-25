@@ -64,8 +64,6 @@ declare module 'vue' {
     VisualCssInput: typeof import('./components/VisualComponents/helper/VisualCssInput.vue')['default']
     VisualElement: typeof import('./components/VisualComponents/render/VisualElement.vue')['default']
     VisualImage: typeof import('./components/VisualComponents/basics/VisualImage.vue')['default']
-    VisualMethodInput: typeof import('./components/VisualComponents/helper/VisualMethodInput.vue')['default']
-    VisualText: typeof import('./components/VisualComponents/basics/VisualText.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

@@ -1,14 +1,17 @@
 import { CSSProperties } from 'vue'
 
+export type VariableType = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'function'
+export type MethodTriggerType = 'click' | 'hover' | 'change' | 'input' | 'focus' | 'blur'
+export type VisualBoxOptionTarget = 'props' | 'root' | 'customStyle' | 'layoutStyle' | 'bindMethodMap' | 'bindPropMap'
+
 export interface VisualBoxRenderOption {
   groupId: string
   groupName: string
   options: VisualBoxOption[]
 }
 
-export type VariableType = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'function'
-
 export interface VisualBoxGlobalVariable {
+  uuid: string
   name: string
   variableName: string
   valueType: VariableType
@@ -16,9 +19,8 @@ export interface VisualBoxGlobalVariable {
   description?: string
 }
 
-export type MethodTriggerType = 'click' | 'hover' | 'change' | 'input' | 'focus' | 'blur'
-
 export interface VisualBoxGlobalMethod {
+  uuid: string
   name: string
   methodName: string
   trigger: MethodTriggerType
@@ -32,10 +34,6 @@ export interface VisualBoxGlobal {
   methods: VisualBoxGlobalMethod[]
 }
 
-export interface VisualBoxMethod extends Record<string, any> {}
-
-export interface VisualBoxBindProp extends Record<string, any> {}
-
 export interface VisualBoxBindPropOption {
   propName: string
   bindPropName: string
@@ -44,7 +42,7 @@ export interface VisualBoxBindPropOption {
   visualBoxKey: string
 }
 
-export interface VisualBoxBindMethod {
+export interface VisualBoxBindMethodOption {
   trigger: string
   methodName: string
   bindMethodName?: string
@@ -73,12 +71,12 @@ export interface VisualBasic<T = any> {
   component?: string
   componentType?: 'element' | 'visual'
   props?: T
-  bindOptions?: VisualBoxOption[]
   options?: VisualBoxOption[]
+  bindOptions?: VisualBoxOption[]
   children?: VisualBasic[]
-  methods?: VisualBoxMethod
-  bindProps?: VisualBoxBindProp
-  content?: string
+  content?: any
+  bindMethodMap?: Record<string, any>
+  bindPropMap?: Record<string, any>
 }
 
 export interface VisualBoxOptionItem {
@@ -90,7 +88,7 @@ export interface VisualBoxOption {
   order?: number
   formType: string
   groupName: string
-  target: 'props' | 'root' | 'customStyle' | 'layoutStyle' | 'methods'
+  target: VisualBoxOptionTarget
   label: string
   property: string
   value?: any
@@ -103,7 +101,7 @@ export interface VisualBoxOption {
   min?: number
   max?: number
   bindAble?: boolean
-  bindProps?: string
+  bindProp?: string
 }
 
 export interface VisualBoxGroup {

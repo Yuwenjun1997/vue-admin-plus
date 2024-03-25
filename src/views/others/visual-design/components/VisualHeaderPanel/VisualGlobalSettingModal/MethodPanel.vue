@@ -70,11 +70,13 @@ import { useVisualGlobal } from '@/store/modules/visual-global'
 import { MethodTriggerType, VisualBoxGlobalMethod } from '@/types/visual-box'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'
+import { v4 as uuidv4 } from 'uuid'
 
 const visualGlobalStore = useVisualGlobal()
 const { methods } = storeToRefs(visualGlobalStore)
 
 class Method implements VisualBoxGlobalMethod {
+  uuid: string = uuidv4()
   name: string = ''
   methodName: string = ''
   trigger: MethodTriggerType = 'click'
@@ -139,7 +141,7 @@ const handleSave = async () => {
   try {
     if (showModalType.value === 'form') {
       await formValidate.value?.validate()
-      visualGlobalStore.addMethod(unref(form))
+      visualGlobalStore.saveMethod(unref(form))
     } else {
       const methods = JSON.parse(unref(methodsJson)) as VisualBoxGlobalMethod[]
       visualGlobalStore.methods = methods

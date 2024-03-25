@@ -30,8 +30,11 @@ import { useClipboard } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
 import { isArray } from 'lodash'
 import { saveAs } from 'file-saver'
+import { VisualBoxExportJsonData } from '@/helper/visual.helper'
+import { useVisualGlobal } from '@/store/modules/visual-global'
 
 const visualBoxStore = useVisualBoxStore()
+const visualGlobalStore = useVisualGlobal()
 
 // 导入导出json
 const showJsonCodeModal = ref<boolean>(false)
@@ -51,11 +54,12 @@ const handleImportJson = () => {
     if (jsonCode.value.length === 0) {
       return ElMessage.warning('导入数据必须为json格式')
     }
-    const data = JSON.parse(jsonCode.value)
-    if (!isArray(data)) {
+    const data: VisualBoxExportJsonData = JSON.parse(jsonCode.value) as VisualBoxExportJsonData
+    if (!isArray(data.visualBoxTemplates)) {
       return ElMessage.error('导入失败，请检查数据格式')
     }
-    visualBoxStore.initVisualBoxTemplates(data)
+    visualBoxStore.initVisualBoxTemplates(data.visualBoxTemplates)
+    visualGlobalStore.init(data.visaulBoxGlobalOption)
     ElMessage.success('导入成功')
     jsonCode.value = ''
     showJsonCodeModal.value = false
@@ -72,7 +76,9 @@ const handleSaveJsonAsFile = () => {
 const showJsonExportModal = () => {
   jsonCodeModalType.value = 'export'
   jsonCodeModalTitle.value = '导出Json'
-  jsonCode.value = JSON.stringify(visualBoxStore.visualBoxTemplates, null, 2)
+  const jsonData = new VisualBoxExportJsonData()
+  jsonData.visualBoxTemplates = unref(visualBoxStore.visualBoxTemplates)
+  jsonCode.value = JSON.stringify(jsonData, null, 2)
   showJsonCodeModal.value = true
 }
 

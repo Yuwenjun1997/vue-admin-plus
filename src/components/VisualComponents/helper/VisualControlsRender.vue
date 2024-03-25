@@ -3,7 +3,7 @@
     <el-form-item v-for="item in props.options" :key="item.property + Math.random()" :label="item.label">
       <template #label v-if="item.bindAble">
         <el-popover title="绑定属性" trigger="click">
-          <el-select v-model="item.bindProps" clearable @change="handleChange">
+          <el-select v-model="item.bindProp" clearable @change="handleChange">
             <el-option v-for="(v, index) in variables" :key="index" :label="v.name" :value="v.variableName" />
           </el-select>
           <template #reference>
@@ -184,12 +184,12 @@ const handleSaveCode = () => {
 }
 
 const getBindTip = (item: VisualBoxOption) => {
-  if (!item.bindProps) return '暂未绑定任何属性'
-  return `已绑定属性名{${item.bindProps}}`
+  if (!item.bindProp) return '暂未绑定任何属性'
+  return `已绑定属性名{${item.bindProp}}`
 }
 
 const isDisabled = (item: VisualBoxOption) => {
-  return item.disabled || !!(item.bindAble && item.bindProps)
+  return item.disabled || !!(item.bindAble && item.bindProp)
 }
 </script>
 

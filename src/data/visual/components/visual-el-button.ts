@@ -11,7 +11,6 @@ export const visualElButton: VisualBasic = {
   disabled: true,
   component: 'el-button',
   componentType: 'element',
-  methods: {},
   props: {
     color: '#409eff',
   },
@@ -62,7 +61,7 @@ export const visualElButton: VisualBasic = {
   bindOptions: [
     {
       groupName: '绑定事件',
-      target: 'methods',
+      target: 'bindMethodMap',
       formType: 'methodSelect',
       label: '点击事件',
       property: '#bind:handleClick',
@@ -70,7 +69,7 @@ export const visualElButton: VisualBasic = {
     },
     {
       groupName: '自定义事件',
-      target: 'methods',
+      target: 'bindMethodMap',
       formType: 'codeInput',
       label: '点击事件',
       property: 'click:handleClick',
@@ -84,23 +83,19 @@ export const visualElButton: VisualBasic = {
       isEditable: true,
       isLocked: true,
       disabled: true,
-      component: 'VisualText',
       customStyle: {
         color: '#ffffff',
-      },
-      props: {
-        content: '按钮',
       },
       options: [
         {
           groupName: '基础信息',
-          target: 'props',
+          target: 'root',
           formType: 'input',
           label: '文本内容',
           property: 'content',
         },
       ],
-      bindOptions: [],
+      content: '按钮',
     },
   ],
 }

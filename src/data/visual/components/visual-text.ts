@@ -23,7 +23,7 @@ export const visualText: VisualBasic<VisualTextProps> = {
       label: '文本内容',
       property: 'content',
       bindAble: true,
-      bindProps: '',
+      bindProp: '',
     },
   ],
 }

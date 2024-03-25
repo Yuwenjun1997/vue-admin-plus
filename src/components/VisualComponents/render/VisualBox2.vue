@@ -41,11 +41,11 @@ const wrapStyles = computed(() => {
 const visualBoxKey = computed(() => props.template.visualBoxKey)
 
 const isBindContentProp = computed(() => {
-  if (!props.template.bindProps) return false
-  return Object.keys(props.template.bindProps).some((key) => key === 'content')
+  if (!props.template.bindPropMap) return false
+  return Object.keys(props.template.bindPropMap).some((key) => key === 'content')
 })
 
 const bindPropStr = computed(() => {
-  return `{{${props.template.bindProps?.content}}}`
+  return `{{${props.template.bindPropMap?.content}}}`
 })
 </script>

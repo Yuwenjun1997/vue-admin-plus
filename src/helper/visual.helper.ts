@@ -1,4 +1,4 @@
-import { VisualBasic, VisualBoxOption, VisualBoxRenderOption } from '@/types/visual-box'
+import { VisualBasic, VisualBoxGlobal, VisualBoxOption, VisualBoxRenderOption } from '@/types/visual-box'
 import { cloneDeep } from 'lodash'
 import { CSSProperties } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
@@ -34,26 +34,20 @@ export class VisualBoxTarget<T = any> {
       option.order = option.order || this.orderCount++
       if (option.target === 'root') {
         option.value = this.target[option.property as keyof VisualBasic] || option.value
-      }
-      if (option.target === 'customStyle' && this.target.customStyle) {
+      } else if (option.target === 'customStyle' && this.target.customStyle) {
         option.value = this.target.customStyle[option.property as keyof CSSProperties] || option.value
-      }
-      if (option.target === 'layoutStyle' && this.target.layoutStyle) {
+      } else if (option.target === 'layoutStyle' && this.target.layoutStyle) {
         option.value = this.target.layoutStyle[option.property as keyof CSSProperties] || option.value
-      }
-      if (option.target === 'props' && this.target.props) {
+      } else if (option.target === 'props' && this.target.props) {
         // @ts-ignore
         option.value = this.target.props[option.property] || option.value
+      } else if (option.target === 'bindMethodMap' && this.target.bindMethodMap) {
+        option.value = this.target.bindMethodMap[option.property] || option.value
       }
-      if (option.target === 'methods' && this.target.methods) {
-        option.value = this.target.methods[option.property] || option.value
-      }
-      if (option.bindAble && option.bindProps) {
+      if (option.bindAble && option.bindProp) {
         const { variables } = useVisualGlobal()
-        const variable = variables.find((v) => v.variableName === option.bindProps)
-        if (variable) {
-          option.value = variable.defaultValue
-        }
+        const variable = variables.find((v) => v.variableName === option.bindProp)
+        option.value = variable?.defaultValue
       }
       const group = results.find((r) => r.groupName === option.groupName)
       if (group) {
@@ -70,44 +64,44 @@ export class VisualBoxTarget<T = any> {
     this.target.layoutStyle = {}
     // @ts-ignore
     this.target.props = {}
-    // @ts-ignore
-    this.target.methods = {}
-    // @ts-ignore
-    this.target.bindProps = {}
-    const allOptions: VisualBoxOption[] = [...this.basicOptions, ...this.customOptions, ...this.bindOptions]
-    allOptions.forEach((option) => {
-      if (option.bindAble && option.bindProps) {
+    this.target.bindMethodMap = {}
+    this.target.bindPropMap = {}
+    const applyOptions = [...this.basicOptions, ...this.customOptions, ...this.bindOptions]
+    applyOptions.forEach((option) => {
+      if (option.bindAble && option.bindProp) {
         const { variables } = useVisualGlobal()
-        const variable = variables.find((v) => v.variableName === option.bindProps)
-        if (variable) {
-          option.value = variable.defaultValue
-        }
+        const variable = variables.find((v) => v.variableName === option.bindProp)
+        option.value = variable?.defaultValue
+        // @ts-ignore
+        this.target.bindPropMap[option.property] = option.bindProp
       }
       if (option.target === 'customStyle') {
         // @ts-ignore
         this.target.customStyle[option.property] = option.value
-      }
-      if (option.target === 'layoutStyle') {
+      } else if (option.target === 'layoutStyle') {
         // @ts-ignore
         this.target.layoutStyle[option.property] = option.value
-      }
-      if (option.target === 'root') {
+      } else if (option.target === 'root') {
         // @ts-ignore
         this.target[option.property] = option.value
-      }
-      if (option.target === 'props') {
+      } else if (option.target === 'props') {
         // @ts-ignore
         this.target.props[option.property] = option.value
-      }
-      if (option.target === 'methods') {
+      } else if (option.target === 'bindMethodMap') {
         // @ts-ignore
-        this.target.methods[option.property] = option.value
-      }
-      if (option.bindAble) {
-        // @ts-ignore
-        this.target.bindProps[option.property] = option.bindProps
+        this.target.bindMethodMap[option.property] = option.value
       }
     })
     console.log(this.target)
+  }
+}
+
+export class VisualBoxExportJsonData {
+  visualBoxTemplates: VisualBasic[] = []
+  visaulBoxGlobalOption: VisualBoxGlobal
+
+  constructor() {
+    const { methods, variables } = useVisualGlobal()
+    this.visaulBoxGlobalOption = { methods, variables }
   }
 }

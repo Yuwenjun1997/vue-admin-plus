@@ -66,11 +66,13 @@ import { useVisualGlobal } from '@/store/modules/visual-global'
 import { VariableType, VisualBoxGlobalVariable } from '@/types/visual-box'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'
+import { v4 as uuidv4 } from 'uuid'
 
 const visualGlobalStore = useVisualGlobal()
 const { variables } = storeToRefs(visualGlobalStore)
 
 class Variable implements VisualBoxGlobalVariable {
+  uuid: string = uuidv4()
   name: string = ''
   variableName: string = ''
   description: string = ''
@@ -133,7 +135,7 @@ const handleSave = async () => {
   try {
     if (showModalType.value === 'form') {
       await formValidate.value?.validate()
-      visualGlobalStore.addVariable(unref(form))
+      visualGlobalStore.saveVariable(unref(form))
     } else {
       const variables = JSON.parse(unref(variablesJson)) as VisualBoxGlobalVariable[]
       visualGlobalStore.variables = variables

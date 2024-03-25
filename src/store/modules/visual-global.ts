@@ -7,8 +7,12 @@ export const useVisualGlobal = defineStore('visualGlobal', {
     variables: [],
   }),
   actions: {
-    addMethod(method: VisualBoxGlobalMethod) {
-      const oldMethod = this.methods.find((m) => m.name === method.name)
+    init(option: VisualBoxGlobal) {
+      this.methods = option.methods
+      this.variables = option.variables
+    },
+    saveMethod(method: VisualBoxGlobalMethod) {
+      const oldMethod = this.methods.find((m) => m.uuid === method.uuid)
       if (oldMethod) {
         Object.assign(oldMethod, method)
       } else {
@@ -18,7 +22,7 @@ export const useVisualGlobal = defineStore('visualGlobal', {
     removeMethod(method: VisualBoxGlobalMethod) {
       this.methods = this.methods.filter((m) => m.name !== method.name)
     },
-    addVariable(variable: VisualBoxGlobalVariable) {
+    saveVariable(variable: VisualBoxGlobalVariable) {
       if (variable.valueType === 'number') variable.defaultValue = Number(variable.defaultValue)
       const oldVariable = this.variables.find((v) => v.name === variable.name)
       if (oldVariable) {
