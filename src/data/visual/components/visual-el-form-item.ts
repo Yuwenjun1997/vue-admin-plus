@@ -30,6 +30,7 @@ export const visualElForm: VisualBasic = {
       visualBoxName: '表单列内容区域',
       isEditable: false,
       isDeletable: false,
+      noWrapper: true,
       visualLayoutStyle: {
         width: '100%',
       },

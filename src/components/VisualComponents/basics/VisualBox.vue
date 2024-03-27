@@ -154,7 +154,7 @@ onMounted(() => {
   }
 
   &.visual-box-ghost {
-    width: 100%;
+    // width: 100%;
     height: 8px;
     min-height: 8px;
     overflow: hidden;

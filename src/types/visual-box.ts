@@ -51,7 +51,7 @@ export interface VisualBoxBindMethodOption {
   params?: string
 }
 
-export interface VisualBasic<T = any> {
+export interface VisualBasic<T = Record<string, any>> {
   visualBoxKey: string
   visualBoxParentKey?: string
   visualBoxGroup?: string
@@ -79,6 +79,7 @@ export interface VisualBasic<T = any> {
   component?: string // 优先级最高
   children?: VisualBasic[] // 第二优先级
   content?: any // 第三优先级
+  noWrapper?: boolean // 是否不渲染容器
 }
 
 export interface VisualBoxOptionItem {

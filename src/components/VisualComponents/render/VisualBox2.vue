@@ -1,34 +1,25 @@
 <!-- eslint-disable vue/no-multiple-template-root -->
 <template>
-  <!-- 渲染组件 -->
+  <!-- 组件渲染 -->
   <template v-if="props.template.component">
     <component
+      v-bind="bindProps"
       :is="props.template.component"
       :class="classList"
       :data-visual-box-key="visualBoxKey"
       :style="wrapStyles"
-      :template="templateType === 'visual' ? props.template : undefined"
-      v-bind="templateType === 'visual' ? undefined : props.template.props"
+      :template="bindTemplate"
     >
-      <template v-if="props.template.children">
-        <VisualBox2 v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
-      </template>
-      <template v-else-if="props.template.content">
-        <template v-if="isBindContentProp">{{ bindPropStr }}</template>
-        <template v-else>{{ props.template.content }}</template>
-      </template>
+      <VisualBox2Content :template="props.template" />
     </component>
   </template>
-  <!-- 渲染子元素 -->
-  <div v-else-if="props.template.children" :class="classList" :data-visual-box-key="visualBoxKey" :style="wrapStyles">
-    <VisualBox2 v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
-  </div>
-  <!-- 渲染内容 -->
+  <!-- 无标签渲染 -->
+  <template v-else-if="template.noWrapper">
+    <VisualBox2Content :template="props.template" />
+  </template>
+  <!-- 默认方式渲染 -->
   <div v-else :class="classList" :data-visual-box-key="visualBoxKey" :style="wrapStyles">
-    <template v-if="props.template.content">
-      <template v-if="isBindContentProp">{{ bindPropStr }}</template>
-      <template v-else>{{ props.template.content }}</template>
-    </template>
+    <VisualBox2Content :template="props.template" />
   </div>
 </template>
 
@@ -55,12 +46,6 @@ const wrapStyles = computed(() => {
 
 const visualBoxKey = computed(() => props.template.visualBoxKey)
 
-const isBindContentProp = computed(() => {
-  if (!props.template.bindPropMap) return false
-  return Object.keys(props.template.bindPropMap).some((key) => key === 'content')
-})
-
-const bindPropStr = computed(() => {
-  return `{{${props.template.bindPropMap?.content}}}`
-})
+const bindProps = computed(() => (templateType.value === 'visual' ? undefined : props.template.props))
+const bindTemplate = computed(() => (templateType.value === 'visual' ? props.template : undefined))
 </script>

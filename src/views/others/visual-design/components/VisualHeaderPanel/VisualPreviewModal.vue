@@ -17,15 +17,16 @@
         <el-radio-button label="H5" value="h5" />
       </el-radio-group>
     </template>
-    <div v-loading="isIframeLoading" class="iframe-container">
-      <iframe ref="previewFrame" height="100%" :width="iframeWidth" />
+    <div ref="previewFrame" v-loading="isIframeLoading" class="iframe-container">
+      <iframe v-if="false" height="100%" :width="iframeWidth" />
     </div>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { useVisualBoxStore } from '@/store/modules/visual-box'
-import { genPreviewHtml } from '@/plugins/visual-box'
+// import { genPreviewHtml } from '@/plugins/visual-box'
+import { renderVisualBox } from '@/plugins/visual-box/render'
 
 const visualBoxStore = useVisualBoxStore()
 
@@ -34,7 +35,7 @@ const handleDeviceChange = (name: string | number | boolean | undefined) => {
 }
 
 // 预览
-const previewFrame = ref<HTMLIFrameElement | null>(null)
+const previewFrame = ref<HTMLElement | null>(null)
 const previewModal = ref<boolean>(false)
 const isIframeLoading = ref<boolean>(true)
 
@@ -45,14 +46,20 @@ const iframeWidth = computed(() => {
 })
 
 const showPreviewModal = async () => {
+  // previewModal.value = true
+  // isIframeLoading.value = true
+  // await nextTick()
+  // if (!previewFrame.value) return
+  // previewFrame.value.srcdoc = genPreviewHtml(visualBoxStore.flatVisualBoxTemplates)
+  // previewFrame.value.onload = () => {
+  //   isIframeLoading.value = false
+  // }
   previewModal.value = true
   isIframeLoading.value = true
   await nextTick()
   if (!previewFrame.value) return
-  previewFrame.value.srcdoc = genPreviewHtml(visualBoxStore.flatVisualBoxTemplates)
-  previewFrame.value.onload = () => {
-    isIframeLoading.value = false
-  }
+  renderVisualBox(previewFrame.value)
+  isIframeLoading.value = false
 }
 
 defineExpose({
@@ -64,6 +71,7 @@ defineExpose({
 .iframe-container {
   width: 100%;
   height: calc(100vh - var(--el-dialog-padding-primary) - var(--el-dialog-padding-primary) - 50px);
+  overflow: auto;
 
   iframe {
     margin: 0 auto;

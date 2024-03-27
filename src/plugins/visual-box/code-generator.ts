@@ -22,15 +22,25 @@ interface Parse5Node {
 
 const { methods: globalMethods, variables: globalVariables } = storeToRefs(useVisualGlobal())
 
+// 需要过滤掉的属性名
 const FILTER_ATTR_NAMES = ['style', 'id', 'title', 'data-visual-box-key']
-const CLASS_NAME_PREFIX = 'gen_'
+
+// 生成的class的名称前缀
+const CLASS_NAME_PREFIX = 'vbox-'
+
+// 生成的class的名称index
 let CLASS_NAME_INDEX = 0
 
-let styleSheetList: Record<string, string>[] = []
-
+// 绑定的方法的index
 let BIND_METHOD_INDEX = 0
 
+// 生成的样式表键值对
+let styleSheetList: Record<string, string>[] = []
+
+// 绑定的属性配置列表
 let bindPropOptions: VisualBoxBindPropOption[] = []
+
+// 绑定的事件配置列表
 let bindMethodOptions: VisualBoxBindMethodOption[] = []
 
 // 将style抽离出来生成class
@@ -59,7 +69,6 @@ function handleEvents(node: Parse5Node) {
   const bindMethodList = bindMethodOptions.filter((item) => item.visualBoxKey === visualBoxKey)
   bindMethodList.forEach((method) => {
     if (!method.bindMethodName) return
-
     node.attrs.push({ name: `@${method.trigger}`, value: method.params ? method.bindMethodName : method.methodName })
   })
   // 合并同名属性

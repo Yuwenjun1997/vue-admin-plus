@@ -22,6 +22,7 @@ export function getPreviewTemplate(
       <style>
         *{box-sizing: border-box;}
         body{margin: 0;font-size: 14px;}
+        .el-button {margin:0 !important;}
       </style>
       <style>${styleSheet}</style>
     </head>

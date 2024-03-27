@@ -13,6 +13,9 @@ export const visualElButton: VisualBasic = {
   component: 'el-button',
   componentType: 'element',
   content: '按钮',
+  visualLayoutStyle: {
+    display: 'inline-block',
+  },
   props: {
     color: '#409eff',
   },
@@ -77,6 +80,15 @@ export const visualElButton: VisualBasic = {
       formType: 'codeInput',
       label: '点击事件',
       property: 'click:handleClick',
+      value: '',
+      description: customBindMehotdDesc,
+    },
+    {
+      groupName: '绑定事件',
+      target: 'bindMethodMap',
+      formType: 'codeInput',
+      label: '点击事件',
+      property: '@click',
       value: '',
       description: customBindMehotdDesc,
     },

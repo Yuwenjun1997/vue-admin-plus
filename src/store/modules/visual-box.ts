@@ -119,7 +119,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
         ElMessage.warning('当前元素已经在第一个位置了')
       } else {
         parent.children = parent.children.filter((i) => i.visualBoxKey !== template.visualBoxKey)
-        parent.children.splice(index - 1, 0, cloneDeep(template))
+        parent.children.splice(index - 1, 0, template)
       }
     },
 
@@ -133,7 +133,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
         ElMessage.warning('当前元素已经在第一个位置了')
       } else {
         parent.children = parent.children.filter((i) => i.visualBoxKey !== template.visualBoxKey)
-        parent.children.splice(index + 1, 0, cloneDeep(template))
+        parent.children.splice(index + 1, 0, template)
       }
     },
 
