@@ -7,7 +7,7 @@
       :is="props.template.component"
       :class="classList"
       :data-visual-box-key="visualBoxKey"
-      :style="wrapStyles"
+      :style="visualStyles"
       :template="bindTemplate"
     >
       <VisualBox2Content :template="props.template" />
@@ -18,7 +18,7 @@
     <VisualBox2Content :template="props.template" />
   </template>
   <!-- 默认方式渲染 -->
-  <div v-else :class="classList" :data-visual-box-key="visualBoxKey" :style="wrapStyles">
+  <div v-else :class="classList" :data-visual-box-key="visualBoxKey" :style="visualStyles">
     <VisualBox2Content :template="props.template" />
   </div>
 </template>
@@ -34,14 +34,10 @@ const props = defineProps<Props>()
 
 const templateType = computed(() => props.template.componentType)
 
-const classList = computed(() => {
-  const layoutClassList = props.template.layoutClassList || []
-  const customClassList = props.template.customClassList || []
-  return [...layoutClassList, ...customClassList]
-})
+const classList = computed(() => props.template.customClassList)
 
-const wrapStyles = computed(() => {
-  return [props.template.style, props.template.layoutStyle, props.template.customStyle]
+const visualStyles = computed(() => {
+  return [props.template.normalStyle, props.template.customStyle]
 })
 
 const visualBoxKey = computed(() => props.template.visualBoxKey)

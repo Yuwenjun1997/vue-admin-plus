@@ -45,7 +45,8 @@
         </el-select>
       </template>
       <template v-if="item.formType === 'codeInput'">
-        <el-input v-model="item.value" clearable disabled placeholder="请输入代码片段" type="textarea" />
+        <el-input v-model="item.bindMehodName" clearable placeholder="事件名称" type="input" />
+        <el-input v-model="item.value" class="mt-1" clearable disabled placeholder="请输入代码片段" type="textarea" />
         <el-button class="!w-full mt-1" size="small" type="primary" @click="handleShowCodeEditor(item)">
           打开编辑器
         </el-button>

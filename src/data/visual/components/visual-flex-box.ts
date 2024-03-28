@@ -11,7 +11,7 @@ export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
   isDeletable: true,
   isEditable: true,
   disabled: false,
-  style: {
+  normalStyle: {
     display: 'flex !important',
   },
   customStyle: {},

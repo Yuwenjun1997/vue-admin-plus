@@ -4,7 +4,7 @@
     :class="classList"
     :data-visual-box-key="props.template.visualBoxKey"
     :options="{ ...defualtSortableOpts, disabled: disabled }"
-    :style="[layoutStyles, wrapStyles]"
+    :style="visualStyles"
     :title="props.template.visualBoxName"
     @click="handleClick"
     @on-end="onEnd"
@@ -39,10 +39,8 @@ const isDraggable = computed(() => !isRoot.value && !isLocked.value)
 const disabled = computed(() => !!(isLocked.value || isDisabled.value))
 
 const classList = computed(() => {
-  const layoutClassList = props.template.layoutClassList || []
   const customClassList = props.template.customClassList || []
   return [
-    ...layoutClassList,
     ...customClassList,
     {
       'is-active': isActive.value,
@@ -53,12 +51,8 @@ const classList = computed(() => {
   ]
 })
 
-const wrapStyles = computed(() => {
-  return [props.template.visualStyle, props.template.style, props.template.customStyle]
-})
-
-const layoutStyles = computed(() => {
-  return [props.template.visualLayoutStyle, props.template.layoutStyle]
+const visualStyles = computed(() => {
+  return [props.template.layoutStyle, props.template.normalStyle, props.template.customStyle]
 })
 
 const handleClick = (event: MouseEvent) => {

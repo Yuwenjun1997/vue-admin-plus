@@ -11,7 +11,7 @@ export const visualElForm: VisualBasic = {
   disabled: true,
   component: 'el-form-item',
   componentType: 'element',
-  visualStyle: { display: 'flex', flexDirection: 'column' },
+  layoutStyle: { display: 'flex', flexDirection: 'column' },
   props: {
     label: '表单列',
   },
@@ -31,10 +31,7 @@ export const visualElForm: VisualBasic = {
       isEditable: false,
       isDeletable: false,
       noWrapper: true,
-      visualLayoutStyle: {
-        width: '100%',
-      },
-      visualStyle: {
+      layoutStyle: {
         width: '100%',
       },
     },

@@ -3,6 +3,7 @@ import { cloneDeep } from 'lodash'
 import { CSSProperties } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { useVisualGlobal } from '@/store/modules/visual-global'
+import { generateRandomFunctionName } from '@/utils'
 
 export class VisualBoxTarget<T = any> {
   orderCount: number = 1
@@ -36,13 +37,14 @@ export class VisualBoxTarget<T = any> {
         option.value = this.target[option.property as keyof VisualBasic] || option.value
       } else if (option.target === 'customStyle' && this.target.customStyle) {
         option.value = this.target.customStyle[option.property as keyof CSSProperties] || option.value
-      } else if (option.target === 'layoutStyle' && this.target.layoutStyle) {
-        option.value = this.target.layoutStyle[option.property as keyof CSSProperties] || option.value
       } else if (option.target === 'props' && this.target.props) {
         // @ts-ignore
         option.value = this.target.props[option.property] || option.value
       } else if (option.target === 'bindMethodMap' && this.target.bindMethodMap) {
         option.value = this.target.bindMethodMap[option.property] || option.value
+      } else if (option.target === 'customMethod' && this.target.customMethod) {
+        option.value = this.target.customMethod[option.property] || option.value
+        option.bindMehodName = option.bindMehodName || generateRandomFunctionName()
       }
       if (option.bindAble && option.bindProp) {
         const { variables } = useVisualGlobal()
@@ -66,6 +68,7 @@ export class VisualBoxTarget<T = any> {
     this.target.props = {}
     this.target.bindMethodMap = {}
     this.target.bindPropMap = {}
+    this.target.customMethod = {}
     const applyOptions = [...this.basicOptions, ...this.customOptions, ...this.bindOptions]
     applyOptions.forEach((option) => {
       if (option.bindAble && option.bindProp) {
@@ -78,9 +81,6 @@ export class VisualBoxTarget<T = any> {
       if (option.target === 'customStyle') {
         // @ts-ignore
         this.target.customStyle[option.property] = option.value
-      } else if (option.target === 'layoutStyle') {
-        // @ts-ignore
-        this.target.layoutStyle[option.property] = option.value
       } else if (option.target === 'root') {
         // @ts-ignore
         this.target[option.property] = option.value
@@ -90,6 +90,9 @@ export class VisualBoxTarget<T = any> {
       } else if (option.target === 'bindMethodMap') {
         // @ts-ignore
         this.target.bindMethodMap[option.property] = option.value
+      } else if (option.target === 'customMethod') {
+        // @ts-ignore
+        this.target.customMethod[option.property] = option.value
       }
     })
     console.log(this.target)

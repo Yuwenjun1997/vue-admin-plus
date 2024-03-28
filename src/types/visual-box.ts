@@ -2,7 +2,14 @@ import { CSSProperties } from 'vue'
 
 export type VariableType = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'function'
 export type MethodTriggerType = 'click' | 'hover' | 'change' | 'input' | 'focus' | 'blur'
-export type VisualBoxOptionTarget = 'props' | 'root' | 'customStyle' | 'layoutStyle' | 'bindMethodMap' | 'bindPropMap'
+export type VisualBoxOptionTarget =
+  | 'props'
+  | 'root'
+  | 'customStyle'
+  | 'normalStyle'
+  | 'bindMethodMap'
+  | 'bindPropMap'
+  | 'customMethod'
 
 export interface VisualBoxRenderOption {
   groupId: string
@@ -63,22 +70,20 @@ export interface VisualBasic<T = Record<string, any>> {
   isRoot?: boolean
   isLocked?: boolean
   disabled?: boolean
-  visualLayoutStyle?: CSSProperties // 不可修改且不会出现在生成的代码之中的样式
-  visualStyle?: CSSProperties // 不可修改且不会出现在生成的代码之中的样式
-  style?: CSSProperties // 不可修改的样式
-  layoutStyle?: CSSProperties // 用于控制布局的样式
+  layoutStyle?: CSSProperties // 布局样式最终不会附加到生成的组件上
+  normalStyle?: CSSProperties // 不可修改的样式
   customStyle?: CSSProperties // 自定义的样式
-  layoutClassList?: string[]
   customClassList?: string[]
   props?: T
   options?: VisualBoxOption[]
   bindOptions?: VisualBoxOption[]
-  bindMethodMap?: Record<string, any>
-  bindPropMap?: Record<string, any>
+  bindMethodMap?: Record<string, any> // 绑定事件的键值对
+  bindPropMap?: Record<string, any> // 绑定属性的键值对
+  customMethod?: Record<string, any> // 自定义事件
   componentType?: 'element' | 'visual'
-  component?: string // 优先级最高
-  children?: VisualBasic[] // 第二优先级
-  content?: any // 第三优先级
+  component?: string // 组件名
+  children?: VisualBasic[] // 第一优先级
+  content?: any // 第二优先级
   noWrapper?: boolean // 是否不渲染容器
 }
 
@@ -105,6 +110,7 @@ export interface VisualBoxOption {
   max?: number
   bindAble?: boolean
   bindProp?: string
+  bindMehodName?: string
   description?: string
 }
 

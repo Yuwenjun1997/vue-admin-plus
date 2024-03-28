@@ -13,7 +13,7 @@ export const visualElButton: VisualBasic = {
   component: 'el-button',
   componentType: 'element',
   content: '按钮',
-  visualLayoutStyle: {
+  layoutStyle: {
     display: 'inline-block',
   },
   props: {
@@ -65,30 +65,23 @@ export const visualElButton: VisualBasic = {
       property: 'circle',
     },
   ],
+  bindMethodMap: {},
+  customMethod: {},
   bindOptions: [
     {
       groupName: '绑定事件',
       target: 'bindMethodMap',
       formType: 'methodSelect',
       label: '点击事件',
-      property: '#bind:handleClick',
+      property: 'click',
       value: '',
     },
     {
       groupName: '自定义事件',
-      target: 'bindMethodMap',
+      target: 'customMethod',
       formType: 'codeInput',
       label: '点击事件',
-      property: 'click:handleClick',
-      value: '',
-      description: customBindMehotdDesc,
-    },
-    {
-      groupName: '绑定事件',
-      target: 'bindMethodMap',
-      formType: 'codeInput',
-      label: '点击事件',
-      property: '@click',
+      property: 'click',
       value: '',
       description: customBindMehotdDesc,
     },
