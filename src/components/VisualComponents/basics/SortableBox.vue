@@ -57,7 +57,6 @@ watchEffect(() => {
 onMounted(() => {
   if (!sortable.value) return
   sortableInstance.value = new Sortable(sortable.value, Object.assign(defaultOptions, props.options))
-  console.log(props.options)
 })
 
 onBeforeUnmount(() => {

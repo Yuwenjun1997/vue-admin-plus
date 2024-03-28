@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <img :src="props.template.props?.src" :style="styles" />
-  </div>
+  <img :src="props.template.props?.src" :style="styles" />
 </template>
 
 <script setup lang="ts">

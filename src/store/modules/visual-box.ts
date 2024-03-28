@@ -199,15 +199,15 @@ export const useVisualBoxStore = defineStore('visualBox', {
         this.handleVisualBoxKey(addItem)
         this.visualBoxTemplates.splice(toIndex, 0, addItem)
       } else {
-        const toItem = this.visualBoxTemplates.find((i) => i.visualBoxKey === toKey)
+        const toItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === toKey)
         if (!toItem) return
         this.handleVisualBoxKey(addItem, toItem.visualBoxKey)
         toItem.children = toItem.children || []
         toItem.children.splice(toIndex, 0, addItem)
       }
+      console.log(moveItem)
       this.flatVisualBox()
       this.toggleActive(addItem)
-      console.log(this.visualBoxTemplates)
     },
 
     // 复制

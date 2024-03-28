@@ -14,6 +14,7 @@ export const visualImage: VisualBasic<VisualImageProps> = {
   isDeletable: true,
   isEditable: true,
   disabled: true,
+  componentType: 'visual',
   component: 'VisualImage',
   layoutStyle: {
     width: '300px',
@@ -22,15 +23,17 @@ export const visualImage: VisualBasic<VisualImageProps> = {
     height: '300px',
   },
   props: {
-    src: 'https://static-mp-c0f2ea90-b7eb-4763-9dcb-64820c2f7a60.next.bspapp.com/static/default-empty.png',
+    src: 'https://vue-admin-assets.oss-cn-hangzhou.aliyuncs.com/default-empty.png',
   },
   options: [
     {
       groupName: '基础信息',
       target: 'props',
       formType: 'input',
-      label: '图片的源地址',
+      label: '源地址',
       property: 'src',
+      bindAble: true,
+      bindProp: '',
     },
     {
       groupName: '基础信息',
