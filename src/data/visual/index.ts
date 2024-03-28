@@ -1,5 +1,4 @@
 import { VisualBasic, VisualBoxGroup } from '@/types/visual-box'
-export { default as visualRoot } from './components/visual-root'
 export { basicOptions } from './options/index'
 
 const modules = import.meta.glob('./components/**/*.ts', { eager: true })

@@ -45,8 +45,6 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { storeToRefs } from 'pinia'
 
 const visualBoxStore = useVisualBoxStore()
-const { moveVisualBoxUp, moveVisualBoxDown, deleteVisualBox, toggleLockVisualBox, toggleActiveParent, copyVisualBox } =
-  visualBoxStore
 const { activeVisualBox } = storeToRefs(visualBoxStore)
 
 const current = computed(() => activeVisualBox.value?.target)
@@ -56,22 +54,30 @@ const isLocked = computed(() => current.value?.isLocked)
 
 const handeUp = () => {
   if (!current.value) return ElMessage.warning('当前未选中组件')
-  moveVisualBoxUp(current.value)
+  visualBoxStore.start()
+  visualBoxStore.moveVisualBoxUp(current.value)
+  visualBoxStore.done()
 }
 
 const handleDown = () => {
   if (!current.value) return ElMessage.warning('当前未选中组件')
-  moveVisualBoxDown(current.value)
+  visualBoxStore.start()
+  visualBoxStore.moveVisualBoxDown(current.value)
+  visualBoxStore.done()
 }
 
 const toggleLock = () => {
   if (!current.value) return ElMessage.warning('当前未选中组件')
-  toggleLockVisualBox()
+  visualBoxStore.start()
+  visualBoxStore.toggleLockVisualBox()
+  visualBoxStore.done()
 }
 
 const handleCopy = () => {
   if (!current.value) return ElMessage.warning('当前未选中组件')
-  copyVisualBox()
+  visualBoxStore.start()
+  visualBoxStore.copyVisualBox()
+  visualBoxStore.done()
 }
 
 const handleDelete = async () => {
@@ -83,7 +89,9 @@ const handleDelete = async () => {
       cancelButtonText: '取消',
       type: 'warning',
     })
-    deleteVisualBox(current.value)
+    visualBoxStore.start()
+    visualBoxStore.deleteVisualBox(current.value)
+    visualBoxStore.done()
     ElMessage({ type: 'success', message: '删除成功!' })
   } catch (error) {
     console.log(error)
@@ -93,7 +101,9 @@ const handleDelete = async () => {
 // 父级
 const handleCurrentParent = () => {
   if (!current.value) return ElMessage.warning('当前未选中组件')
-  toggleActiveParent(current.value)
+  visualBoxStore.start()
+  visualBoxStore.toggleActiveParent(current.value)
+  visualBoxStore.done()
 }
 </script>
 

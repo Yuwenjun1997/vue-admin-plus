@@ -6,7 +6,7 @@
       :name="item.group"
       :title="item.groupName"
     >
-      <div ref="visualGridItem" class="grid grid-cols-2 gap-2 p-2">
+      <SortableBox class="grid grid-cols-2 gap-2 p-2" :options="options" @on-end="onEnd">
         <div
           v-for="component in item.components"
           :key="component.visualBoxKey"
@@ -16,7 +16,7 @@
           <Icon v-if="component.visualBoxIcon" :icon="component.visualBoxIcon" />
           <span class="ml-2">{{ component.visualBoxName }}</span>
         </div>
-      </div>
+      </SortableBox>
     </el-collapse-item>
   </el-collapse>
 </template>
@@ -28,38 +28,25 @@ import { visualComponentGroups } from '@/data/visual.data'
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 
 const visualBoxStore = useVisualBoxStore()
-
 const activeNames = ref<string[]>(['1'])
 
-const visualGridItem = ref<HTMLElement[]>([])
+const options: Sortable.Options = {
+  group: { name: 'visualGroup', pull: 'clone', put: false },
+  sort: false,
+}
 
-onMounted(() => {
-  if (!visualGridItem.value) return
-  visualGridItem.value.forEach((item) => {
-    new Sortable(item, {
-      group: {
-        name: 'shared',
-        pull: 'clone',
-        put: false,
-      },
-      animation: 100,
-      fallbackOnBody: true,
-      onEnd: (evt: Sortable.SortableEvent) => {
-        visualBoxStore.start()
-        const visualboxkey = evt.item.dataset.visualBoxKey || ''
-        const toKey = evt.to.dataset.visualBoxKey || ''
-        const toIndex = evt.newIndex || 0
-        const fromKey = evt.from.dataset.visualBoxKey || ''
-
-        if (fromKey !== toKey) {
-          nextTick(() => evt.item.remove())
-        }
-        visualBoxStore.addVisualBox(visualboxkey, toKey, toIndex)
-        visualBoxStore.done()
-      },
-    })
-  })
-})
+const onEnd = (evt: Sortable.SortableEvent) => {
+  visualBoxStore.start()
+  const visualboxkey = evt.item.dataset.visualBoxKey || ''
+  const toKey = evt.to.dataset.visualBoxKey || ''
+  const toIndex = evt.newIndex || 0
+  const fromKey = evt.from.dataset.visualBoxKey || ''
+  if (fromKey !== toKey) {
+    nextTick(() => evt.item.remove())
+  }
+  visualBoxStore.addVisualBox(visualboxkey, toKey, toIndex)
+  visualBoxStore.done()
+}
 </script>
 
 <style scoped>

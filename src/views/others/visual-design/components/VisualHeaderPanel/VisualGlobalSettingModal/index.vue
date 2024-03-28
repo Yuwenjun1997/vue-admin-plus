@@ -37,5 +37,3 @@ const showModal = () => {
 
 defineExpose({ showModal })
 </script>
-
-<style lang="scss" scoped></style>

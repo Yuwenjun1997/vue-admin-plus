@@ -55,6 +55,7 @@ declare module 'vue' {
     ElWatermark: typeof import('element-plus/es')['ElWatermark']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SortableBox: typeof import('./components/VisualComponents/basics/SortableBox.vue')['default']
     VadCodeEditor: typeof import('./components/VadCodeEditor/index.vue')['default']
     VadFullScreen: typeof import('./components/VadFullScreen/index.vue')['default']
     VadIconPicker: typeof import('./components/VadIconPicker/index.vue')['default']
@@ -72,6 +73,7 @@ declare module 'vue' {
     VisualCssInput: typeof import('./components/VisualComponents/helper/VisualCssInput.vue')['default']
     VisualElement: typeof import('./components/VisualComponents/render/VisualElement.vue')['default']
     VisualImage: typeof import('./components/VisualComponents/basics/VisualImage.vue')['default']
+    VisualSortableBox: typeof import('./components/VisualComponents/basics/VisualSortableBox.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

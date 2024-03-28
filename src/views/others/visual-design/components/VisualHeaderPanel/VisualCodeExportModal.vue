@@ -85,5 +85,3 @@ defineExpose({
   showCodeExportModal,
 })
 </script>
-
-<style scoped></style>

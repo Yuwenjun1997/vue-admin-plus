@@ -1,27 +1,45 @@
 <template>
   <div>
-    <el-switch
-      v-for="(item, index) in list"
-      :key="index"
-      v-model="item.value"
-      :active-value="item.trueValue"
-      :inactive-value="item.falseValue"
-      @change="handleChange"
-    />
+    <div class="sort-container p-4 bg-blue-200">
+      <div class="sort-container p-4 bg-slate-200" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const list = ref<any[]>([{ trueValue: 1, falseValue: 0, value: 1 }])
+import Sortable from 'sortablejs'
 
-const handleChange = () => {
-  console.log('change')
-}
-
-setTimeout(() => {
-  list.value.push({ trueValue: 1, falseValue: 0, value: 0 })
-  list.value[0].value = 0
-}, 200)
+onMounted(() => {
+  const doms = document.querySelectorAll<HTMLElement>('.sort-container')
+  doms.forEach((dom) => {
+    new Sortable(dom, {
+      group: 'container',
+      fallbackOnBody: true,
+      animation: 300,
+      onEnd(event: Sortable.SortableEvent) {
+        console.log(event.newIndex)
+      },
+    })
+  })
+  // if (!sortable.value) return
+  // new Sortable(sortable.value, {
+  //   animation: 300,
+  //   onEnd(event: Sortable.SortableEvent) {
+  //     console.log(event.newIndex)
+  //   },
+  // })
+})
 </script>
 
-<style scoped></style>
+<style scoped>
+.sort-container {
+  position: relative;
+}
+
+.sort-container::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+</style>

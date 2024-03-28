@@ -1,29 +1,16 @@
 <template>
-  <div
-    :key="props.template.visualBoxKey"
+  <SortableBox
     class="visual-box"
-    :class="{
-      active: isActive,
-      'visual-box-darggable': isDraggable,
-      'visual-box-locked': isLocked,
-      'visual-box-disabled': isDisabled,
-      'is-root': isRoot,
-    }"
+    :class="classList"
     :data-visual-box-key="props.template.visualBoxKey"
-    :style="layoutStyles"
+    :options="{ ...defualtSortableOpts, disabled: disabled }"
+    :style="[layoutStyles, wrapStyles]"
     :title="props.template.visualBoxName"
     @click="handleClick"
+    @on-end="onEnd"
   >
-    <div
-      ref="visualBoxWrap"
-      class="visual-box__wrap"
-      :class="classList"
-      :data-visual-box-key="props.template.visualBoxKey"
-      :style="wrapStyles"
-    >
-      <slot />
-    </div>
-  </div>
+    <slot />
+  </SortableBox>
 </template>
 
 <script setup lang="ts" name="VisualBox">
@@ -49,13 +36,21 @@ const isActive = computed(() => {
 const isDisabled = computed(() => props.template.disabled)
 const isLocked = computed(() => props.template.isLocked)
 const isDraggable = computed(() => !isRoot.value && !isLocked.value)
-
 const disabled = computed(() => !!(isLocked.value || isDisabled.value))
 
 const classList = computed(() => {
   const layoutClassList = props.template.layoutClassList || []
   const customClassList = props.template.customClassList || []
-  return [...layoutClassList, ...customClassList, { 'visual-root-wrap': isRoot.value }]
+  return [
+    ...layoutClassList,
+    ...customClassList,
+    {
+      'is-active': isActive.value,
+      'visual-box-darggable': isDraggable.value,
+      'visual-box-locked': isLocked.value,
+      'visual-box-disabled': isDisabled.value,
+    },
+  ]
 })
 
 const wrapStyles = computed(() => {
@@ -66,49 +61,33 @@ const layoutStyles = computed(() => {
   return [props.template.visualLayoutStyle, props.template.layoutStyle]
 })
 
-const visualBoxWrap = ref<HTMLElement>()
-
 const handleClick = (event: MouseEvent) => {
   if (props.template.isEditable) event.stopPropagation()
   toggleActive(props.template)
 }
 
-const sortableInstance = ref<Sortable>()
+const defualtSortableOpts = {
+  animation: 100,
+  fallbackOnBody: true,
+  disabled: false,
+  draggable: '.visual-box-darggable',
+  chosenClass: 'visual-box-chosen',
+  ghostClass: 'visual-box-ghost',
+  dragClass: 'visual-box-drag',
+}
 
-watchEffect(() => {
-  sortableInstance.value?.option('disabled', disabled.value)
-})
-
-onBeforeUnmount(() => {
-  sortableInstance.value?.destroy()
-})
-
-onMounted(() => {
-  if (!visualBoxWrap.value) return
-  sortableInstance.value = new Sortable(visualBoxWrap.value, {
-    group: 'shared',
-    animation: 100,
-    fallbackOnBody: true,
-    disabled: disabled.value,
-    draggable: '.visual-box-darggable',
-    chosenClass: 'visual-box-chosen',
-    ghostClass: 'visual-box-ghost',
-    dragClass: 'visual-box-drag',
-
-    onEnd: async (evt: Sortable.SortableEvent) => {
-      start()
-      const currentKey = evt.item.dataset.visualBoxKey || ''
-      const fromKey = evt.from.dataset.visualBoxKey || ''
-      const toKey = evt.to.dataset.visualBoxKey || ''
-      const { oldIndex = 0, newIndex = 0 } = evt
-      if (fromKey !== toKey) {
-        nextTick(() => evt.item.remove())
-      }
-      moveVisualBox(currentKey, fromKey, toKey, oldIndex, newIndex)
-      done()
-    },
-  })
-})
+const onEnd = (evt: Sortable.SortableEvent) => {
+  start()
+  const currentKey = evt.item.dataset.visualBoxKey || ''
+  const fromKey = evt.from.dataset.visualBoxKey || ''
+  const toKey = evt.to.dataset.visualBoxKey || ''
+  const { oldIndex = 0, newIndex = 0 } = evt
+  if (fromKey !== toKey) {
+    nextTick(() => evt.item.remove())
+  }
+  moveVisualBox(currentKey, fromKey, toKey, oldIndex, newIndex)
+  done()
+}
 </script>
 
 <style scoped lang="scss">
@@ -118,6 +97,8 @@ onMounted(() => {
   position: relative;
   user-select: none;
   cursor: pointer;
+  min-height: $min-size;
+  min-width: $min-size;
 
   &-darggable {
     cursor: move !important;
@@ -127,34 +108,19 @@ onMounted(() => {
     }
   }
 
-  &.is-root {
-    width: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    cursor: default;
-
-    & > .visual-box__wrap {
-      flex: 1;
-    }
+  &.is-active {
+    outline: $outline-width solid var(--el-color-primary);
+    z-index: 10;
   }
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    display: block;
     border: 1px dotted var(--el-border-color);
-    // z-index: 10;
-  }
-
-  &.active {
-    outline: $outline-width solid var(--el-color-primary);
-    z-index: 10;
   }
 
   &.visual-box-ghost {
-    // width: 100%;
     height: 8px;
     min-height: 8px;
     overflow: hidden;
@@ -171,12 +137,6 @@ onMounted(() => {
       inset: 0;
       background-color: var(--el-color-primary);
     }
-  }
-
-  &__wrap {
-    position: relative;
-    min-height: $min-size;
-    min-width: $min-size;
   }
 }
 </style>

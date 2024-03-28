@@ -9,4 +9,4 @@
 const icon = ref<string>()
 </script>
 
-<style lang="scss" scoped></style>
+
