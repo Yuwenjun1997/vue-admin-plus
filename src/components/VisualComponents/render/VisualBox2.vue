@@ -6,7 +6,7 @@
       v-bind="bindProps"
       :is="props.template.component"
       :class="classList"
-      :data-visual-box-key="visualBoxKey"
+      :data-visual-box-key="key"
       :style="visualStyles"
       :template="bindTemplate"
     >
@@ -18,7 +18,7 @@
     <VisualBox2Content :template="props.template" />
   </template>
   <!-- 默认方式渲染 -->
-  <div v-else :class="classList" :data-visual-box-key="visualBoxKey" :style="visualStyles">
+  <div v-else :class="classList" :data-visual-box-key="key" :style="visualStyles">
     <VisualBox2Content :template="props.template" />
   </div>
 </template>
@@ -40,7 +40,7 @@ const visualStyles = computed(() => {
   return [props.template.normalStyle, props.template.customStyle]
 })
 
-const visualBoxKey = computed(() => props.template.visualBoxKey)
+const key = computed(() => props.template.key)
 
 const bindProps = computed(() => (templateType.value === 'visual' ? undefined : props.template.props))
 const bindTemplate = computed(() => (templateType.value === 'visual' ? props.template : undefined))

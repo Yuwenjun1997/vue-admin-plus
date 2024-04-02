@@ -1,54 +1,78 @@
 import { VisualBasic } from '@/types/visual-box'
 import { v4 as uuidv4 } from 'uuid'
+import { ImageProps } from 'vant'
+import { FormatProps } from '../types'
 
-export interface VisualImageProps {
-  src?: string
-  fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
-}
-
-export const visualImage: VisualBasic<VisualImageProps> = {
-  visualBoxKey: uuidv4(),
-  visualBoxGroup: 'basic',
-  visualBoxName: '图片',
-  visualBoxIcon: 'ep:picture',
+export const visualImage: VisualBasic<FormatProps<ImageProps>> = {
+  key: uuidv4(),
+  group: 'basic',
+  name: '图片',
+  icon: 'ep:picture',
   isDeletable: true,
   isEditable: true,
   disabled: true,
-  componentType: 'visual',
-  component: 'VisualImage',
+  componentType: 'vant',
+  component: 'van-image',
   layoutStyle: {
-    width: '300px',
-  },
-  customStyle: {
-    height: '300px',
+    display: 'inline-block',
   },
   props: {
     src: 'https://vue-admin-assets.oss-cn-hangzhou.aliyuncs.com/default-empty.png',
+    round: false,
+    block: false,
+    lazyLoad: false,
+    showLoading: true,
+    width: '200px',
+    height: '200px',
   },
   options: [
     {
       groupName: '基础信息',
       target: 'props',
       formType: 'input',
-      label: '源地址',
+      label: '图片地址',
       property: 'src',
-      bindAble: true,
-      bindProp: '',
+      value: '',
     },
     {
       groupName: '基础信息',
       target: 'props',
-      formType: 'select',
-      label: '填充',
-      property: 'fit',
-      value: 'cover',
-      options: [
-        { label: 'fill', value: 'fill' },
-        { label: ' contain', value: 'contain' },
-        { label: ' cover', value: 'cover' },
-        { label: ' none', value: 'none' },
-        { label: ' scale-down', value: 'scale-down' },
-      ],
+      formType: 'cssInput',
+      label: '图片宽度',
+      property: 'width',
+      value: '',
+    },
+    {
+      groupName: '基础信息',
+      target: 'props',
+      formType: 'cssInput',
+      label: '图片长度',
+      property: 'height',
+      value: '',
+    },
+    {
+      groupName: '基础信息',
+      target: 'props',
+      formType: 'switch',
+      label: '圆形图片',
+      property: 'round',
+      value: false,
+    },
+    {
+      groupName: '基础信息',
+      target: 'props',
+      formType: 'switch',
+      label: '块级元素',
+      property: 'block',
+      value: false,
+    },
+    {
+      groupName: '基础信息',
+      target: 'props',
+      formType: 'switch',
+      label: '懒加载',
+      property: 'lazyLoad',
+      value: false,
     },
   ],
 }

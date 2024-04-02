@@ -7,9 +7,10 @@
         class="VisualCenterPanel-wrap"
         :class="device"
         data-visual-box-key="root"
+        :options="defualtSortableOpts"
         @on-end="onEnd"
       >
-        <VisualBoxRender v-for="template in visualBoxTemplates" :key="template.visualBoxKey" :template="template" />
+        <VisualBoxRender v-for="template in visualBoxTemplates" :key="template.key" :template="template" />
       </SortableBox>
     </el-scrollbar>
   </div>
@@ -22,6 +23,13 @@ import Sortable from 'sortablejs'
 
 const visualBoxStore = useVisualBoxStore()
 const { visualBoxTemplates, device, isLoading, actionUid } = storeToRefs(visualBoxStore)
+
+const defualtSortableOpts = {
+  draggable: '.visual-box-darggable',
+  chosenClass: 'visual-box-chosen',
+  ghostClass: 'visual-box-ghost',
+  dragClass: 'visual-box-drag',
+}
 
 const onEnd = (evt: Sortable.SortableEvent) => {
   visualBoxStore.start()

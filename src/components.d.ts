@@ -72,6 +72,7 @@ declare module 'vue' {
     VisualControlsRender: typeof import('./components/VisualComponents/helper/VisualControlsRender.vue')['default']
     VisualCssInput: typeof import('./components/VisualComponents/helper/VisualCssInput.vue')['default']
     VisualElement: typeof import('./components/VisualComponents/render/VisualElement.vue')['default']
+    VisualGrid: typeof import('./components/VisualComponents/basics/VisualGrid.vue')['default']
     VisualImage: typeof import('./components/VisualComponents/basics/VisualImage.vue')['default']
     VisualSortableBox: typeof import('./components/VisualComponents/basics/VisualSortableBox.vue')['default']
   }

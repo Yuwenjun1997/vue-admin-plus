@@ -13,7 +13,7 @@ interface Props {
 
 const defaultOptions: Sortable.Options = {
   group: 'visualGroup',
-  animation: 150,
+  animation: 0,
   onChoose: (evt) => emit('onChoose', evt),
   onUnchoose: (evt) => emit('onUnchoose', evt),
   onStart: (evt) => emit('onStart', evt),
@@ -63,3 +63,36 @@ onBeforeUnmount(() => {
   sortableInstance.value?.destroy()
 })
 </script>
+
+<style lang="scss" scoped>
+.visual-box-darggable {
+  cursor: move !important;
+
+  * {
+    cursor: move !important;
+  }
+}
+
+.visual-box-drag {
+  opacity: 0;
+}
+
+.visual-box-ghost {
+  height: 8px;
+  min-height: 8px;
+  overflow: hidden;
+  outline: none !important;
+
+  &::before {
+    display: none;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    inset: 0;
+    background-color: var(--el-color-primary);
+  }
+}
+</style>

@@ -22,7 +22,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
   state: (): VisualBoxState => ({
     actionUid: uuidv4(),
     isLoading: false,
-    device: 'pc',
+    device: 'h5',
     isFullscreen: false,
     visualBoxTemplates: [],
     flatVisualBoxTemplates: [],
@@ -84,7 +84,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     // 选中
     toggleActive(template: VisualBasic) {
       if (!template.isEditable) return this.toggleActiveParent(template)
-      if (template.visualBoxKey === this.activeVisualBox?.visualBoxKey) return
+      if (template.key === this.activeVisualBox?.key) return
       this.start()
       this.activeVisualBox = new VisualBoxTarget(template, basicOptions)
       this.done()
@@ -92,7 +92,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 选中父级
     toggleActiveParent(template: VisualBasic) {
-      const parent = this.flatVisualBoxTemplates.find((t) => t.visualBoxKey === template.visualBoxParentKey)
+      const parent = this.flatVisualBoxTemplates.find((t) => t.key === template.parentKey)
       if (parent) this.toggleActive(parent)
     },
 
@@ -105,12 +105,12 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 删除
     deleteVisualBox(template: VisualBasic) {
-      if (template.visualBoxParentKey === 'root') {
-        this.visualBoxTemplates = this.visualBoxTemplates.filter((i) => i.visualBoxKey !== template.visualBoxKey)
+      if (template.parentKey === 'root') {
+        this.visualBoxTemplates = this.visualBoxTemplates.filter((i) => i.key !== template.key)
       } else {
-        const parent = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === template.visualBoxParentKey)
+        const parent = this.flatVisualBoxTemplates.find((i) => i.key === template.parentKey)
         if (!parent) return
-        parent.children = parent.children?.filter((i) => i.visualBoxKey !== template.visualBoxKey)
+        parent.children = parent.children?.filter((i) => i.key !== template.key)
       }
       this.activeVisualBox = null
       this.flatVisualBox()
@@ -118,23 +118,23 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 上移
     moveVisualBoxUp(template: VisualBasic) {
-      if (template.visualBoxParentKey === 'root') {
-        const index = this.visualBoxTemplates.findIndex((i) => i.visualBoxKey === template.visualBoxKey)
+      if (template.parentKey === 'root') {
+        const index = this.visualBoxTemplates.findIndex((i) => i.key === template.key)
         if (index === 0) {
           ElMessage.warning('当前元素已经在第一个位置了')
         } else {
-          this.visualBoxTemplates = this.visualBoxTemplates.filter((i) => i.visualBoxKey !== template.visualBoxKey)
+          this.visualBoxTemplates = this.visualBoxTemplates.filter((i) => i.key !== template.key)
           this.visualBoxTemplates.splice(index - 1, 0, template)
         }
       } else {
-        const parent = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === template.visualBoxParentKey)
+        const parent = this.flatVisualBoxTemplates.find((i) => i.key === template.parentKey)
         if (!parent) return
         parent.children = parent.children || []
-        const index = parent.children.findIndex((c) => c.visualBoxKey === template.visualBoxKey)
+        const index = parent.children.findIndex((c) => c.key === template.key)
         if (index === 0) {
           ElMessage.warning('当前元素已经在第一个位置了')
         } else {
-          parent.children = parent.children.filter((i) => i.visualBoxKey !== template.visualBoxKey)
+          parent.children = parent.children.filter((i) => i.key !== template.key)
           parent.children.splice(index - 1, 0, template)
         }
       }
@@ -142,23 +142,23 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 下移
     moveVisualBoxDown(template: VisualBasic) {
-      if (template.visualBoxParentKey === 'root') {
-        const index = this.visualBoxTemplates.findIndex((i) => i.visualBoxKey === template.visualBoxKey)
+      if (template.parentKey === 'root') {
+        const index = this.visualBoxTemplates.findIndex((i) => i.key === template.key)
         if (index === this.visualBoxTemplates.length - 1) {
           ElMessage.warning('当前元素已经在第一个位置了')
         } else {
-          this.visualBoxTemplates = this.visualBoxTemplates.filter((i) => i.visualBoxKey !== template.visualBoxKey)
+          this.visualBoxTemplates = this.visualBoxTemplates.filter((i) => i.key !== template.key)
           this.visualBoxTemplates.splice(index + 1, 0, template)
         }
       } else {
-        const parent = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === template.visualBoxParentKey)
+        const parent = this.flatVisualBoxTemplates.find((i) => i.key === template.parentKey)
         if (!parent) return
         parent.children = parent.children || []
-        const index = parent.children.findIndex((c) => c.visualBoxKey === template.visualBoxKey)
+        const index = parent.children.findIndex((c) => c.key === template.key)
         if (index === parent.children.length - 1) {
           ElMessage.warning('当前元素已经在第一个位置了')
         } else {
-          parent.children = parent.children.filter((i) => i.visualBoxKey !== template.visualBoxKey)
+          parent.children = parent.children.filter((i) => i.key !== template.key)
           parent.children.splice(index + 1, 0, template)
         }
       }
@@ -167,22 +167,22 @@ export const useVisualBoxStore = defineStore('visualBox', {
     // 移动
     moveVisualBox(currentKey: string, fromKey: string, toKey: string, fromIndex: number, toIndex: number) {
       if (fromKey === toKey && fromIndex === toIndex) return
-      const moveItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === currentKey)
+      const moveItem = this.flatVisualBoxTemplates.find((i) => i.key === currentKey)
       if (!moveItem) return
       if (fromKey === 'root') {
-        this.visualBoxTemplates = this.visualBoxTemplates.filter((i) => i.visualBoxKey !== currentKey)
+        this.visualBoxTemplates = this.visualBoxTemplates.filter((i) => i.key !== currentKey)
       } else {
-        const fromItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === fromKey)
+        const fromItem = this.flatVisualBoxTemplates.find((i) => i.key === fromKey)
         if (!fromItem || !fromItem.children) return
-        fromItem.children = fromItem.children.filter((i) => i.visualBoxKey !== currentKey)
+        fromItem.children = fromItem.children.filter((i) => i.key !== currentKey)
       }
       if (toKey === 'root') {
-        moveItem.visualBoxParentKey = 'root'
+        moveItem.parentKey = 'root'
         this.visualBoxTemplates.splice(toIndex, 0, moveItem)
       } else {
-        const toItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === toKey)
+        const toItem = this.flatVisualBoxTemplates.find((i) => i.key === toKey)
         if (!toItem) return
-        moveItem.visualBoxParentKey = toKey
+        moveItem.parentKey = toKey
         toItem.children = toItem.children || []
         toItem.children.splice(toIndex, 0, moveItem)
       }
@@ -192,40 +192,39 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 添加
     addVisualBox(currentKey: string, toKey: string, toIndex: number) {
-      const moveItem = this.visualBoxComponents.find((i) => i.visualBoxKey === currentKey)
+      const moveItem = this.visualBoxComponents.find((i) => i.key === currentKey)
       if (!moveItem) return
       const addItem = cloneDeep(moveItem)
       if (toKey === 'root') {
         this.handleVisualBoxKey(addItem)
         this.visualBoxTemplates.splice(toIndex, 0, addItem)
       } else {
-        const toItem = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === toKey)
+        const toItem = this.flatVisualBoxTemplates.find((i) => i.key === toKey)
         if (!toItem) return
-        this.handleVisualBoxKey(addItem, toItem.visualBoxKey)
+        this.handleVisualBoxKey(addItem, toItem.key)
         toItem.children = toItem.children || []
         toItem.children.splice(toIndex, 0, addItem)
       }
-      console.log(moveItem)
       this.flatVisualBox()
       this.toggleActive(addItem)
     },
 
     // 复制
     copyVisualBox(currentKey?: string) {
-      if (!currentKey) currentKey = this.activeVisualBox?.target.visualBoxKey
+      if (!currentKey) currentKey = this.activeVisualBox?.target.key
       if (!currentKey) return
-      const current = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === currentKey)
+      const current = this.flatVisualBoxTemplates.find((i) => i.key === currentKey)
       if (!current) return
       const copyItem = cloneDeep(current)
-      if (current.visualBoxParentKey === 'root') {
-        const index = this.visualBoxTemplates.findIndex((i) => i.visualBoxKey === currentKey)
+      if (current.parentKey === 'root') {
+        const index = this.visualBoxTemplates.findIndex((i) => i.key === currentKey)
         this.handleVisualBoxKey(copyItem)
         this.visualBoxTemplates.splice(index + 1, 0, copyItem)
       } else {
-        const parent = this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === current?.visualBoxParentKey)
+        const parent = this.flatVisualBoxTemplates.find((i) => i.key === current?.parentKey)
         if (!parent || !parent.children) return
-        const index = parent.children.findIndex((i) => i.visualBoxKey === currentKey)
-        this.handleVisualBoxKey(copyItem, parent.visualBoxKey)
+        const index = parent.children.findIndex((i) => i.key === currentKey)
+        this.handleVisualBoxKey(copyItem, parent.key)
         parent.children.splice(index + 1, 0, copyItem)
       }
       this.flatVisualBox()
@@ -234,10 +233,10 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 处理添加组件的key及其子组件key
     handleVisualBoxKey(template: VisualBasic, parentKey: string = 'root') {
-      template.visualBoxKey = uuidv4()
-      template.visualBoxParentKey = parentKey
+      template.key = uuidv4()
+      template.parentKey = parentKey
       if (template.children && template.children.length > 0) {
-        template.children.forEach((i) => this.handleVisualBoxKey(i, template.visualBoxKey))
+        template.children.forEach((i) => this.handleVisualBoxKey(i, template.key))
       }
     },
 
@@ -249,7 +248,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     // 根据key获取组件
     getVisualBoxByKey(key: string) {
-      return this.flatVisualBoxTemplates.find((i) => i.visualBoxKey === key)
+      return this.flatVisualBoxTemplates.find((i) => i.key === key)
     },
   },
 })

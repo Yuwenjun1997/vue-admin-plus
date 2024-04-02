@@ -3,6 +3,7 @@
     <div class="sort-container p-4 bg-blue-200">
       <div class="sort-container p-4 bg-slate-200" />
     </div>
+    <van-field />
   </div>
 </template>
 

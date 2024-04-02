@@ -84,11 +84,11 @@ const { activeVisualBox } = storeToRefs(visualBoxStore)
 
 const isActive = computed<boolean>(() => {
   if (!activeVisualBox.value) return false
-  return !!getVisualBoxByKey(activeVisualBox.value.visualBoxKey)
+  return !!getVisualBoxByKey(activeVisualBox.value.key)
 })
 
 const getKey = (index: number) => {
-  return `${activeVisualBox.value?.target.visualBoxKey}_${index}`
+  return `${activeVisualBox.value?.target.key}_${index}`
 }
 </script>
 

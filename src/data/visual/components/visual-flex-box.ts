@@ -4,10 +4,10 @@ import { v4 as uuidv4 } from 'uuid'
 export interface VisualFlexBoxProps {}
 
 export const visualFlexBox: VisualBasic<VisualFlexBoxProps> = {
-  visualBoxKey: uuidv4(),
-  visualBoxGroup: 'container',
-  visualBoxName: '弹性盒子',
-  visualBoxIcon: 'bi:grid-1x2',
+  key: uuidv4(),
+  group: 'container',
+  name: '弹性盒子',
+  icon: 'bi:grid-1x2',
   isDeletable: true,
   isEditable: true,
   disabled: false,

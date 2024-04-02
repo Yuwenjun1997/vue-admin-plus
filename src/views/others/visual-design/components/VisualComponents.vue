@@ -6,15 +6,15 @@
       :name="item.group"
       :title="item.groupName"
     >
-      <SortableBox class="grid grid-cols-2 gap-2 p-2" :options="options" @on-end="onEnd">
+      <SortableBox class="grid grid-cols-2 gap-2" :options="options" @on-end="onEnd">
         <div
           v-for="component in item.components"
-          :key="component.visualBoxKey"
+          :key="component.key"
           class="visual-item"
-          :data-visual-box-key="component.visualBoxKey"
+          :data-visual-box-key="component.key"
         >
-          <Icon v-if="component.visualBoxIcon" :icon="component.visualBoxIcon" />
-          <span class="ml-2">{{ component.visualBoxName }}</span>
+          <Icon v-if="component.icon" :icon="component.icon" />
+          <span class="ml-2">{{ component.name }}</span>
         </div>
       </SortableBox>
     </el-collapse-item>
@@ -49,7 +49,7 @@ const onEnd = (evt: Sortable.SortableEvent) => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 :deep(.el-collapse-item__content) {
   padding-bottom: 8px;
 }

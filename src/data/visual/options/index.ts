@@ -6,7 +6,7 @@ export const basicOptions: VisualBoxOption[] = [
     groupName: '基础属性',
     target: 'root',
     label: '唯一标识',
-    property: 'visualBoxKey',
+    property: 'key',
     formType: 'input',
     disabled: true,
     required: true,
@@ -15,7 +15,7 @@ export const basicOptions: VisualBoxOption[] = [
     groupName: '基础属性',
     target: 'root',
     label: '自定义名称',
-    property: 'visualBoxName',
+    property: 'name',
     formType: 'input',
   },
   {

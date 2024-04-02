@@ -41,6 +41,10 @@ import { useVisualBoxStore } from '@/store/modules/visual-box'
 const visualBoxStore = useVisualBoxStore()
 
 visualBoxStore.setup()
+
+watchEffect(() => {
+  console.log(visualBoxStore.visualBoxTemplates)
+})
 </script>
 
 <style lang="scss" scoped>

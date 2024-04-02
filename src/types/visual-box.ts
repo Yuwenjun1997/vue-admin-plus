@@ -46,7 +46,7 @@ export interface VisualBoxBindPropOption {
   bindPropName: string
   propType: VariableType
   defaultValue: any
-  visualBoxKey: string
+  key: string
 }
 
 export interface VisualBoxBindMethodOption {
@@ -54,17 +54,16 @@ export interface VisualBoxBindMethodOption {
   methodName: string
   bindMethodName?: string
   methodToken: string
-  visualBoxKey: string
+  key: string
   params?: string
 }
 
 export interface VisualBasic<T = Record<string, any>> {
-  visualBoxKey: string
-  visualBoxParentKey?: string
-  visualBoxGroup?: string
-  visualBoxName?: string
-  visualBoxCover?: string
-  visualBoxIcon?: string
+  key: string
+  parentKey?: string
+  group?: string
+  name?: string
+  icon?: string
   isDeletable?: boolean
   isEditable?: boolean
   isRoot?: boolean
@@ -80,7 +79,7 @@ export interface VisualBasic<T = Record<string, any>> {
   bindMethodMap?: Record<string, any> // 绑定事件的键值对
   bindPropMap?: Record<string, any> // 绑定属性的键值对
   customMethod?: Record<string, any> // 自定义事件
-  componentType?: 'element' | 'visual'
+  componentType?: 'element' | 'visual' | 'vant'
   component?: string // 组件名
   children?: VisualBasic[] // 第一优先级
   content?: any // 第二优先级

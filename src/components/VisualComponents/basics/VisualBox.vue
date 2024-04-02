@@ -2,10 +2,10 @@
   <SortableBox
     class="visual-box"
     :class="classList"
-    :data-visual-box-key="props.template.visualBoxKey"
+    :data-visual-box-key="props.template.key"
     :options="{ ...defualtSortableOpts, disabled: disabled }"
     :style="visualStyles"
-    :title="props.template.visualBoxName"
+    :title="props.template.name"
     @click="handleClick"
     @on-end="onEnd"
   >
@@ -31,7 +31,7 @@ const { toggleActive, moveVisualBox, start, done } = visualBoxStore
 
 const isRoot = computed(() => props.template.isRoot)
 const isActive = computed(() => {
-  return activeVisualBox.value && props.template.visualBoxKey === activeVisualBox.value.visualBoxKey
+  return activeVisualBox.value && props.template.key === activeVisualBox.value.key
 })
 const isDisabled = computed(() => props.template.disabled)
 const isLocked = computed(() => props.template.isLocked)
@@ -61,9 +61,6 @@ const handleClick = (event: MouseEvent) => {
 }
 
 const defualtSortableOpts = {
-  animation: 100,
-  fallbackOnBody: true,
-  disabled: false,
   draggable: '.visual-box-darggable',
   chosenClass: 'visual-box-chosen',
   ghostClass: 'visual-box-ghost',
@@ -94,43 +91,17 @@ const onEnd = (evt: Sortable.SortableEvent) => {
   min-height: $min-size;
   min-width: $min-size;
 
-  &-darggable {
-    cursor: move !important;
-
-    * {
-      cursor: move !important;
-    }
-  }
-
-  &.is-active {
-    outline: $outline-width solid var(--el-color-primary);
-    z-index: 10;
-  }
-
   &::before {
     content: '';
     position: absolute;
     inset: 0;
     border: 1px dotted var(--el-border-color);
+    z-index: 10;
   }
 
-  &.visual-box-ghost {
-    height: 8px;
-    min-height: 8px;
-    overflow: hidden;
-    outline: none !important;
-
-    &::before {
-      display: none;
-    }
-
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      inset: 0;
-      background-color: var(--el-color-primary);
-    }
+  &.is-active {
+    outline: $outline-width solid var(--el-color-primary);
+    z-index: 10;
   }
 }
 </style>

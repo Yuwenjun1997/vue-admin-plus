@@ -14,6 +14,7 @@ import { setupHighlight } from './plugins/highlight'
 import { setupVisual } from './components/VisualComponents/index'
 import { setupVueQuill } from './plugins/vue-quill'
 import { setupElementPlus } from './plugins/element-ui'
+import { setupVant } from './plugins/vant'
 
 async function bootstrap() {
   // 加载动画
@@ -28,6 +29,8 @@ async function bootstrap() {
   setupIconify()
 
   setupElementPlus(app)
+
+  setupVant(app)
 
   setupVxeTable(app)
 

@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-multiple-template-root -->
 <template>
-  <VisualBox2 v-for="template in visualBoxTemplates" :key="template.visualBoxKey" :template="template" />
+  <VisualBox2 v-for="template in visualBoxTemplates" :key="template.key" :template="template" />
 </template>
 
 <script setup lang="ts">

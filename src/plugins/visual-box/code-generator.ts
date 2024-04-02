@@ -64,9 +64,9 @@ function handleClassAndStyle(node: Parse5Node) {
 
 // 处理事件
 function handleEvents(node: Parse5Node) {
-  const visualBoxKey = node.attrs.find((attr) => attr.name === 'data-visual-box-key')?.value
-  if (!visualBoxKey) return
-  const bindMethodList = bindMethodOptions.filter((item) => item.visualBoxKey === visualBoxKey)
+  const key = node.attrs.find((attr) => attr.name === 'data-visual-box-key')?.value
+  if (!key) return
+  const bindMethodList = bindMethodOptions.filter((item) => item.key === key)
   bindMethodList.forEach((method) => {
     if (!method.bindMethodName) return
     node.attrs.push({ name: `@${method.trigger}`, value: method.params ? method.bindMethodName : method.methodName })
@@ -127,7 +127,7 @@ function handleBindMethods(template: VisualBasic) {
         trigger: globalMethod.trigger,
         methodName: globalMethod.methodName,
         bindMethodName: `${globalMethod.methodName}(${globalMethod.params})`,
-        visualBoxKey: template.visualBoxKey,
+        key: template.key,
         methodToken: globalMethod.methodToken,
       })
     } else {
@@ -136,7 +136,7 @@ function handleBindMethods(template: VisualBasic) {
         trigger: prefix,
         methodName: methodName,
         bindMethodName: `${methodName}($event)`,
-        visualBoxKey: template.visualBoxKey,
+        key: template.key,
         methodToken: value,
       })
     }
@@ -156,7 +156,7 @@ function handleBindProps(template: VisualBasic) {
       bindPropName: bindPropName,
       propType: globalVariable.valueType,
       defaultValue: globalVariable.defaultValue,
-      visualBoxKey: template.visualBoxKey,
+      key: template.key,
     })
   })
 }

@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-multiple-template-root -->
 <template>
   <template v-if="props.template.children">
-    <VisualBox2 v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
+    <VisualBox2 v-for="t in props.template.children" :key="t.key" :template="t" />
   </template>
   <template v-else-if="props.template.content">
     <template v-if="isBindContentProp">{{ bindPropStr }}</template>

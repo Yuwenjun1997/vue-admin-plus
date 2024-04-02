@@ -8,8 +8,8 @@ import { generateRandomFunctionName } from '@/utils'
 export class VisualBoxTarget<T = any> {
   orderCount: number = 1
   target: VisualBasic<T>
-  visualBoxKey: string
-  visualBoxName?: string
+  key: string
+  name?: string
   basicOptions: VisualBoxOption[]
   customOptions: VisualBoxOption[]
   bindOptions: VisualBoxOption[]
@@ -19,8 +19,8 @@ export class VisualBoxTarget<T = any> {
 
   constructor(target: VisualBasic<T>, basicOptions: VisualBoxOption[] = []) {
     this.target = target
-    this.visualBoxKey = this.target.visualBoxKey
-    this.visualBoxName = this.target.visualBoxName
+    this.key = this.target.key
+    this.name = this.target.name
     this.basicOptions = cloneDeep(basicOptions)
     this.customOptions = this.target.options || []
     this.bindOptions = this.target.bindOptions || []
@@ -62,13 +62,19 @@ export class VisualBoxTarget<T = any> {
   }
 
   applyOptions() {
-    this.target.customStyle = {}
-    this.target.layoutStyle = {}
+    const customStyle: CSSProperties = {}
+    const props: Record<string, any> = {}
+    const bindMethodMap: Record<string, any> = {}
+    const bindPropMap: Record<string, any> = {}
+    const customMethod: Record<string, any> = {}
+
     // @ts-ignore
-    this.target.props = {}
-    this.target.bindMethodMap = {}
-    this.target.bindPropMap = {}
-    this.target.customMethod = {}
+    this.target.props = this.target.props || {}
+    this.target.customStyle = this.target.customStyle || {}
+    this.target.bindPropMap = this.target.bindPropMap || {}
+    this.target.bindMethodMap = this.target.bindMethodMap || {}
+    this.target.customMethod = this.target.customMethod || {}
+
     const applyOptions = [...this.basicOptions, ...this.customOptions, ...this.bindOptions]
     applyOptions.forEach((option) => {
       if (option.bindAble && option.bindProp) {
@@ -76,26 +82,29 @@ export class VisualBoxTarget<T = any> {
         const variable = variables.find((v) => v.variableName === option.bindProp)
         option.value = variable?.defaultValue
         // @ts-ignore
-        this.target.bindPropMap[option.property] = option.bindProp
+        bindPropMap[option.property] = option.bindProp
       }
-      if (option.target === 'customStyle') {
-        // @ts-ignore
-        this.target.customStyle[option.property] = option.value
-      } else if (option.target === 'root') {
+      if (option.target === 'root') {
         // @ts-ignore
         this.target[option.property] = option.value
+      } else if (option.target === 'customStyle') {
+        // @ts-ignore
+        customStyle[option.property] = option.value
       } else if (option.target === 'props') {
-        // @ts-ignore
-        this.target.props[option.property] = option.value
+        props[option.property] = option.value
       } else if (option.target === 'bindMethodMap') {
-        // @ts-ignore
-        this.target.bindMethodMap[option.property] = option.value
+        bindMethodMap[option.property] = option.value
       } else if (option.target === 'customMethod') {
-        // @ts-ignore
-        this.target.customMethod[option.property] = option.value
+        customMethod[option.property] = option.value
       }
     })
-    console.log(this.target)
+
+    // @ts-ignore
+    Object.assign(this.target.props, props)
+    Object.assign(this.target.customStyle, customStyle)
+    Object.assign(this.target.bindPropMap, bindPropMap)
+    Object.assign(this.target.bindMethodMap, bindMethodMap)
+    Object.assign(this.target.customMethod, customMethod)
   }
 }
 

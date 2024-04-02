@@ -66,20 +66,22 @@
         </el-select>
       </template>
       <template v-if="item.formType === 'numberInput'">
-        <div class="w-full text-right">
-          <el-input-number v-model.number="item.value" clearable :disabled="isDisabled(item)" @change="handleChange" />
-        </div>
+        <el-input-number
+          v-model.number="item.value"
+          class="w-full"
+          clearable
+          :disabled="isDisabled(item)"
+          @change="handleChange"
+        />
       </template>
       <template v-if="item.formType === 'switch'">
-        <div class="w-full text-right">
-          <el-switch
-            v-model="item.value"
-            :active-value="item.trueValue"
-            :disabled="isDisabled(item)"
-            :inactive-value="item.falseValue"
-            @change="handleSwitchChange"
-          />
-        </div>
+        <el-switch
+          v-model="item.value"
+          :active-value="item.trueValue"
+          :disabled="isDisabled(item)"
+          :inactive-value="item.falseValue"
+          @change="handleSwitchChange"
+        />
       </template>
       <template v-if="item.formType === 'slider'">
         <el-slider

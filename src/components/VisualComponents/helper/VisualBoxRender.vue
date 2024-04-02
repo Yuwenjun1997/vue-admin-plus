@@ -5,7 +5,7 @@
       <component :is="props.template.component" v-bind="bindAttrs" :template="bindTemplate">
         <!-- 渲染子组件 -->
         <template v-if="props.template.children && props.template.children.length">
-          <VisualBoxRender v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
+          <VisualBoxRender v-for="t in props.template.children" :key="t.key" :template="t" />
         </template>
         <!-- 渲染内容 -->
         <template v-else-if="props.template.content">{{ props.template.content }}</template>
@@ -13,7 +13,7 @@
     </template>
     <!-- 渲染子组件 -->
     <template v-else-if="props.template.children && props.template.children.length">
-      <VisualBoxRender v-for="t in props.template.children" :key="t.visualBoxKey" :template="t" />
+      <VisualBoxRender v-for="t in props.template.children" :key="t.key" :template="t" />
     </template>
     <!-- 渲染内容 -->
     <template v-else-if="props.template.content">{{ props.template.content }}</template>
