@@ -60,22 +60,20 @@ export interface VisualBoxBindMethodOption {
 
 export interface VisualBasic<T = Record<string, any>> {
   key: string
+  name: string
   parentKey?: string
   group?: string
-  name?: string
+  title?: string
   icon?: string
+  isDragable?: boolean
   isDeletable?: boolean
   isEditable?: boolean
-  isRoot?: boolean
   isLocked?: boolean
   disabled?: boolean
   layoutStyle?: CSSProperties // 布局样式最终不会附加到生成的组件上
   normalStyle?: CSSProperties // 不可修改的样式
   customStyle?: CSSProperties // 自定义的样式
-  customClassList?: string[]
   props?: T
-  options?: VisualBoxOption[]
-  bindOptions?: VisualBoxOption[]
   bindMethodMap?: Record<string, any> // 绑定事件的键值对
   bindPropMap?: Record<string, any> // 绑定属性的键值对
   customMethod?: Record<string, any> // 自定义事件
@@ -84,6 +82,12 @@ export interface VisualBasic<T = Record<string, any>> {
   children?: VisualBasic[] // 第一优先级
   content?: any // 第二优先级
   noWrapper?: boolean // 是否不渲染容器
+}
+
+export interface VisualOptionMap {
+  name: string
+  options: VisualBoxOption[]
+  bindOptions: VisualBoxOption[]
 }
 
 export interface VisualBoxOptionItem {

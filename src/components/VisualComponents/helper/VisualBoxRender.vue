@@ -1,23 +1,18 @@
 <template>
-  <VisualBox :template="props.template">
-    <!-- 渲染组件 -->
+  <component :is="renderLayout" :template="props.template">
     <template v-if="props.template.component">
       <component :is="props.template.component" v-bind="bindAttrs" :template="bindTemplate">
-        <!-- 渲染子组件 -->
         <template v-if="props.template.children && props.template.children.length">
           <VisualBoxRender v-for="t in props.template.children" :key="t.key" :template="t" />
         </template>
-        <!-- 渲染内容 -->
         <template v-else-if="props.template.content">{{ props.template.content }}</template>
       </component>
     </template>
-    <!-- 渲染子组件 -->
     <template v-else-if="props.template.children && props.template.children.length">
       <VisualBoxRender v-for="t in props.template.children" :key="t.key" :template="t" />
     </template>
-    <!-- 渲染内容 -->
     <template v-else-if="props.template.content">{{ props.template.content }}</template>
-  </VisualBox>
+  </component>
 </template>
 
 <script lang="ts" setup name="VisualBoxRender">
@@ -30,6 +25,10 @@ interface Props {
 const props = defineProps<Props>()
 
 const templateType = computed(() => props.template.componentType)
+
+const renderLayout = computed(() => {
+  return props.template.isDragable ? 'VisualSortable' : 'VisualBox'
+})
 
 const bindAttrs = computed(() => {
   return templateType.value === 'visual' ? undefined : props.template.props

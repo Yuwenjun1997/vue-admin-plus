@@ -1,20 +1,23 @@
 <template>
-  <div
+  <SortableBox
     class="visual-box"
     :class="{ 'is-active': isActive, 'visual-box-disabled': isLocked }"
     :data-visual-box-key="props.template.key"
+    :options="{ ...defualtSortableOpts, disabled: disabled }"
     :style="visualStyles"
     :title="props.template.name"
     @click="handleClick"
+    @on-end="onEnd"
   >
     <slot />
-  </div>
+  </SortableBox>
 </template>
 
 <script setup lang="ts" name="VisualBox">
 import { useVisualBoxStore } from '@/store/modules/visual-box'
 import { VisualBasic } from '@/types/visual-box'
 import { storeToRefs } from 'pinia'
+import Sortable from 'sortablejs'
 
 interface Props {
   template: VisualBasic
@@ -24,12 +27,14 @@ const props = defineProps<Props>()
 
 const visualBoxStore = useVisualBoxStore()
 const { activeVisualBox } = storeToRefs(visualBoxStore)
-const { toggleActive } = visualBoxStore
+const { toggleActive, moveVisualBox, start, done } = visualBoxStore
 
 const isActive = computed(() => {
   return activeVisualBox.value && props.template.key === activeVisualBox.value.key
 })
+const isDisabled = computed(() => props.template.disabled)
 const isLocked = computed(() => props.template.isLocked)
+const disabled = computed(() => !!(isLocked.value || isDisabled.value))
 
 const visualStyles = computed(() => {
   return [props.template.layoutStyle, props.template.normalStyle, props.template.customStyle]
@@ -38,6 +43,27 @@ const visualStyles = computed(() => {
 const handleClick = (event: MouseEvent) => {
   if (props.template.isEditable) event.stopPropagation()
   toggleActive(props.template)
+}
+
+const defualtSortableOpts = {
+  draggable: '.visual-box',
+  chosenClass: 'visual-box-chosen',
+  ghostClass: 'visual-box-ghost',
+  dragClass: 'visual-box-drag',
+  filter: '.visual-box-disabled',
+}
+
+const onEnd = (evt: Sortable.SortableEvent) => {
+  start()
+  const currentKey = evt.item.dataset.visualBoxKey || ''
+  const fromKey = evt.from.dataset.visualBoxKey || ''
+  const toKey = evt.to.dataset.visualBoxKey || ''
+  const { oldIndex = 0, newIndex = 0 } = evt
+  if (fromKey !== toKey) {
+    nextTick(() => evt.item.remove())
+  }
+  moveVisualBox(currentKey, fromKey, toKey, oldIndex, newIndex)
+  done()
 }
 </script>
 

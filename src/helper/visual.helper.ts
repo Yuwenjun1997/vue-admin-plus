@@ -4,6 +4,7 @@ import { CSSProperties } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { useVisualGlobal } from '@/store/modules/visual-global'
 import { generateRandomFunctionName } from '@/utils'
+import { visualOptionMap } from '@/data/visual'
 
 export class VisualBoxTarget<T = any> {
   orderCount: number = 1
@@ -22,11 +23,23 @@ export class VisualBoxTarget<T = any> {
     this.key = this.target.key
     this.name = this.target.name
     this.basicOptions = cloneDeep(basicOptions)
-    this.customOptions = this.target.options || []
-    this.bindOptions = this.target.bindOptions || []
+    // this.customOptions = this.target.options || []
+    // this.bindOptions = this.target.bindOptions || []
+
+    this.customOptions = this.getOptions()
+    this.bindOptions = this.getBindOptions()
+
     this.renderBasicOptions = this.initOptions(this.basicOptions)
     this.renderCustomOptions = this.initOptions(this.customOptions)
     this.renderBindOptions = this.initOptions(this.bindOptions)
+  }
+
+  getOptions() {
+    return visualOptionMap.get(this.target.name)?.options || []
+  }
+
+  getBindOptions() {
+    return visualOptionMap.get(this.target.name)?.bindOptions || []
   }
 
   initOptions(options: VisualBoxOption[]): VisualBoxRenderOption[] {

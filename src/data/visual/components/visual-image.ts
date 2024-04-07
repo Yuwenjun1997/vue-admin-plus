@@ -1,12 +1,13 @@
-import { VisualBasic } from '@/types/visual-box'
+import { VisualBasic, VisualBoxOption } from '@/types/visual-box'
 import { v4 as uuidv4 } from 'uuid'
 import { ImageProps } from 'vant'
 import { FormatProps } from '../types'
 
 export const visualImage: VisualBasic<FormatProps<ImageProps>> = {
   key: uuidv4(),
+  name: 'visualImage',
   group: 'basic',
-  name: '图片',
+  title: '图片',
   icon: 'ep:picture',
   isDeletable: true,
   isEditable: true,
@@ -25,56 +26,60 @@ export const visualImage: VisualBasic<FormatProps<ImageProps>> = {
     width: '200px',
     height: '200px',
   },
-  options: [
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'input',
-      label: '图片地址',
-      property: 'src',
-      value: '',
-    },
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'cssInput',
-      label: '图片宽度',
-      property: 'width',
-      value: '',
-    },
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'cssInput',
-      label: '图片长度',
-      property: 'height',
-      value: '',
-    },
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'switch',
-      label: '圆形图片',
-      property: 'round',
-      value: false,
-    },
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'switch',
-      label: '块级元素',
-      property: 'block',
-      value: false,
-    },
-    {
-      groupName: '基础信息',
-      target: 'props',
-      formType: 'switch',
-      label: '懒加载',
-      property: 'lazyLoad',
-      value: false,
-    },
-  ],
 }
 
-export default visualImage
+export const options: VisualBoxOption[] = [
+  {
+    groupName: '基础信息',
+    target: 'props',
+    formType: 'input',
+    label: '图片地址',
+    property: 'src',
+    value: '',
+  },
+  {
+    groupName: '基础信息',
+    target: 'props',
+    formType: 'cssInput',
+    label: '图片宽度',
+    property: 'width',
+    value: '',
+  },
+  {
+    groupName: '基础信息',
+    target: 'props',
+    formType: 'cssInput',
+    label: '图片长度',
+    property: 'height',
+    value: '',
+  },
+  {
+    groupName: '基础信息',
+    target: 'props',
+    formType: 'switch',
+    label: '圆形图片',
+    property: 'round',
+    value: false,
+  },
+  {
+    groupName: '基础信息',
+    target: 'props',
+    formType: 'switch',
+    label: '块级元素',
+    property: 'block',
+    value: false,
+  },
+  {
+    groupName: '基础信息',
+    target: 'props',
+    formType: 'switch',
+    label: '懒加载',
+    property: 'lazyLoad',
+    value: false,
+  },
+]
+
+export default {
+  component: visualImage,
+  options,
+}

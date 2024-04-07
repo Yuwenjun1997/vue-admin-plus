@@ -14,7 +14,7 @@
           :data-visual-box-key="component.key"
         >
           <Icon v-if="component.icon" :icon="component.icon" />
-          <span class="ml-2">{{ component.name }}</span>
+          <span class="ml-2">{{ component.title }}</span>
         </div>
       </SortableBox>
     </el-collapse-item>

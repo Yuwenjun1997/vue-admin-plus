@@ -5,7 +5,6 @@
     <component
       v-bind="bindProps"
       :is="props.template.component"
-      :class="classList"
       :data-visual-box-key="key"
       :style="visualStyles"
       :template="bindTemplate"
@@ -18,7 +17,7 @@
     <VisualBox2Content :template="props.template" />
   </template>
   <!-- 默认方式渲染 -->
-  <div v-else :class="classList" :data-visual-box-key="key" :style="visualStyles">
+  <div v-else :data-visual-box-key="key" :style="visualStyles">
     <VisualBox2Content :template="props.template" />
   </div>
 </template>
@@ -33,8 +32,6 @@ interface Props {
 const props = defineProps<Props>()
 
 const templateType = computed(() => props.template.componentType)
-
-const classList = computed(() => props.template.customClassList)
 
 const visualStyles = computed(() => {
   return [props.template.normalStyle, props.template.customStyle]

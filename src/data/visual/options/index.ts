@@ -13,13 +13,6 @@ export const basicOptions: VisualBoxOption[] = [
   },
   {
     groupName: '基础属性',
-    target: 'root',
-    label: '自定义名称',
-    property: 'name',
-    formType: 'input',
-  },
-  {
-    groupName: '基础属性',
     target: 'customStyle',
     label: '宽度',
     property: 'width',
@@ -467,16 +460,3 @@ export const basicOptions: VisualBoxOption[] = [
     ],
   },
 ]
-
-// export const basicOptions: VisualBoxOption[] = [
-//   {
-//     groupName: '基础属性',
-//     target: 'customStyle',
-//     formType: 'switch',
-//     label: '启用透明度',
-//     property: 'opacity',
-//     trueValue: 'var(--visual-opacity-number,1)',
-//     falseValue: 'unset',
-//     value: 'unset',
-//   },
-// ]

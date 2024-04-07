@@ -16,9 +16,9 @@ export function getHtmlTemplate(
   <!DOCTYPE html>
   <html lang="en">
     <head>
-      <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css">
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/vant@4/lib/index.css">
       <script src="//unpkg.com/vue@3"></script>
-      <script src="//unpkg.com/element-plus"></script>
+      <script src="https://fastly.jsdelivr.net/npm/vant@4/lib/vant.min.js"></script>
     </head>
 
     <body>
@@ -35,7 +35,8 @@ export function getHtmlTemplate(
           }
         };
         const app = Vue.createApp(App);
-        app.use(ElementPlus);
+        app.use(vant);
+        app.use(vant.Lazyload);
         app.mount("#app");
       </script>
     </body>
