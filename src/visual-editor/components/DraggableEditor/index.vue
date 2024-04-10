@@ -16,11 +16,11 @@
 import DraggableGroup from './components/DraggableGroup.vue'
 import SlotItem from './components/SlotItem.vue'
 import ComponentRender from './components/ComponentRender'
+import { createNewBlock } from '@/visual-editor/visual-editor.utils'
+import button from '@/visual-editor/packages/base-widgets/button'
+import { VisualEditorBlockData } from '@/visual-editor/types'
 
-const blocks = ref<any[]>([
-  { name: '按钮组件', _vid: 1 },
-  { name: '文本组件', _vid: 2 },
-])
+const blocks = ref<VisualEditorBlockData[]>([createNewBlock(button)])
 
 watchEffect(() => {
   console.log(blocks.value)

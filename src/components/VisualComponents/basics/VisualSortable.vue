@@ -5,7 +5,6 @@
     :data-visual-box-key="props.template.key"
     :options="{ ...defualtSortableOpts, disabled: disabled }"
     :style="visualStyles"
-    :title="props.template.name"
     @click="handleClick"
     @on-end="onEnd"
   >

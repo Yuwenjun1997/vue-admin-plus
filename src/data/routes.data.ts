@@ -192,6 +192,16 @@ export const menus: MenuOption[] = [
           component: '@/views/others/code-editor/index.vue',
         },
       },
+      {
+        name: 'OthersLowcode',
+        path: '/others/lowcode',
+        meta: {
+          menuId: 'OthersLowcode',
+          title: '可视化设计',
+          icon: 'line-md:discord-twotone',
+          component: '@/views/others/lowcode/index.vue',
+        },
+      },
     ],
   },
 ]

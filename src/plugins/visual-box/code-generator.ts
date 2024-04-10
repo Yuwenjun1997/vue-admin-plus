@@ -23,7 +23,7 @@ interface Parse5Node {
 const { methods: globalMethods, variables: globalVariables } = storeToRefs(useVisualGlobal())
 
 // 需要过滤掉的属性名
-const FILTER_ATTR_NAMES = ['style', 'id', 'title', 'data-visual-box-key']
+const FILTER_ATTR_NAMES = ['style', 'id', 'data-visual-box-key']
 
 // 生成的class的名称前缀
 const CLASS_NAME_PREFIX = 'vbox-'
@@ -80,7 +80,9 @@ function traverseAST(node: Parse5Node) {
   if (node.attrs) {
     handleEvents(node)
     handleClassAndStyle(node)
-    node.attrs = node.attrs.filter((attr) => attr.value && !FILTER_ATTR_NAMES.includes(attr.name))
+    node.attrs = node.attrs.filter((attr) => {
+      return attr.value && !FILTER_ATTR_NAMES.includes(attr.name)
+    })
     node.attrs = node.attrs.filter((attr) => attr.value !== 'false')
     node.attrs.forEach((attr) => {
       const bindProp = bindPropOptions.find((item) => item.propName === attr.name)

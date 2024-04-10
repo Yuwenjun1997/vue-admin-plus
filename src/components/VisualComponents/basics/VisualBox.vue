@@ -4,7 +4,6 @@
     :class="{ 'is-active': isActive, 'visual-box-disabled': isLocked }"
     :data-visual-box-key="props.template.key"
     :style="visualStyles"
-    :title="props.template.name"
     @click="handleClick"
   >
     <slot />
