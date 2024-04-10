@@ -91,8 +91,8 @@ export interface VisualEditorComponent {
 
 // 组件模块
 export interface ComponentModules {
-  baseWidgets: VisualEditorComponent[] // 基础组件
-  containerComponents: VisualEditorComponent[] // 容器组件
+  basicWidgets: VisualEditorComponent[] // 基础组件
+  containerWidgets: VisualEditorComponent[] // 容器组件
 }
 
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>

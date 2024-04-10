@@ -3,7 +3,7 @@ import { Button } from 'vant'
 
 export default {
   key: 'button',
-  moduleName: 'baseWidgets',
+  moduleName: 'basicWidgets',
   label: '按钮',
   preview: () => <Button type={'primary'}>按钮</Button>,
   render: ({ props, styles }) => {

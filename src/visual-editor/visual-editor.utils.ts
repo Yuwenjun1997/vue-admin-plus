@@ -29,8 +29,8 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
  */
 export function createVisualEditorConfig() {
   const componentModules: ComponentModules = {
-    baseWidgets: [],
-    containerComponents: [],
+    basicWidgets: [],
+    containerWidgets: [],
   }
   // const componentList: VisualEditorComponent[] = []
   const componentMap: Record<string, VisualEditorComponent> = {}

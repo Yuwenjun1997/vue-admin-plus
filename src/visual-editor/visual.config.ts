@@ -1,10 +1,13 @@
 import { createVisualEditorConfig } from '@/visual-editor/visual-editor.utils'
 
-import baseWidgets from '@/visual-editor/packages/base-widgets'
+import basicWidgets from '@/visual-editor/packages/basic'
+import containerWidgets from '@/visual-editor/packages/container'
 
 export const visualConfig = createVisualEditorConfig()
 // 注册基础控件
-Object.entries(baseWidgets).forEach(([name, widget]) => visualConfig.registry('baseWidgets', name, widget))
+Object.entries(basicWidgets).forEach(([name, widget]) => visualConfig.registry('basicWidgets', name, widget))
+
+Object.entries(containerWidgets).forEach(([name, widget]) => visualConfig.registry('containerWidgets', name, widget))
 
 console.log(
   `%c成功加载组件数量:${Object.keys(visualConfig.componentMap).length}`,
