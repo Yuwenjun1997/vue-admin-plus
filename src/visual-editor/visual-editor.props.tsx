@@ -1,4 +1,4 @@
-import { VisualEditorProps, VisualEditorPropsType } from './types'
+import { VisualEditorProps, VisualEditorPropsType, VisualEditorTableOption } from './types'
 
 interface EditorCssInputProp {
   label: string
@@ -89,4 +89,19 @@ export function createEditorSelectProp({
   multiple,
 }: EditorSelectProp): VisualEditorProps {
   return { type: VisualEditorPropsType.select, label, defaultValue, tips, options, multiple }
+}
+
+interface EditorTableProp {
+  label: string
+  option: VisualEditorTableOption
+  defaultValue?: { label: string; value: string }[]
+}
+
+export function createEditorTableProp({ label, option, defaultValue }: EditorTableProp): VisualEditorProps {
+  return {
+    type: VisualEditorPropsType.table,
+    label,
+    table: option,
+    defaultValue,
+  }
 }

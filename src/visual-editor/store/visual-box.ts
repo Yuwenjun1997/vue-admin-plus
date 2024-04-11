@@ -52,6 +52,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
         })
       }
       this.visualEditor = visualEditor
+      console.log(this.visualEditor)
     },
     applyVisualEditor() {
       if (!this.visualEditor || !this.currentBlock) return

@@ -9,5 +9,4 @@ Object.entries(modules).forEach(([key, module]) => {
   components[name] = (module as any)?.default || module
 })
 
-console.log(components, 'container-widgets')
 export default components

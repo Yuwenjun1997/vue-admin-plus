@@ -1,12 +1,12 @@
 <template>
   <DraggableGroup
     v-model="slotChildren"
-    :class="{ 'draggable-group__dropzone': !slotChildren?.length }"
+    :class="{ 'visual-group__dropzone': !slotChildren?.length }"
     data-slot="拖拽组件到此处"
   >
     <template #item="{ element: innerElement }">
       <div
-        class="draggable-group__item inner"
+        class="visual-block inner"
         :class="{ 'is-active': innerElement.isActive }"
         @mousedown.stop="props.selectHandler(innerElement)"
       >
@@ -49,7 +49,7 @@ const slotChildren = useVModel(props, 'children', emit)
 </script>
 
 <style lang="scss" scoped>
-.draggable-group__item {
+.visual-block {
   position: relative;
   padding: 2px;
 
@@ -59,7 +59,7 @@ const slotChildren = useVModel(props, 'children', emit)
   }
 }
 
-.draggable-group__dropzone {
+.visual-group__dropzone {
   &::after {
     position: absolute;
     inset: 0;

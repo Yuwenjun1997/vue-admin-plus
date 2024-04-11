@@ -10,6 +10,15 @@ export enum VisualEditorPropsType {
   color = 'colorPicker',
   select = 'select',
   switch = 'switch',
+  table = 'table',
+}
+
+export type VisualEditorTableOption = {
+  options: {
+    label: string // 列显示文本
+    field: string // 列绑定的字段
+  }[]
+  showKey: string
 }
 
 // 组件属性编辑配置
@@ -25,6 +34,8 @@ export type VisualEditorProps = {
 } & {
   max?: number
   min?: number
+} & {
+  table?: VisualEditorTableOption
 }
 
 // 组件属性

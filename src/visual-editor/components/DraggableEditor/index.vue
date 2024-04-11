@@ -2,14 +2,14 @@
   <DraggableGroup v-model="blocks">
     <template #item="{ element: outElement }">
       <div
-        class="draggable-group__item"
+        class="visual-block"
         :class="{ 'is-active': outElement.isActive }"
         :data-label="outElement.label"
         @mousedown.stop="selectComponent(outElement)"
       >
         <ComponentRender :key="outElement._vid" :element="outElement">
-          <template v-for="(value, slotKey) in outElement.props?.decorates" :key="slotKey" #[slotKey]>
-            <DecorationItem v-model:children="value.children" :select-handler="selectComponent" :slot-key="slotKey" />
+          <template v-for="(value, key) in outElement.props?.decorates" :key="key" #[key]>
+            <DecorationItem v-model:children="value.children" :select-handler="selectComponent" :slot-key="key" />
           </template>
         </ComponentRender>
       </div>
@@ -64,7 +64,7 @@ watchEffect(() => {
 </script>
 
 <style scoped lang="scss">
-.draggable-group__item {
+.visual-block {
   position: relative;
   padding: 2px;
 
