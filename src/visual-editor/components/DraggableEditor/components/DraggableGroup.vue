@@ -1,13 +1,16 @@
 <template>
   <draggable
     v-model="moduleList"
-    class="draggabel-group"
+    class="draggable-group visual-draggable-group"
+    :class="{ 'is-drag': isDrag }"
     v-bind="{ ...sortableOptions }"
     :group="props.group"
     :item-key="props.itemKey"
+    @end="isDrag = false"
+    @start="isDrag = true"
   >
     <template #item="item">
-      <div class="draggabel-group__drag">
+      <div class="draggable-group__drag">
         <slot name="item" v-bind="item" />
       </div>
     </template>
@@ -36,24 +39,30 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: Array<any>): void
 }>()
 
+const isDrag = ref<boolean>(false)
+
 const moduleList = useVModel(props, 'modelValue', emit)
 
-const sortableOptions = computed<Options>(() => ({}))
+const sortableOptions = computed<Options>(() => ({
+  draggable: '.draggable-group__drag',
+  animation: 150,
+}))
 </script>
 
 <style lang="scss" scoped>
-@import '../func.scss';
-
-.draggabel-group {
+.draggable-group {
+  position: relative;
   height: 100%;
   min-height: 40px;
+}
 
-  &__drag {
-    cursor: move;
-  }
+.draggable-group__drag {
+  cursor: move;
+  position: relative;
+  z-index: 10;
+}
 
-  &.isDrag:not(.no-child) :deep(.draggabel-group__item.has-slot) {
-    @include showContainerBorder;
-  }
+.sortable-drag {
+  opacity: 0;
 }
 </style>

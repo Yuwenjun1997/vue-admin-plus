@@ -19,7 +19,6 @@ const { device } = storeToRefs(useVisualBoxStore())
   position: relative;
   flex: 1;
   background-color: var(--el-bg-color);
-  padding: 2px;
 
   &.pc {
     width: 100%;

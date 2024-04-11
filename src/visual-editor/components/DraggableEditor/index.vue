@@ -3,22 +3,13 @@
     <template #item="{ element: outElement }">
       <div
         class="draggable-group__item"
-        :class="{
-          'is-active': outElement.isActive,
-          'is-drag': isDrag,
-          'has-slot': !!Object.keys(outElement.props.slots || {}).length,
-        }"
+        :class="{ 'is-active': outElement.isActive }"
         :data-label="outElement.label"
+        @mousedown.stop="selectComponent(outElement)"
       >
-        <ComponentRender
-          :key="outElement._vid"
-          :element="outElement"
-          :style="{
-            pointerEvents: pointerEvents(outElement),
-          }"
-        >
-          <template v-for="(value, slotKey) in outElement.props?.slots" :key="slotKey" #[slotKey]>
-            <SlotItem v-model:children="value.children" :slot-key="slotKey" />
+        <ComponentRender :key="outElement._vid" :element="outElement">
+          <template v-for="(value, slotKey) in outElement.props?.decorates" :key="slotKey" #[slotKey]>
+            <DecorationItem v-model:children="value.children" :select-handler="selectComponent" :slot-key="slotKey" />
           </template>
         </ComponentRender>
       </div>
@@ -28,26 +19,44 @@
 
 <script setup lang="ts">
 import DraggableGroup from './components/DraggableGroup.vue'
-import SlotItem from './components/SlotItem.vue'
+import DecorationItem from './components/DecorationItem.vue'
 import ComponentRender from './components/ComponentRender'
 import { createNewBlock } from '@/visual-editor/visual-editor.utils'
 import { VisualEditorBlockData } from '@/visual-editor/types'
 import button from '@/visual-editor/packages/basic/button'
 import layout from '@/visual-editor/packages/container/layout'
+import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
+
+const { setCurrentBlock } = useVisualBoxStore()
 
 const layoutCom = createNewBlock(layout)
 
-layoutCom.isActive = true
-
 const blocks = ref<VisualEditorBlockData[]>([createNewBlock(button), layoutCom])
 
-const isDrag = ref<boolean>(false)
-
-const pointerEvents = (element: VisualEditorBlockData) => {
-  return Object.keys(element.props?.slots || {}).length ? 'auto' : 'none'
+const selectComponent = (component: VisualEditorBlockData) => {
+  setCurrentBlock(component)
+  blocks.value.forEach((block) => {
+    block.isActive = block._vid === component._vid
+    handleSlotsActive(block, component._vid)
+  })
 }
 
-console.log(blocks)
+const handleSlotsActive = (block: VisualEditorBlockData, _vid: string) => {
+  const decorates = block.props?.decorates
+  if (!decorates) return
+  if (Object.keys(decorates).length <= 0) return
+  Object.keys(decorates).forEach((slotKey) => {
+    decorates[slotKey]?.children?.forEach((item: VisualEditorBlockData) => {
+      item.isActive = item._vid === _vid
+      if (item.isActive) {
+        console.log(item)
+      }
+      if (Object.keys(item.props?.decorates || {}).length) {
+        handleSlotsActive(item, _vid)
+      }
+    })
+  })
+}
 
 watchEffect(() => {
   console.log(blocks.value)
@@ -55,27 +64,13 @@ watchEffect(() => {
 </script>
 
 <style scoped lang="scss">
-@import './func.scss';
-
 .draggable-group__item {
   position: relative;
-  padding: 3px;
-  cursor: move;
-
-  > div {
-    position: relative;
-  }
+  padding: 2px;
 
   &.is-active {
-    @include showComponentBorder;
-  }
-
-  &.is-drag::after {
-    display: none;
-  }
-
-  &:not(.has-slot) {
-    content: '';
+    outline: 2px solid var(--el-color-primary);
+    outline-offset: -2px;
   }
 }
 </style>

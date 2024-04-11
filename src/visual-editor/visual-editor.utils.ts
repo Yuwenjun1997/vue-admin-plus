@@ -1,7 +1,7 @@
-import type { VisualEditorProps } from './visual-editor.props'
 import type { CSSProperties } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import { ComponentModules, VisualEditorBlockData, VisualEditorComponent } from './types'
+import { ComponentModules, VisualEditorBlockData, VisualEditorComponent, VisualEditorProps } from './types'
+import { useDotProp } from './hooks/useDotProp'
 
 export function createNewBlock(component: VisualEditorComponent): VisualEditorBlockData {
   return {
@@ -18,7 +18,14 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
       paddingLeft: '0',
       paddingBottom: '0',
     },
-    props: component.props ?? {},
+    props: Object.entries(component.props || {}).reduce((prev, [propName, propSchema]) => {
+      const { propObj, prop } = useDotProp(prev, propName)
+      if (propSchema?.defaultValue) {
+        // @ts-ignore
+        propObj[prop] = prev[propName] = propSchema?.defaultValue
+      }
+      return prev
+    }, {}),
     draggable: component.draggable ?? true, // 是否可以拖拽
     model: {},
   }
