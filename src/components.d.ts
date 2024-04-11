@@ -33,9 +33,7 @@ declare module 'vue' {
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
-    ElNumberInput: typeof import('element-plus/es')['ElNumberInput']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
@@ -68,7 +66,6 @@ declare module 'vue' {
     VisualCenter: typeof import('./components/VisualComponents/basics/VisualCenter.vue')['default']
     VisualControlsRender: typeof import('./components/VisualComponents/helper/VisualControlsRender.vue')['default']
     VisualCssInput: typeof import('./components/VisualComponents/helper/VisualCssInput.vue')['default']
-    VisualFlex: typeof import('./components/VisualComponents/components/VisualFlex.vue')['default']
     VisualSortable: typeof import('./components/VisualComponents/basics/VisualSortable.vue')['default']
   }
   export interface ComponentCustomProperties {

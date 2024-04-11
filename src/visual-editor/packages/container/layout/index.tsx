@@ -44,6 +44,7 @@ export default {
     </Row>
   ),
   render: ({ props, styles, block, custom }) => {
+    console.log(props.decorates)
     const decorates = useSlots()
     decoratesTemp[block._vid] ??= {}
     watchEffect(() => {
@@ -77,9 +78,13 @@ export default {
   },
   props: {
     gutter: createEditorInputProp({ label: '列间隔' }),
-    decorates: createEditorTableProp({
+    decorates: createEditorTableProp<Decorate>({
       label: '列配置',
-      defaultValue: [],
+      option: {
+        options: [],
+        showKey: 'label',
+      },
+      defaultValue: createDecorate('12:12'),
     }),
     justify: createEditorSelectProp({
       label: '主轴对齐方式',

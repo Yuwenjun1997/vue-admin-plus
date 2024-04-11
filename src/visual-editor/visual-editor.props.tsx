@@ -91,13 +91,13 @@ export function createEditorSelectProp({
   return { type: VisualEditorPropsType.select, label, defaultValue, tips, options, multiple }
 }
 
-interface EditorTableProp {
+interface EditorTableProp<T> {
   label: string
   option: VisualEditorTableOption
-  defaultValue?: { label: string; value: string }[]
+  defaultValue?: T
 }
 
-export function createEditorTableProp({ label, option, defaultValue }: EditorTableProp): VisualEditorProps {
+export function createEditorTableProp<T = any>({ label, option, defaultValue }: EditorTableProp<T>): VisualEditorProps {
   return {
     type: VisualEditorPropsType.table,
     label,

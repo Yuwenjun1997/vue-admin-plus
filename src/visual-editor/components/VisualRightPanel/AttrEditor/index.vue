@@ -1,5 +1,5 @@
 <template>
-  <el-form class="p-4">
+  <el-form class="p-4" size="small">
     <el-form-item v-for="(option, key) in props.options" :key="key" :label="option.label">
       <template v-if="option.type === VisualEditorPropsType.input">
         <el-input v-model="option.defaultValue" @blur="emit('on-change')" />
@@ -21,12 +21,16 @@
       <template v-if="option.type === VisualEditorPropsType.cssInput">
         <VisualCssInput v-model="option.defaultValue" @change="emit('on-change')" />
       </template>
+      <template v-if="option.type === VisualEditorPropsType.table">
+        <VisualPropTable v-model="option.defaultValue" @change="emit('on-change')" />
+      </template>
     </el-form-item>
   </el-form>
 </template>
 
 <script setup lang="ts" name="AttrEditor">
 import VisualCssInput from './components/VisualCssInput.vue'
+import VisualPropTable from './components/VisualPropTable.vue'
 import { VisualEditorProps, VisualEditorPropsType } from '@/visual-editor/types'
 
 interface Props {
