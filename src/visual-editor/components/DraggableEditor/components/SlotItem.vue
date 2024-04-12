@@ -11,8 +11,8 @@
         @mousedown.stop="props.selectHandler(innerElement)"
       >
         <ComponentRender :element="innerElement">
-          <template v-for="(value, key) in innerElement.props?.decorates" :key="key" #[key]>
-            <DecorationItem v-model:children="value.children" :select-handler="props.selectHandler" :slot-key="key" />
+          <template v-for="(value, key) in innerElement.slots" :key="key" #[key]>
+            <SlotItem v-model:children="value.children" :select-handler="props.selectHandler" />
           </template>
         </ComponentRender>
       </div>
@@ -27,19 +27,17 @@ import ComponentRender from './ComponentRender'
 import type { VisualEditorBlockData } from '@/visual-editor/types'
 
 defineOptions({
-  name: 'DecorationItem',
+  name: 'SlotItem',
 })
 
 interface Props {
   children: Array<VisualEditorBlockData>
-  slotKey?: number | string
   drag?: boolean
   selectHandler: (block: VisualEditorBlockData) => void
 }
 
 const props = withDefaults(defineProps<Props>(), {
   children: () => [],
-  slotKey: '',
 })
 const emit = defineEmits<{
   (e: 'update:children', value: Array<VisualEditorBlockData>): void

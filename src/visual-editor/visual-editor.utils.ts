@@ -1,7 +1,12 @@
 import type { CSSProperties } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import { ComponentModules, VisualEditorBlockData, VisualEditorComponent, VisualEditorProps } from './types'
-import { useDotProp } from './hooks/useDotProp'
+import {
+  ComponentModules,
+  VisualBlockSlotMap,
+  VisualEditorBlockData,
+  VisualEditorComponent,
+  VisualEditorProps,
+} from './types'
 
 export function createNewBlock(component: VisualEditorComponent): VisualEditorBlockData {
   return {
@@ -18,15 +23,22 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
       paddingLeft: '0',
       paddingBottom: '0',
     },
-    props: Object.entries(component.props || {}).reduce((prev, [propName, propSchema]) => {
-      const { propObj, prop } = useDotProp(prev, propName)
-      if (propSchema?.defaultValue) {
-        // @ts-ignore
-        propObj[prop] = prev[propName] = propSchema?.defaultValue
-      }
+    props: Object.entries(component.props || {}).reduce((prev: Record<string, any>, [propName, propSchema]) => {
+      prev[propName] = propSchema?.defaultValue
       return prev
     }, {}),
     draggable: component.draggable ?? true, // 是否可以拖拽
+    slots: (component.slots || []).reduce((prev: VisualBlockSlotMap, slot, index) => {
+      const props = Object.entries(slot).reduce((props: Record<string, any>, [propName, propSchema]) => {
+        props[propName] = propSchema?.defaultValue
+        return props
+      }, {})
+      prev[`slot${index}`] = {
+        props: props,
+        children: [] as VisualEditorBlockData[],
+      }
+      return prev
+    }, {}),
     model: {},
   }
 }
@@ -39,7 +51,6 @@ export function createVisualEditorConfig() {
     basicWidgets: [],
     containerWidgets: [],
   }
-  // const componentList: VisualEditorComponent[] = []
   const componentMap: Record<string, VisualEditorComponent> = {}
   return {
     componentModules,

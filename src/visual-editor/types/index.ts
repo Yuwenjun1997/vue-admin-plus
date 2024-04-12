@@ -2,6 +2,19 @@ import { CSSProperties } from 'vue'
 import { VisualEditorSelectOptions } from '../visual-editor.props'
 import { createVisualEditorConfig } from '../visual-editor.utils'
 
+export type VisualBlockSlotData = {
+  props: Record<string, any>
+  children: VisualEditorBlockData[]
+}
+
+export type VisualBlockSlot = {
+  [prop: string]: any
+}
+
+export type VisualBlockSlotMap = Record<string, VisualBlockSlotData>
+
+export type VisualBlockProps = Record<string, any>
+
 // 组件属性编辑类型
 export enum VisualEditorPropsType {
   input = 'input',
@@ -46,9 +59,10 @@ export type VisualEditorBlockData = {
   label: string
   isActive: boolean
   styles: CSSProperties
-  props: Record<string, any>
+  props: VisualBlockProps
   model: Record<string, string>
   draggable: boolean
+  slots: VisualBlockSlotMap
 }
 
 // 页面配置
@@ -85,11 +99,13 @@ export type VisualEditorComponent = {
     styles: CSSProperties
     block: VisualEditorBlockData
     custom: Record<string, any>
+    slots?: VisualBlockSlotMap
   }) => () => JSX.Element
   draggable?: boolean
   showStyleConfig?: boolean
   props?: Record<string, VisualEditorProps>
   styles?: CSSProperties
+  slots?: Record<string, VisualEditorProps>[]
 }
 
 // 组件模块

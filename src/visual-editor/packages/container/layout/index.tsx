@@ -1,37 +1,14 @@
-import { VisualEditorComponent } from '@/visual-editor/types'
+import { VisualBlockSlotData, VisualEditorComponent } from '@/visual-editor/types'
 import { Row, Col } from 'vant'
 import { renderSlot } from 'vue'
 import styleModule from './index.module.scss'
 import {
+  createEditorInputNumberProp,
   createEditorInputProp,
   createEditorSelectProp,
-  createEditorTableProp,
 } from '@/visual-editor/visual-editor.props'
-import { VisualBlockData } from '@/low-code'
 
-const decoratesTemp = {} as any
-
-interface Decorate {
-  [key: string]: any
-}
-
-interface DecorateItem {
-  children?: VisualBlockData[]
-  [prop: string]: any
-}
-
-const createDecorate = (str: string): Decorate =>
-  str.split(':').reduce(
-    (prev, curr, index) => {
-      prev[`decorate${index}`] = {
-        key: `decorate${index}`,
-        span: curr,
-        children: [],
-      } as DecorateItem
-      return prev
-    },
-    { value: str } as Decorate
-  )
+const slotsTemp = {} as any
 
 export default {
   key: 'layout',
@@ -43,15 +20,15 @@ export default {
       <Col span={12}>12</Col>
     </Row>
   ),
-  render: ({ props, styles, block, custom }) => {
-    console.log(props.decorates)
-    const decorates = useSlots()
-    decoratesTemp[block._vid] ??= {}
+  render: ({ props, styles, block, custom, slots: vslots }) => {
+    const slots = useSlots()
+    console.log(vslots, slots)
+    slotsTemp[block._vid] ??= {}
     watchEffect(() => {
-      if (Object.keys(props.decorates || {}).length) {
-        Object.entries<Decorate>(props.decorates || {}).forEach(([key, decorate]) => {
-          if (decoratesTemp[block._vid][key]?.children) {
-            decorate.children = decoratesTemp[block._vid][key].children
+      if (Object.keys(vslots || {}).length) {
+        Object.entries<VisualBlockSlotData>(vslots || {}).forEach(([key, vslot]) => {
+          if (slotsTemp[block._vid][key]?.children) {
+            vslot.children = slotsTemp[block._vid][key].children
           }
         })
       }
@@ -60,32 +37,16 @@ export default {
     return () => (
       <div style={styles}>
         <Row {...custom} {...props} class={styleModule['van-row1']}>
-          {Object.values<Decorate>(
-            Object.keys(props.decorates || {}).length ? props.decorates || {} : createDecorate('12:12')
-          )
-            ?.filter((item) => typeof item !== 'string')
-            .map((spanItem, spanIndex) => {
-              decoratesTemp[block._vid][`decorate${spanIndex}`] = spanItem
-              return (
-                <>
-                  <Col span={spanItem.span}>{renderSlot(decorates, `decorate${spanIndex}`)}</Col>
-                </>
-              )
-            })}
+          {Object.entries<VisualBlockSlotData>(vslots || {}).map(([key, vslot]) => {
+            slotsTemp[block._vid][key] = vslot
+            return <Col {...vslot.props}>{renderSlot(slots, key)}</Col>
+          })}
         </Row>
       </div>
     )
   },
   props: {
     gutter: createEditorInputProp({ label: '列间隔' }),
-    decorates: createEditorTableProp<Decorate>({
-      label: '列配置',
-      option: {
-        options: [],
-        showKey: 'label',
-      },
-      defaultValue: createDecorate('12:12'),
-    }),
     justify: createEditorSelectProp({
       label: '主轴对齐方式',
       options: [
@@ -105,4 +66,8 @@ export default {
       ],
     }),
   },
+  slots: [
+    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12 }) },
+    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12 }) },
+  ],
 } as VisualEditorComponent

@@ -10,7 +10,14 @@
           <div v-if="!visualEditor" class="overflow-hidden p-2">
             <el-empty description="当前未选中组件" />
           </div>
-          <AttrEditor v-else :options="visualEditor.props" @on-change="handleAttrChange" />
+          <div v-else class="px-4">
+            <el-divider>基础属性</el-divider>
+            <AttrEditor :options="visualEditor.props" :trigger-handler="handleAttrChange" />
+            <template v-if="visualEditor.slots && visualEditor.slots.length">
+              <el-divider>插槽配置</el-divider>
+              <SlotEditor :options="visualEditor.slots" :trigger-handler="handleAttrChange" />
+            </template>
+          </div>
         </el-scrollbar>
       </el-tab-pane>
       <el-tab-pane label="动画" lazy name="ComponentAttribute">
@@ -44,6 +51,7 @@ import { Icon } from '@iconify/vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { storeToRefs } from 'pinia'
 import AttrEditor from './AttrEditor/index.vue'
+import SlotEditor from './SlotEditor/index.vue'
 
 const activeTab = ref<string>('BasicAttribute')
 

@@ -8,8 +8,8 @@
         @mousedown.stop="selectComponent(outElement)"
       >
         <ComponentRender :key="outElement._vid" :element="outElement">
-          <template v-for="(value, key) in outElement.props?.decorates" :key="key" #[key]>
-            <DecorationItem v-model:children="value.children" :select-handler="selectComponent" :slot-key="key" />
+          <template v-for="(value, key) in outElement.slots" :key="key" #[key]>
+            <SlotItem v-model:children="value.children" :select-handler="selectComponent" />
           </template>
         </ComponentRender>
       </div>
@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import DraggableGroup from './components/DraggableGroup.vue'
-import DecorationItem from './components/DecorationItem.vue'
+import SlotItem from './components/SlotItem.vue'
 import ComponentRender from './components/ComponentRender'
 import { createNewBlock } from '@/visual-editor/visual-editor.utils'
 import { VisualEditorBlockData } from '@/visual-editor/types'
@@ -42,16 +42,14 @@ const selectComponent = (component: VisualEditorBlockData) => {
 }
 
 const handleSlotsActive = (block: VisualEditorBlockData, _vid: string) => {
-  const decorates = block.props?.decorates
-  if (!decorates) return
-  if (Object.keys(decorates).length <= 0) return
-  Object.keys(decorates).forEach((slotKey) => {
-    decorates[slotKey]?.children?.forEach((item: VisualEditorBlockData) => {
+  if (Object.keys(block.slots).length <= 0) return
+  Object.keys(block.slots).forEach((slotKey) => {
+    block.slots[slotKey]?.children?.forEach((item: VisualEditorBlockData) => {
       item.isActive = item._vid === _vid
       if (item.isActive) {
         console.log(item)
       }
-      if (Object.keys(item.props?.decorates || {}).length) {
+      if (Object.keys(block.slots).length) {
         handleSlotsActive(item, _vid)
       }
     })

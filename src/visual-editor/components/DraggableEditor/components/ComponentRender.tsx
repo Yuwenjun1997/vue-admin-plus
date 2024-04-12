@@ -17,6 +17,7 @@ export default defineComponent({
       model: {},
       block: props.element,
       custom: {},
+      slots: props.element.slots,
     })
   },
 })
