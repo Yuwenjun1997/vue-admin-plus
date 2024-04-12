@@ -5,7 +5,7 @@
         <el-input v-model="option.defaultValue" @blur="triggerHandler" />
       </template>
       <template v-if="option.type === VisualEditorPropsType.inputNumber">
-        <el-input-number v-model="option.defaultValue" @blur="triggerHandler" />
+        <el-input-number v-model="option.defaultValue" :max="option.max" :min="option.min" @change="triggerHandler" />
       </template>
       <template v-if="option.type === VisualEditorPropsType.switch">
         <el-switch v-model="option.defaultValue" @change="triggerHandler" />
@@ -21,16 +21,12 @@
       <template v-if="option.type === VisualEditorPropsType.cssInput">
         <VisualCssInput v-model="option.defaultValue" @change="triggerHandler" />
       </template>
-      <template v-if="option.type === VisualEditorPropsType.table">
-        <VisualPropTable v-model="option.defaultValue" @change="triggerHandler" />
-      </template>
     </el-form-item>
   </el-form>
 </template>
 
 <script setup lang="ts" name="AttrEditor">
 import VisualCssInput from './components/VisualCssInput.vue'
-import VisualPropTable from './components/VisualPropTable.vue'
 import { VisualEditorProps, VisualEditorPropsType } from '@/visual-editor/types'
 
 interface Props {

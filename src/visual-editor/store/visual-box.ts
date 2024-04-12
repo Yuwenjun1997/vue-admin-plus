@@ -51,15 +51,24 @@ export const useVisualBoxStore = defineStore('visualBox', {
           }
         })
       }
+      visualEditor.slots?.forEach((item, index) => {
+        Object.entries(this.currentBlock?.slots || {}).forEach(([_slotKey, slotValue]) => {
+          console.log(slotValue.index === index)
+          if (slotValue.index === index) {
+            Object.entries(item).forEach(([propKey, propSchema]) => {
+              propSchema.defaultValue = slotValue.props[propKey]
+            })
+          }
+        })
+      })
       this.visualEditor = visualEditor
-      console.log(this.visualEditor)
     },
     applyVisualEditor() {
       if (!this.visualEditor || !this.currentBlock) return
       const block = createNewBlock(this.visualEditor)
-      console.log(block.props)
       replaceProps(this.currentBlock.props, block.props)
-      console.log(this.currentBlock.props)
+      replaceProps(this.currentBlock.slots, block.slots)
+      console.log(block.slots)
     },
     setDevice(name: string) {
       this.device = name

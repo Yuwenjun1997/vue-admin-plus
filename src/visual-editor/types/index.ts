@@ -3,6 +3,7 @@ import { VisualEditorSelectOptions } from '../visual-editor.props'
 import { createVisualEditorConfig } from '../visual-editor.utils'
 
 export type VisualBlockSlotData = {
+  index: number
   props: Record<string, any>
   children: VisualEditorBlockData[]
 }

@@ -67,7 +67,7 @@ export default {
     }),
   },
   slots: [
-    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12 }) },
-    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12 }) },
+    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12, max: 24, min: 1 }) },
+    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12, max: 24, min: 1 }) },
   ],
 } as VisualEditorComponent

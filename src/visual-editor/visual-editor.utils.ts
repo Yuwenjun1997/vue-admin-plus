@@ -34,6 +34,7 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
         return props
       }, {})
       prev[`slot${index}`] = {
+        index,
         props: props,
         children: [] as VisualEditorBlockData[],
       }
