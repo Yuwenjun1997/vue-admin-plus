@@ -18,10 +18,6 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
     styles: {
       display: 'flex',
       justifyContent: 'flex-start',
-      paddingTop: '0',
-      paddingRight: '0',
-      paddingLeft: '0',
-      paddingBottom: '0',
     },
     props: Object.entries(component.props || {}).reduce((prev: Record<string, any>, [propName, propSchema]) => {
       prev[propName] = propSchema?.defaultValue

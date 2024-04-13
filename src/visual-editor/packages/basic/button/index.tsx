@@ -11,7 +11,11 @@ export default {
   key: 'button',
   moduleName: 'basicWidgets',
   label: '按钮',
-  preview: () => <Button type={'primary'}>按钮</Button>,
+  preview: () => (
+    <Button size="small" type="primary" square>
+      按钮
+    </Button>
+  ),
   render: ({ props, styles }) => {
     return () => (
       <div style={styles}>
@@ -30,7 +34,7 @@ export default {
         { label: '警告按钮', value: 'warning' },
         { label: '危险按钮', value: 'danger' },
       ],
-      defaultValue: 'default',
+      defaultValue: 'primary',
     }),
     size: createEditorSelectProp({
       label: '按钮尺寸',
@@ -56,7 +60,7 @@ export default {
     plain: createEditorSwitchProp({ label: '是否为朴素按钮' }),
     replace: createEditorSwitchProp({ label: '是否在跳转时替换当前页面历史' }),
     round: createEditorSwitchProp({ label: '是否为圆形按钮' }),
-    square: createEditorSwitchProp({ label: '是否为方形按钮' }),
+    square: createEditorSwitchProp({ label: '是否为方形按钮', defaultValue: true }),
     block: createEditorSwitchProp({ label: '是否为块级元素', defaultValue: false }),
     color: createEditorColorProp({ label: '按钮颜色' }),
     disabled: createEditorSwitchProp({ label: '是否禁用按钮' }),

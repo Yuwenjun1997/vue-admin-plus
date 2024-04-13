@@ -2,7 +2,7 @@ import { VisualEditorProps, VisualEditorPropsType, VisualEditorTableOption } fro
 
 interface EditorCssInputProp {
   label: string
-  defaultValue?: boolean
+  defaultValue?: any
   tips?: string
 }
 

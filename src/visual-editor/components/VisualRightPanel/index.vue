@@ -10,7 +10,7 @@
           <div v-if="!visualEditor" class="overflow-hidden p-2">
             <el-empty description="当前未选中组件" />
           </div>
-          <div v-else class="px-4">
+          <div v-else :key="visualEditor.key" class="px-4">
             <el-divider>基础属性</el-divider>
             <AttrEditor :options="visualEditor.props" :trigger-handler="handleAttrChange" />
             <template v-if="visualEditor.slots && visualEditor.slots.length">
@@ -31,8 +31,11 @@
           <span class="ml-1">样式</span>
         </template>
         <el-scrollbar height="100%">
-          <div class="overflow-hidden p-2">
+          <div v-if="!visualEditor" class="overflow-hidden p-2">
             <el-empty description="当前未选中组件" />
+          </div>
+          <div v-else :key="visualEditor.key" class="p-4">
+            <AttrEditor :options="cssEditorOptions" :trigger-handler="handleAttrChange" />
           </div>
         </el-scrollbar>
       </el-tab-pane>
@@ -61,7 +64,7 @@ import SlotEditor from './SlotEditor/index.vue'
 const activeTab = ref<string>('BasicAttribute')
 
 const visualBoxStore = useVisualBoxStore()
-const { visualEditor } = storeToRefs(visualBoxStore)
+const { visualEditor, cssEditorOptions } = storeToRefs(visualBoxStore)
 
 const handleAttrChange = () => {
   visualBoxStore.applyVisualEditor()
@@ -77,6 +80,7 @@ const handleDeleteSlot = (index: number) => {
 }
 
 watchEffect(() => {
+  console.log(cssEditorOptions.value)
   console.log(visualEditor.value)
 })
 </script>

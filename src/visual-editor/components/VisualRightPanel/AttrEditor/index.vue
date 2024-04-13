@@ -30,7 +30,7 @@ import VisualCssInput from './components/VisualCssInput.vue'
 import { VisualEditorProps, VisualEditorPropsType } from '@/visual-editor/types'
 
 interface Props {
-  options?: Record<string, VisualEditorProps>
+  options?: Record<string, VisualEditorProps> | null
   triggerHandler?: (e: any) => void
 }
 

@@ -15,9 +15,13 @@ export default {
   moduleName: 'basicWidgets',
   label: '布局容器',
   preview: () => (
-    <Row>
-      <Col span={12}>12</Col>
-      <Col span={12}>12</Col>
+    <Row style={{ width: '100%' }} gutter={4}>
+      <Col span={12}>
+        <div style={{ background: '#f0f0f0', minHeight: '30px' }}></div>
+      </Col>
+      <Col span={12}>
+        <div style={{ background: '#f0f0f0', minHeight: '30px' }}></div>
+      </Col>
     </Row>
   ),
   render: ({ props, styles, block, custom, slots: vslots }) => {
@@ -65,7 +69,10 @@ export default {
       ],
     }),
   },
-  slots: [{ span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 24, max: 24, min: 1 }) }],
+  slots: [
+    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12, max: 24, min: 1 }) },
+    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12, max: 24, min: 1 }) },
+  ],
   addSlot() {
     this.slots = this.slots || []
     this.slots.push({ span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 24, max: 24, min: 1 }) })
