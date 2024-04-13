@@ -44,23 +44,11 @@ export const useVisualBoxStore = defineStore('visualBox', {
     initVisualEditor() {
       if (!this.currentBlock) return
       const visualEditor = cloneDeep(visualConfig.componentMap[this.currentBlock.componentKey])
-      if (Object.keys(visualEditor.props || {}).length > 0) {
-        Object.keys(visualEditor.props || {}).forEach((propKey) => {
-          if (visualEditor.props) {
-            visualEditor.props[propKey].defaultValue = this.currentBlock?.props[propKey]
-          }
-        })
-      }
-      visualEditor.slots?.forEach((item, index) => {
-        Object.entries(this.currentBlock?.slots || {}).forEach(([_slotKey, slotValue]) => {
-          console.log(slotValue.index === index)
-          if (slotValue.index === index) {
-            Object.entries(item).forEach(([propKey, propSchema]) => {
-              propSchema.defaultValue = slotValue.props[propKey]
-            })
-          }
-        })
+      Object.keys(visualEditor.props || {}).forEach((propKey) => {
+        visualEditor.props = visualEditor.props || {}
+        visualEditor.props[propKey].defaultValue = this.currentBlock?.props[propKey]
       })
+      visualEditor.initSlotsOptions && visualEditor.initSlotsOptions(this.currentBlock.slots)
       this.visualEditor = visualEditor
     },
     applyVisualEditor() {
@@ -68,7 +56,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
       const block = createNewBlock(this.visualEditor)
       replaceProps(this.currentBlock.props, block.props)
       replaceProps(this.currentBlock.slots, block.slots)
-      console.log(block.slots)
     },
     setDevice(name: string) {
       this.device = name

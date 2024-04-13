@@ -15,15 +15,20 @@
             <AttrEditor :options="visualEditor.props" :trigger-handler="handleAttrChange" />
             <template v-if="visualEditor.slots && visualEditor.slots.length">
               <el-divider>插槽配置</el-divider>
-              <SlotEditor :options="visualEditor.slots" :trigger-handler="handleAttrChange" />
+              <SlotEditor
+                :options="visualEditor.slots"
+                :trigger-handler="handleAttrChange"
+                @add-slot="handleAddSlot"
+                @delete-slot="handleDeleteSlot"
+              />
             </template>
           </div>
         </el-scrollbar>
       </el-tab-pane>
-      <el-tab-pane label="动画" lazy name="ComponentAttribute">
+      <el-tab-pane label="样式" lazy name="ComponentAttribute">
         <template #label>
           <Icon icon="ep:set-up" />
-          <span class="ml-1">动画</span>
+          <span class="ml-1">样式</span>
         </template>
         <el-scrollbar height="100%">
           <div class="overflow-hidden p-2">
@@ -59,12 +64,20 @@ const visualBoxStore = useVisualBoxStore()
 const { visualEditor } = storeToRefs(visualBoxStore)
 
 const handleAttrChange = () => {
-  console.log(123)
+  visualBoxStore.applyVisualEditor()
+}
+
+const handleAddSlot = () => {
+  visualEditor.value?.addSlot && visualEditor.value?.addSlot()
+  visualBoxStore.applyVisualEditor()
+}
+const handleDeleteSlot = (index: number) => {
+  visualEditor.value?.deleteSlot && visualEditor.value?.deleteSlot(index)
   visualBoxStore.applyVisualEditor()
 }
 
 watchEffect(() => {
-  // console.log(visualEditor.value)
+  console.log(visualEditor.value)
 })
 </script>
 

@@ -4,14 +4,16 @@
       <el-collapse-item v-for="(option, index) in props.options" :key="index" :name="index">
         <template #title>
           <div class="flex items-center gap-1">
-            <Icon class="slot-del-btn" icon="ep:circle-close-filled" />
+            <template v-if="props.options && props.options.length > 1">
+              <Icon class="slot-del-btn" icon="ep:circle-close-filled" @click="emit('delete-slot', index)" />
+            </template>
             <span>插槽{{ index + 1 }}</span>
           </div>
         </template>
         <AttrEditor :options="option" :trigger-handler="triggerHandler" />
       </el-collapse-item>
     </el-collapse>
-    <el-button class="w-full" size="small" type="primary" @click="handleAddSlot">添加插槽</el-button>
+    <el-button class="w-full" size="small" type="primary" @click="emit('add-slot')">添加插槽</el-button>
   </div>
 </template>
 
@@ -27,9 +29,12 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const activeIndex = ref<number[]>([])
+const emit = defineEmits<{
+  (e: 'add-slot'): void
+  (e: 'delete-slot', index: number): void
+}>()
 
-const handleAddSlot = () => {}
+const activeIndex = ref<number[]>([])
 </script>
 
 <style scoped lang="scss">
