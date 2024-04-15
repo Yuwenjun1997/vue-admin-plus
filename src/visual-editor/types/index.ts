@@ -91,7 +91,6 @@ export type VisualEditorPages = {
 export type VisualEditorComponent = {
   key: string
   moduleName: keyof ComponentModules
-  _vid?: string
   label: string
   preview: () => JSX.Element
   render: (data: {

@@ -6,7 +6,7 @@
         <VadTools align="end" />
       </el-header>
       <el-container class="visual-design-wrap">
-        <el-aside class="vad-bg-color" style="width: 260px">
+        <el-aside class="vad-bg-color" style="width: 340px">
           <VisualLeftPanel />
         </el-aside>
         <el-container>

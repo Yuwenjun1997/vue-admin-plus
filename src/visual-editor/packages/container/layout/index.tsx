@@ -13,14 +13,17 @@ const slotsTemp = {} as any
 export default {
   key: 'layout',
   moduleName: 'basicWidgets',
-  label: '布局容器',
+  label: '栅格布局',
   preview: () => (
     <Row style={{ width: '100%' }} gutter={4}>
-      <Col span={12}>
-        <div style={{ background: '#f0f0f0', minHeight: '30px' }}></div>
+      <Col span={8}>
+        <div style={{ background: '#f0f0f0', minHeight: '26px' }}></div>
       </Col>
-      <Col span={12}>
-        <div style={{ background: '#f0f0f0', minHeight: '30px' }}></div>
+      <Col span={8}>
+        <div style={{ background: '#f0f0f0', minHeight: '26px' }}></div>
+      </Col>
+      <Col span={8}>
+        <div style={{ background: '#f0f0f0', minHeight: '26px' }}></div>
       </Col>
     </Row>
   ),

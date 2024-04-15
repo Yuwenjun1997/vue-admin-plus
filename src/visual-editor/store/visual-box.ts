@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import { VisualEditorBlockData, VisualEditorComponent, VisualEditorProps } from '../types'
+import { VisualEditorBlockData, VisualEditorComponent } from '../types'
 import { visualConfig } from '../visual.config'
 import { cloneDeep } from 'lodash'
 import { createNewBlock } from '../visual-editor.utils'
-import { cssEditorOptions } from '../configs/css-editor-options'
+import { CssEditorOption, cssEditorOptions } from '../configs/css-editor-options'
 import { CSSProperties } from 'vue'
 
 interface VisualBoxState {
@@ -11,7 +11,7 @@ interface VisualBoxState {
   isFullscreen: boolean
   currentBlock: VisualEditorBlockData | null
   visualEditor: VisualEditorComponent | null
-  cssEditorOptions: Record<string, VisualEditorProps> | null
+  cssEditorOptions: CssEditorOption[]
 }
 
 const replaceProps = (source: Record<string, any>, target: Record<string, any>) => {
@@ -37,7 +37,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     isFullscreen: false,
     currentBlock: null,
     visualEditor: null,
-    cssEditorOptions: null,
+    cssEditorOptions: [],
   }),
 
   actions: {
@@ -56,12 +56,18 @@ export const useVisualBoxStore = defineStore('visualBox', {
       })
       // 处理插槽
       visualEditor.initSlotsOptions && visualEditor.initSlotsOptions(this.currentBlock.slots)
-      this.visualEditor = visualEditor
+
       // 处理css样式
-      this.cssEditorOptions = cloneDeep(cssEditorOptions)
-      Object.entries(this.cssEditorOptions).forEach(([key, value]) => {
-        value.defaultValue = this.currentBlock?.styles[key as keyof CSSProperties]
+      if (!this.cssEditorOptions.length) {
+        this.cssEditorOptions = cloneDeep(cssEditorOptions)
+      }
+      this.cssEditorOptions.forEach((item) => {
+        Object.entries(item.optionMap).forEach(([key, value]) => {
+          value.defaultValue = this.currentBlock?.styles[key as keyof CSSProperties]
+        })
       })
+      this.visualEditor = visualEditor
+
       console.log(this.cssEditorOptions)
     },
     applyVisualEditor() {
@@ -69,13 +75,14 @@ export const useVisualBoxStore = defineStore('visualBox', {
       const block = createNewBlock(this.visualEditor)
       replaceProps(this.currentBlock.props, block.props)
       replaceProps(this.currentBlock.slots, block.slots)
-      if (this.cssEditorOptions) {
-        const cssRule = Object.entries(this.cssEditorOptions).reduce((cssRule: Record<string, any>, [key, value]) => {
+
+      this.cssEditorOptions.forEach((item) => {
+        const cssRule = Object.entries(item.optionMap).reduce((cssRule: Record<string, any>, [key, value]) => {
           cssRule[key] = value.defaultValue
           return cssRule
         }, {})
-        Object.assign(this.currentBlock.styles, cssRule)
-      }
+        Object.assign(this.currentBlock?.styles || {}, cssRule)
+      })
     },
     setDevice(name: string) {
       this.device = name

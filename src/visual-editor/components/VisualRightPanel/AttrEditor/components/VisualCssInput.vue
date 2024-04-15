@@ -61,12 +61,16 @@ const handleUnitChange = () => {
   emit('change', spliceValue.value)
 }
 
-onMounted(() => {
+watchEffect(() => {
   if (props.modelValue) {
     const result = useExtractValueAndUnit(props.modelValue)
     if (!result) return
     inputValue.value = sliderValue.value = Number(result[0])
     unit.value = (result[1] as string).toLowerCase()
+  } else {
+    inputValue.value = undefined
+    unit.value = 'px'
+    sliderValue.value = 0
   }
 })
 </script>

@@ -2,16 +2,22 @@
   <el-form size="small">
     <el-form-item v-for="(option, key) in props.options" :key="key" :label="option.label">
       <template v-if="option.type === VisualEditorPropsType.input">
-        <el-input v-model="option.defaultValue" @blur="triggerHandler" />
+        <el-input v-model="option.defaultValue" clearable @blur="triggerHandler" />
       </template>
       <template v-if="option.type === VisualEditorPropsType.inputNumber">
-        <el-input-number v-model="option.defaultValue" :max="option.max" :min="option.min" @change="triggerHandler" />
+        <el-input-number
+          v-model="option.defaultValue"
+          clearable
+          :max="option.max"
+          :min="option.min"
+          @change="triggerHandler"
+        />
       </template>
       <template v-if="option.type === VisualEditorPropsType.switch">
         <el-switch v-model="option.defaultValue" @change="triggerHandler" />
       </template>
       <template v-if="option.type === VisualEditorPropsType.select">
-        <el-select v-model="option.defaultValue" @change="triggerHandler">
+        <el-select v-model="option.defaultValue" clearable @change="triggerHandler">
           <el-option v-for="(item, i) in option.options" :key="i" :label="item.label" :value="item.value" />
         </el-select>
       </template>
