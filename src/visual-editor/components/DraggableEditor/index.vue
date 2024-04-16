@@ -1,15 +1,21 @@
 <template>
-  <DraggableGroup v-model="blocks">
+  <DraggableGroup v-model="visualBlocks" :end-handler="handleDragEnd" :start-handler="handleDragStart">
     <template #item="{ element: outElement }">
       <div
         class="visual-block"
-        :class="{ 'is-active': outElement.isActive }"
+        :class="{ 'is-active': outElement._vid === activeId, 'has-slots': Object.keys(outElement.slots).length }"
         :data-label="outElement.label"
-        @mousedown.stop="selectComponent(outElement)"
+        @click.stop="setCurrentBlock(outElement)"
       >
         <ComponentRender :key="outElement._vid" :element="outElement">
           <template v-for="(value, key) in outElement.slots" :key="key" #[key]>
-            <SlotItem v-model:children="value.children" :select-handler="selectComponent" />
+            <SlotItem
+              v-model:children="value.children"
+              :active-id="activeId"
+              :end-handler="handleDragEnd"
+              :select-handler="setCurrentBlock"
+              :start-handler="handleDragStart"
+            />
           </template>
         </ComponentRender>
       </div>
@@ -21,54 +27,24 @@
 import DraggableGroup from './components/DraggableGroup.vue'
 import SlotItem from './components/SlotItem.vue'
 import ComponentRender from './components/ComponentRender'
-import { createNewBlock } from '@/visual-editor/visual-editor.utils'
-import { VisualEditorBlockData } from '@/visual-editor/types'
-import button from '@/visual-editor/packages/basic/button'
-import layout from '@/visual-editor/packages/container/layout'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
+import { storeToRefs } from 'pinia'
 
 const { setCurrentBlock } = useVisualBoxStore()
+const { visualBlocks, currentBlock, isDrag } = storeToRefs(useVisualBoxStore())
 
-const layoutCom = createNewBlock(layout)
+const activeId = computed(() => currentBlock.value?._vid)
 
-const blocks = ref<VisualEditorBlockData[]>([createNewBlock(button), layoutCom])
-
-const selectComponent = (component: VisualEditorBlockData) => {
-  setCurrentBlock(component)
-  blocks.value.forEach((block) => {
-    block.isActive = block._vid === component._vid
-    handleSlotsActive(block, component._vid)
-  })
+const handleDragStart = () => {
+  isDrag.value = true
 }
-
-const handleSlotsActive = (block: VisualEditorBlockData, _vid: string) => {
-  if (Object.keys(block.slots).length <= 0) return
-  Object.keys(block.slots).forEach((slotKey) => {
-    block.slots[slotKey]?.children?.forEach((item: VisualEditorBlockData) => {
-      item.isActive = item._vid === _vid
-      if (item.isActive) {
-        console.log(item)
-      }
-      if (Object.keys(block.slots).length) {
-        handleSlotsActive(item, _vid)
-      }
-    })
-  })
+const handleDragEnd = () => {
+  isDrag.value = false
 }
 
 watchEffect(() => {
-  console.log(blocks.value)
+  console.log(visualBlocks.value)
 })
 </script>
 
-<style scoped lang="scss">
-.visual-block {
-  position: relative;
-  padding: 2px;
-
-  &.is-active {
-    outline: 2px solid var(--el-color-primary);
-    outline-offset: -2px;
-  }
-}
-</style>
+<style scoped lang="scss"></style>

@@ -2,12 +2,12 @@
   <div class="VisualHeaderPanel h-full">
     <div class="flex-1 flex items-center">
       <el-tooltip content="撤销" effect="dark">
-        <div class="visual-tools__control" @click.stop="handleUndo">
+        <div class="visual-tools__control" :class="{ disabled: !canUndo }" @click.stop="undo">
           <Icon icon="ion:ios-undo" />
         </div>
       </el-tooltip>
       <el-tooltip content="重做" effect="dark">
-        <div class="visual-tools__control" @click.stop="handleRedo">
+        <div class="visual-tools__control" :class="{ disabled: !canRedo }" @click.stop="redo">
           <Icon icon="ion:ios-redo" />
         </div>
       </el-tooltip>
@@ -71,7 +71,7 @@
     <VisualPreviewModal ref="previewModal" />
 
     <!-- 全局设置 -->
-    <VisualGlobalSettingModal ref="golbalSettingModal" />
+    <!-- <VisualGlobalSettingModal ref="golbalSettingModal" /> -->
   </div>
 </template>
 
@@ -79,20 +79,18 @@
 import VisualJsonCodeModal from './VisualJsonCodeModal.vue'
 import VisualCodeExportModal from './VisualCodeExportModal.vue'
 import VisualPreviewModal from './VisualPreviewModal.vue'
-import VisualGlobalSettingModal from './VisualGlobalSettingModal/index.vue'
+// import VisualGlobalSettingModal from './VisualGlobalSettingModal/index.vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { Icon } from '@iconify/vue'
-import { useToggle } from '@vueuse/core'
+import { useRefHistory, useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { ElMessageBox } from 'element-plus'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen, device } = storeToRefs(visualBoxStore)
+const { isFullscreen, device, visualBlocks } = storeToRefs(visualBoxStore)
 const toggleFullscreen = useToggle(isFullscreen)
 
-const handleUndo = () => {}
-
-const handleRedo = () => {}
+const { undo, redo, canRedo, canUndo } = useRefHistory(visualBlocks, { deep: true })
 
 // 清空画布
 const handleClearScreen = async () => {
@@ -102,7 +100,7 @@ const handleClearScreen = async () => {
       cancelButtonText: '取消',
       type: 'warning',
     })
-    // todo
+    visualBoxStore.clear()
   } catch (error) {
     console.log(error)
   }
@@ -139,11 +137,11 @@ const handlePreview = () => {
 }
 
 // 全局设置
-const golbalSettingModal = ref<InstanceType<typeof VisualGlobalSettingModal>>()
-const handleShowGlobalSettingModal = () => {
-  if (!golbalSettingModal.value) return
-  golbalSettingModal.value.showModal()
-}
+// const golbalSettingModal = ref<InstanceType<typeof VisualGlobalSettingModal>>()
+// const handleShowGlobalSettingModal = () => {
+//   if (!golbalSettingModal.value) return
+//   golbalSettingModal.value.showModal()
+// }
 </script>
 
 <style scoped lang="scss">

@@ -5,13 +5,17 @@ import { cloneDeep } from 'lodash'
 import { createNewBlock } from '../visual-editor.utils'
 import { CssEditorOption, cssEditorOptions } from '../configs/css-editor-options'
 import { CSSProperties } from 'vue'
+import { ElMessage } from 'element-plus'
+import { v4 as uuidv4 } from 'uuid'
 
 interface VisualBoxState {
+  isDrag: boolean
   device: string
   isFullscreen: boolean
   currentBlock: VisualEditorBlockData | null
   visualEditor: VisualEditorComponent | null
   cssEditorOptions: CssEditorOption[]
+  visualBlocks: VisualEditorBlockData[]
 }
 
 const replaceProps = (source: Record<string, any>, target: Record<string, any>) => {
@@ -31,21 +35,48 @@ const replaceProps = (source: Record<string, any>, target: Record<string, any>) 
   }
 }
 
+const moveComponet = (blocks: VisualEditorBlockData[], formIndex: number, toIndex: number) => {
+  const element = blocks.splice(formIndex, 1)[0]
+  blocks.splice(toIndex, 0, element)
+}
+
 export const useVisualBoxStore = defineStore('visualBox', {
   state: (): VisualBoxState => ({
+    isDrag: false,
     device: 'h5',
     isFullscreen: false,
     currentBlock: null,
     visualEditor: null,
     cssEditorOptions: [],
+    visualBlocks: [],
   }),
 
   actions: {
+    findVisualWrap(components: VisualEditorBlockData[]) {
+      let blocks: VisualEditorBlockData[] = []
+      let currentIndex: number = 0
+      let parent: VisualEditorBlockData | null = null
+
+      const recursion = (components: VisualEditorBlockData[], prevParent: VisualEditorBlockData | null) => {
+        components.forEach((item, index) => {
+          if (item._vid === this.currentBlock?._vid) {
+            blocks = components
+            currentIndex = index
+            parent = prevParent
+          } else if (item.slots && Object.keys(item.slots).length) {
+            Object.entries(item.slots).forEach(([_key, value]) => recursion(value.children, item))
+          }
+        })
+      }
+      recursion(components, null)
+      return { blocks, currentIndex, parent }
+    },
+
     setCurrentBlock(block: VisualEditorBlockData) {
       this.currentBlock = block
-
       this.initVisualEditor()
     },
+
     initVisualEditor() {
       if (!this.currentBlock) return
       const visualEditor = cloneDeep(visualConfig.componentMap[this.currentBlock.componentKey])
@@ -67,9 +98,8 @@ export const useVisualBoxStore = defineStore('visualBox', {
         })
       })
       this.visualEditor = visualEditor
-
-      console.log(this.cssEditorOptions)
     },
+
     applyVisualEditor() {
       if (!this.visualEditor || !this.currentBlock) return
       const block = createNewBlock(this.visualEditor)
@@ -84,8 +114,55 @@ export const useVisualBoxStore = defineStore('visualBox', {
         Object.assign(this.currentBlock?.styles || {}, cssRule)
       })
     },
+
     setDevice(name: string) {
       this.device = name
+    },
+
+    moveUp() {
+      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
+      const { currentIndex, blocks } = this.findVisualWrap(this.visualBlocks)
+      if (currentIndex === 0) return ElMessage.warning('当前组件已在第一个位置')
+      moveComponet(blocks, currentIndex, currentIndex - 1)
+    },
+
+    moveDown() {
+      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
+      const { currentIndex, blocks } = this.findVisualWrap(this.visualBlocks)
+      if (currentIndex === blocks.length - 1) return ElMessage.warning('当前组件已在最后一个位置')
+      moveComponet(blocks, currentIndex, currentIndex + 1)
+    },
+
+    clone() {
+      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
+      const clone = cloneDeep(this.currentBlock)
+      clone.label = `${clone.label}(clone)`
+      clone._vid = uuidv4()
+      const { currentIndex, blocks } = this.findVisualWrap(this.visualBlocks)
+      blocks.splice(currentIndex + 1, 0, clone)
+      this.setCurrentBlock(clone)
+    },
+
+    deleteFn() {
+      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
+      const { currentIndex, blocks } = this.findVisualWrap(this.visualBlocks)
+      blocks.splice(currentIndex, 1)
+      this.currentBlock = null
+      this.visualEditor = null
+    },
+
+    activeParent() {
+      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
+      const { parent } = this.findVisualWrap(this.visualBlocks)
+      if (!parent) return ElMessage.warning('已经是顶级组件')
+      this.currentBlock.isActive = false
+      this.setCurrentBlock(parent)
+    },
+
+    clear() {
+      this.visualBlocks = []
+      this.currentBlock = null
+      this.visualEditor = null
     },
   },
 })

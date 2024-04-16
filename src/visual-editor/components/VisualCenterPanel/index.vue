@@ -1,7 +1,7 @@
 <template>
   <div class="VisualCenterPanel p-2 h-full">
     <el-scrollbar height="100%">
-      <DraggableEditor class="VisualCenterPanel-wrap" :class="device" />
+      <DraggableEditor class="VisualCenterPanel-wrap" :class="[device, { 'is-drag': isDrag }]" />
     </el-scrollbar>
   </div>
 </template>
@@ -11,7 +11,7 @@ import DraggableEditor from '../DraggableEditor/index.vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { storeToRefs } from 'pinia'
 
-const { device } = storeToRefs(useVisualBoxStore())
+const { device, isDrag } = storeToRefs(useVisualBoxStore())
 </script>
 
 <style scoped lang="scss">

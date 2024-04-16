@@ -17,15 +17,15 @@
         <el-radio-button label="H5" value="h5" />
       </el-radio-group>
     </template>
-    <div v-loading="isIframeLoading" class="iframe-container">
-      <iframe ref="previewFrame" height="100%" :width="iframeWidth" />
+    <div v-loading="isLoading" class="preview-container">
+      <div ref="previewEl" class="h-full preview-el" :style="{ width: previewWidth }" />
     </div>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
-// import { genPreviewHtml } from '@/plugins/visual-box'
+import { preview } from '@/visual-editor/preview'
 
 const visualBoxStore = useVisualBoxStore()
 
@@ -34,11 +34,11 @@ const handleDeviceChange = (name: string | number | boolean | undefined) => {
 }
 
 // 预览
-const previewFrame = ref<HTMLIFrameElement | null>(null)
+const previewEl = ref<HTMLElement>()
 const previewModal = ref<boolean>(false)
-const isIframeLoading = ref<boolean>(true)
+const isLoading = ref<boolean>(true)
 
-const iframeWidth = computed(() => {
+const previewWidth = computed(() => {
   if (visualBoxStore.device === 'pc') return '100%'
   if (visualBoxStore.device === 'pad') return '768px'
   if (visualBoxStore.device === 'h5') return '390px'
@@ -46,13 +46,11 @@ const iframeWidth = computed(() => {
 
 const showPreviewModal = async () => {
   previewModal.value = true
-  isIframeLoading.value = true
+  isLoading.value = true
   await nextTick()
-  if (!previewFrame.value) return
-  // previewFrame.value.srcdoc = genPreviewHtml(visualBoxStore.flatVisualBoxTemplates)
-  previewFrame.value.onload = () => {
-    isIframeLoading.value = false
-  }
+  if (!previewEl.value) return
+  preview(previewEl.value)
+  isLoading.value = false
 }
 
 defineExpose({
@@ -61,12 +59,12 @@ defineExpose({
 </script>
 
 <style scoped lang="scss">
-.iframe-container {
+.preview-container {
   width: 100%;
   height: calc(100vh - var(--el-dialog-padding-primary) - var(--el-dialog-padding-primary) - 50px);
   overflow: auto;
 
-  iframe {
+  .preview-el {
     margin: 0 auto;
     border: 1px solid var(--el-border-color);
   }

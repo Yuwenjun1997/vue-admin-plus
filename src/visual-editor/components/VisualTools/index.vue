@@ -3,35 +3,28 @@
     <div class="visual-tools__icon">
       <Icon icon="bi:tools" />
     </div>
-    <template v-if="!isLocked">
-      <el-tooltip content="上移" effect="dark" placement="left">
-        <div class="visual-tools__control" @click="handeUp">
-          <Icon icon="line-md:arrow-close-up" />
-        </div>
-      </el-tooltip>
-      <el-tooltip content="下移" effect="dark" placement="left">
-        <div class="visual-tools__control" @click="handleDown">
-          <Icon icon="line-md:arrow-close-down" />
-        </div>
-      </el-tooltip>
-      <el-tooltip content="复制" effect="dark" placement="left">
-        <div class="visual-tools__control" @click="handleCopy">
-          <Icon icon="bi:copy" />
-        </div>
-      </el-tooltip>
-      <el-tooltip content="删除" effect="dark" placement="left">
-        <div class="visual-tools__control" @click="handleDelete">
-          <Icon icon="ep:delete" />
-        </div>
-      </el-tooltip>
-    </template>
-    <el-tooltip :content="isLocked ? '解锁' : '锁定'" effect="dark" placement="left">
-      <div class="visual-tools__control" @click="toggleLock">
-        <Icon :icon="!isLocked ? 'ep:unlock' : 'ep:lock'" />
+    <el-tooltip content="上移" effect="dark" placement="left">
+      <div class="visual-tools__control" @click="moveUp">
+        <Icon icon="line-md:arrow-close-up" />
+      </div>
+    </el-tooltip>
+    <el-tooltip content="下移" effect="dark" placement="left">
+      <div class="visual-tools__control" @click="moveDown">
+        <Icon icon="line-md:arrow-close-down" />
+      </div>
+    </el-tooltip>
+    <el-tooltip content="复制" effect="dark" placement="left">
+      <div class="visual-tools__control" @click="clone">
+        <Icon icon="bi:copy" />
+      </div>
+    </el-tooltip>
+    <el-tooltip content="删除" effect="dark" placement="left">
+      <div class="visual-tools__control" @click="deleteFn">
+        <Icon icon="ep:delete" />
       </div>
     </el-tooltip>
     <el-tooltip content="选择父级" effect="dark" placement="left">
-      <div class="visual-tools__control" @click="handleCurrentParent">
+      <div class="visual-tools__control" @click="activeParent">
         <Icon icon="ep:files" />
       </div>
     </el-tooltip>
@@ -40,21 +33,8 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-
-const isLocked = computed(() => false)
-
-const handeUp = () => {}
-
-const handleDown = () => {}
-
-const toggleLock = () => {}
-
-const handleCopy = () => {}
-
-const handleDelete = async () => {}
-
-// 父级
-const handleCurrentParent = () => {}
+import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
+const { moveDown, moveUp, clone, deleteFn, activeParent } = useVisualBoxStore()
 </script>
 
 <style scoped lang="scss">

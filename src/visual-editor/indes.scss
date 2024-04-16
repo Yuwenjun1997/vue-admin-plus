@@ -1,0 +1,58 @@
+.visual-group {
+  position: relative;
+  height: 100%;
+  min-height: 40px;
+
+  &__drag {
+    cursor: move;
+    position: relative;
+    z-index: 10;
+
+    .visual-block {
+      position: relative;
+      padding: 2px;
+
+      &.is-active {
+        outline: 2px solid var(--el-color-primary) !important;
+        outline-offset: -2px !important;
+      }
+
+      &.has-slots {
+        outline: 1px dashed var(--el-color-info-light-7);
+        outline-offset: -1px;
+      }
+    }
+  }
+
+  &.visual-group__dropzone {
+    &::after {
+      position: absolute;
+      inset: 2px;
+      display: flex;
+      height: auto;
+      min-height: 36px;
+      font-size: 12px;
+      text-align: center;
+      content: attr(data-slot);
+      outline: 1px dashed var(--el-color-info-light-7);
+      outline-offset: -1px;
+      flex-direction: column;
+      justify-content: center;
+      color: var(--el-text-color-placeholder);
+      background: var(--el-color-info-light-9);
+    }
+  }
+
+  &.is-drag {
+    .visual-group__dropzone {
+      &::after {
+        outline-color: var(--el-color-info-light-3);
+        background: var(--el-color-primary-light-9);
+      }
+    }
+
+    .visual-block.has-slots {
+      outline-color: var(--el-color-primary);
+    }
+  }
+}

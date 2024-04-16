@@ -3,9 +3,11 @@
     v-model="moduleList"
     class="visual-group grid grid-cols-2 gap-2"
     v-bind="{ ...sortableOptions }"
-    :clone="props.clone"
+    :clone="cloneHandler"
     :group="props.group"
     :item-key="props.itemKey"
+    @end="handleDragEnd"
+    @start="isDrag = true"
   >
     <template #item="item">
       <div class="visual-group__drag">
@@ -21,26 +23,40 @@ import draggable from 'vuedraggable'
 import { Options } from 'sortablejs'
 import type { VisualEditorComponent, VisualEditorBlockData } from '@/visual-editor/types'
 import { createNewBlock } from '@/visual-editor/visual-editor.utils'
+import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
+import { storeToRefs } from 'pinia'
 
 interface Props {
   modelValue: Array<VisualEditorComponent>
   itemKey?: string
   group?: object
-  clone?: (original: VisualEditorComponent) => VisualEditorBlockData
 }
+
+const { isDrag } = storeToRefs(useVisualBoxStore())
+const { setCurrentBlock } = useVisualBoxStore()
 
 const props = withDefaults(defineProps<Props>(), {
   moduleValue: () => [],
   itemKey: '_vid',
   group: () => ({ name: 'component' }),
-  clone: (original: VisualEditorComponent) => createNewBlock(original),
 })
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: Array<any>): void
-  (e: 'drag-end', value: VisualEditorBlockData): void
-  (e: 'drag-start', value: Array<any>): void
 }>()
+
+let cloneBlock: VisualEditorBlockData | null = null
+
+const cloneHandler = (original: VisualEditorComponent) => {
+  cloneBlock = createNewBlock(original)
+  return cloneBlock
+}
+
+const handleDragEnd = () => {
+  isDrag.value = false
+  if (cloneBlock) setCurrentBlock(cloneBlock)
+  cloneBlock = null
+}
 
 const moduleList = useVModel(props, 'modelValue', emit)
 

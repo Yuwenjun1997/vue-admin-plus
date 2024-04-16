@@ -3,16 +3,24 @@
     v-model="slotChildren"
     :class="{ 'visual-group__dropzone': !slotChildren?.length }"
     data-slot="拖拽组件到此处"
+    :end-handler="props.endHandler"
+    :start-handler="props.startHandler"
   >
     <template #item="{ element: innerElement }">
       <div
-        class="visual-block inner"
-        :class="{ 'is-active': innerElement.isActive }"
-        @mousedown.stop="props.selectHandler(innerElement)"
+        class="visual-block"
+        :class="{ 'is-active': innerElement._vid === activeId, 'has-slots': Object.keys(innerElement.slots).length }"
+        @click.stop="props.selectHandler(innerElement)"
       >
         <ComponentRender :element="innerElement">
           <template v-for="(value, key) in innerElement.slots" :key="key" #[key]>
-            <SlotItem v-model:children="value.children" :select-handler="props.selectHandler" />
+            <SlotItem
+              v-model:children="value.children"
+              :active-id="activeId"
+              :end-handler="props.endHandler"
+              :select-handler="props.selectHandler"
+              :start-handler="props.startHandler"
+            />
           </template>
         </ComponentRender>
       </div>
@@ -32,12 +40,15 @@ defineOptions({
 
 interface Props {
   children: Array<VisualEditorBlockData>
-  drag?: boolean
+  activeId?: string
   selectHandler: (block: VisualEditorBlockData) => void
+  startHandler: () => {}
+  endHandler: () => {}
 }
 
 const props = withDefaults(defineProps<Props>(), {
   children: () => [],
+  activeId: '',
 })
 const emit = defineEmits<{
   (e: 'update:children', value: Array<VisualEditorBlockData>): void
@@ -46,33 +57,4 @@ const emit = defineEmits<{
 const slotChildren = useVModel(props, 'children', emit)
 </script>
 
-<style lang="scss" scoped>
-.visual-block {
-  position: relative;
-  padding: 2px;
-
-  &.is-active {
-    outline: 2px solid var(--el-color-primary);
-    outline-offset: -2px;
-  }
-}
-
-.visual-group__dropzone {
-  &::after {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    height: auto;
-    min-height: 36px;
-    font-size: 12px;
-    text-align: center;
-    content: attr(data-slot);
-    outline: 1px dashed var(--el-color-info-light-7);
-    outline-offset: -1px;
-    flex-direction: column;
-    justify-content: center;
-    color: var(--el-text-color-placeholder);
-    background: var(--el-color-info-light-9);
-  }
-}
-</style>
+<style lang="scss" scoped></style>

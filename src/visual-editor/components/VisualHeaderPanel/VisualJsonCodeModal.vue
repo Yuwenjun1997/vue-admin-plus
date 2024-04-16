@@ -25,16 +25,13 @@
 
 <script setup lang="ts">
 import VadCodeEditor from '@/components/VadCodeEditor/index.vue'
-// import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { useClipboard } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
-import { isArray } from 'lodash'
 import { saveAs } from 'file-saver'
-import { VisualBoxExportJsonData } from '@/helper/visual.helper'
-import { useVisualGlobal } from '@/store/modules/visual-global'
+import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
+import { storeToRefs } from 'pinia'
 
-// const visualBoxStore = useVisualBoxStore()
-const visualGlobalStore = useVisualGlobal()
+const { visualBlocks } = storeToRefs(useVisualBoxStore())
 
 // 导入导出json
 const showJsonCodeModal = ref<boolean>(false)
@@ -51,20 +48,11 @@ const handleCopyJsonCode = () => {
 
 const handleImportJson = () => {
   try {
-    if (jsonCode.value.length === 0) {
-      return ElMessage.warning('导入数据必须为json格式')
-    }
-    const data: VisualBoxExportJsonData = JSON.parse(jsonCode.value) as VisualBoxExportJsonData
-    if (!isArray(data.visualBoxTemplates)) {
-      return ElMessage.error('导入失败，请检查数据格式')
-    }
-    // visualBoxStore.initVisualBoxTemplates(data.visualBoxTemplates)
-    visualGlobalStore.init(data.visaulBoxGlobalOption)
-    ElMessage.success('导入成功')
-    jsonCode.value = ''
+    const data = JSON.parse(jsonCode.value)
+    visualBlocks.value = data
     showJsonCodeModal.value = false
   } catch (error) {
-    ElMessage.error('导入失败，请检查数据格式')
+    ElMessage.error('导入失败，请检查Json格式')
   }
 }
 
@@ -76,9 +64,7 @@ const handleSaveJsonAsFile = () => {
 const showJsonExportModal = () => {
   jsonCodeModalType.value = 'export'
   jsonCodeModalTitle.value = '导出Json'
-  const jsonData = new VisualBoxExportJsonData()
-  // jsonData.visualBoxTemplates = unref(visualBoxStore.visualBoxTemplates)
-  jsonCode.value = JSON.stringify(jsonData, null, 2)
+  jsonCode.value = JSON.stringify(visualBlocks.value)
   showJsonCodeModal.value = true
 }
 

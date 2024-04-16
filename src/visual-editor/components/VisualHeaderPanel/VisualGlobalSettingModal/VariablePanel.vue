@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { useVisualGlobal } from '@/store/modules/visual-global'
+import { useVisualGlobal } from '@/visual-editor/store/visual-global'
 import { VariableType, VisualBoxGlobalVariable } from '@/types/visual-box'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'

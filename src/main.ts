@@ -11,7 +11,6 @@ import { setupLayout } from './layout'
 import { setupIconify } from './plugins/iconify'
 import { setupVxeTable } from './plugins/vxe-table'
 import { setupHighlight } from './plugins/highlight'
-import { setupVisual } from './components/VisualComponents/index'
 import { setupVueQuill } from './plugins/vue-quill'
 import { setupElementPlus } from './plugins/element-ui'
 import { setupVant } from './plugins/vant'
@@ -23,8 +22,6 @@ async function bootstrap() {
 
   // 应用渲染
   const app = createApp(App)
-
-  setupVisual(app)
 
   setupIconify()
 
