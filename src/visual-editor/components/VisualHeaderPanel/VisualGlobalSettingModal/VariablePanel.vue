@@ -50,6 +50,7 @@
           <el-input v-model="form.description" placeholder="描述" />
         </el-form-item>
         <el-form-item label="默认值" prop="defaultValue">
+          <!-- <VadCodeEditor v-model="form.defaultValue" class="w-full" :max-lines="20" :user-worker="false" /> -->
           <el-input v-model="form.defaultValue" placeholder="默认值" type="textarea" />
         </el-form-item>
       </el-form>
@@ -62,8 +63,9 @@
 </template>
 
 <script setup lang="ts">
+// import VadCodeEditor from '@/components/VadCodeEditor/index.vue'
 import { useVisualGlobal } from '@/visual-editor/store/visual-global'
-import { VariableType, VisualBoxGlobalVariable } from '@/types/visual-box'
+import { VariableType, VisualGlobalVariable } from '@/visual-editor/types'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
@@ -71,7 +73,7 @@ import { v4 as uuidv4 } from 'uuid'
 const visualGlobalStore = useVisualGlobal()
 const { variables } = storeToRefs(visualGlobalStore)
 
-class Variable implements VisualBoxGlobalVariable {
+class Variable implements VisualGlobalVariable {
   uuid: string = uuidv4()
   name: string = ''
   variableName: string = ''
@@ -103,14 +105,14 @@ const handleEditJson = () => {
 }
 
 const formValidate = ref<FormInstance>()
-const form = ref<VisualBoxGlobalVariable>(new Variable())
-const rules: FormRules<VisualBoxGlobalVariable> = {
+const form = ref<VisualGlobalVariable>(new Variable())
+const rules: FormRules<VisualGlobalVariable> = {
   name: [{ required: true, message: '请输入变量名称', trigger: 'blur' }],
   variableName: [{ required: true, message: '请输入变量标识', trigger: 'blur' }],
   valueType: [{ required: true, message: '请选择值类型', trigger: 'change' }],
 }
 
-const handleEdit = (row: VisualBoxGlobalVariable) => {
+const handleEdit = (row: VisualGlobalVariable) => {
   showModalType.value = 'form'
   form.value = { ...row }
   showEditModal.value = true
@@ -122,7 +124,7 @@ const handleAdd = () => {
   showEditModal.value = true
 }
 
-const handleRemove = async (row: VisualBoxGlobalVariable) => {
+const handleRemove = async (row: VisualGlobalVariable) => {
   try {
     await ElMessageBox.confirm('确定要删除该变量吗？', '提示', { type: 'warning' })
     visualGlobalStore.removeVariable(row)
@@ -137,7 +139,7 @@ const handleSave = async () => {
       await formValidate.value?.validate()
       visualGlobalStore.saveVariable(unref(form))
     } else {
-      const variables = JSON.parse(unref(variablesJson)) as VisualBoxGlobalVariable[]
+      const variables = JSON.parse(unref(variablesJson)) as VisualGlobalVariable[]
       visualGlobalStore.variables = variables
     }
     showEditModal.value = false

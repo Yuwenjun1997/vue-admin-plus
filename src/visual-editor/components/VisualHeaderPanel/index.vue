@@ -71,7 +71,7 @@
     <VisualPreviewModal ref="previewModal" />
 
     <!-- 全局设置 -->
-    <!-- <VisualGlobalSettingModal ref="golbalSettingModal" /> -->
+    <VisualGlobalSettingModal ref="golbalSettingModal" />
   </div>
 </template>
 
@@ -79,7 +79,7 @@
 import VisualJsonCodeModal from './VisualJsonCodeModal.vue'
 import VisualCodeExportModal from './VisualCodeExportModal.vue'
 import VisualPreviewModal from './VisualPreviewModal.vue'
-// import VisualGlobalSettingModal from './VisualGlobalSettingModal/index.vue'
+import VisualGlobalSettingModal from './VisualGlobalSettingModal/index.vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { Icon } from '@iconify/vue'
 import { useRefHistory, useToggle } from '@vueuse/core'
@@ -137,11 +137,11 @@ const handlePreview = () => {
 }
 
 // 全局设置
-// const golbalSettingModal = ref<InstanceType<typeof VisualGlobalSettingModal>>()
-// const handleShowGlobalSettingModal = () => {
-//   if (!golbalSettingModal.value) return
-//   golbalSettingModal.value.showModal()
-// }
+const golbalSettingModal = ref<InstanceType<typeof VisualGlobalSettingModal>>()
+const handleShowGlobalSettingModal = () => {
+  if (!golbalSettingModal.value) return
+  golbalSettingModal.value.showModal()
+}
 </script>
 
 <style scoped lang="scss">

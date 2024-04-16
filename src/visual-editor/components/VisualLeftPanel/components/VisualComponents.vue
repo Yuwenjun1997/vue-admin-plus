@@ -43,7 +43,7 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100px;
+  height: 100px;
   padding: 6px 6px 26px;
   border: 2px solid var(--el-border-color-light);
   cursor: move;

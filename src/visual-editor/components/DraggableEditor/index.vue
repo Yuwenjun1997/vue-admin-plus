@@ -3,15 +3,18 @@
     <template #item="{ element: outElement }">
       <div
         class="visual-block"
-        :class="{ 'is-active': outElement._vid === activeId, 'has-slots': Object.keys(outElement.slots).length }"
+        :class="{ 'is-active': isActive(outElement), 'has-slots': hasSlots(outElement) }"
         :data-label="outElement.label"
         @click.stop="setCurrentBlock(outElement)"
       >
-        <ComponentRender :key="outElement._vid" :element="outElement">
+        <ComponentRender
+          :key="outElement._vid"
+          :element="outElement"
+          :style="{ pointerEvents: hasSlots(outElement) ? 'auto' : 'none' }"
+        >
           <template v-for="(value, key) in outElement.slots" :key="key" #[key]>
             <SlotItem
               v-model:children="value.children"
-              :active-id="activeId"
               :end-handler="handleDragEnd"
               :select-handler="setCurrentBlock"
               :start-handler="handleDragStart"
@@ -29,11 +32,12 @@ import SlotItem from './components/SlotItem.vue'
 import ComponentRender from './components/ComponentRender'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { storeToRefs } from 'pinia'
+import { useVisualUtils } from '@/visual-editor/hooks/useVisualUtils'
 
 const { setCurrentBlock } = useVisualBoxStore()
-const { visualBlocks, currentBlock, isDrag } = storeToRefs(useVisualBoxStore())
+const { visualBlocks, isDrag } = storeToRefs(useVisualBoxStore())
 
-const activeId = computed(() => currentBlock.value?._vid)
+const { isActive, hasSlots } = useVisualUtils()
 
 const handleDragStart = () => {
   isDrag.value = true
@@ -41,10 +45,6 @@ const handleDragStart = () => {
 const handleDragEnd = () => {
   isDrag.value = false
 }
-
-watchEffect(() => {
-  console.log(visualBlocks.value)
-})
 </script>
 
 <style scoped lang="scss"></style>

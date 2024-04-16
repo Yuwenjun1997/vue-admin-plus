@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
+import { customAlphabet } from 'nanoid'
+
 import {
   ComponentModules,
   VisualBlockSlotMap,
@@ -8,9 +9,11 @@ import {
   VisualEditorProps,
 } from './types'
 
+export const generateNanoid = customAlphabet('123456ABCDEF', 6)
+
 export function createNewBlock(component: VisualEditorComponent): VisualEditorBlockData {
   return {
-    _vid: `vid_${uuidv4()}`,
+    _vid: `vid_${generateNanoid()}`,
     moduleName: component.moduleName,
     componentKey: component!.key,
     label: component!.label,

@@ -1,17 +1,17 @@
-import { VisualBoxGlobal, VisualBoxGlobalMethod, VisualBoxGlobalVariable } from '@/types/visual-box'
 import { defineStore } from 'pinia'
+import { VisualGlobal, VisualGlobalMethod, VisualGlobalVariable } from '../types'
 
 export const useVisualGlobal = defineStore('visualGlobal', {
-  state: (): VisualBoxGlobal => ({
+  state: (): VisualGlobal => ({
     methods: [],
     variables: [],
   }),
   actions: {
-    init(option: VisualBoxGlobal) {
+    init(option: VisualGlobal) {
       this.methods = option.methods
       this.variables = option.variables
     },
-    saveMethod(method: VisualBoxGlobalMethod) {
+    saveMethod(method: VisualGlobalMethod) {
       const oldMethod = this.methods.find((m) => m.uuid === method.uuid)
       if (oldMethod) {
         Object.assign(oldMethod, method)
@@ -19,10 +19,10 @@ export const useVisualGlobal = defineStore('visualGlobal', {
         this.methods.push(method)
       }
     },
-    removeMethod(method: VisualBoxGlobalMethod) {
+    removeMethod(method: VisualGlobalMethod) {
       this.methods = this.methods.filter((m) => m.name !== method.name)
     },
-    saveVariable(variable: VisualBoxGlobalVariable) {
+    saveVariable(variable: VisualGlobalVariable) {
       if (variable.valueType === 'number') variable.defaultValue = Number(variable.defaultValue)
       const oldVariable = this.variables.find((v) => v.name === variable.name)
       if (oldVariable) {
@@ -31,7 +31,7 @@ export const useVisualGlobal = defineStore('visualGlobal', {
         this.variables.push(variable)
       }
     },
-    removeVariable(variable: VisualBoxGlobalVariable) {
+    removeVariable(variable: VisualGlobalVariable) {
       this.variables = this.variables.filter((v) => v.name !== variable.name)
     },
   },

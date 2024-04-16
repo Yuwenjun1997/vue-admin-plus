@@ -9,14 +9,13 @@
     <template #item="{ element: innerElement }">
       <div
         class="visual-block"
-        :class="{ 'is-active': innerElement._vid === activeId, 'has-slots': Object.keys(innerElement.slots).length }"
+        :class="{ 'is-active': isActive(innerElement), 'has-slots': hasSlots(innerElement) }"
         @click.stop="props.selectHandler(innerElement)"
       >
-        <ComponentRender :element="innerElement">
+        <ComponentRender :element="innerElement" :style="{ pointerEvents: hasSlots(innerElement) ? 'auto' : 'none' }">
           <template v-for="(value, key) in innerElement.slots" :key="key" #[key]>
             <SlotItem
               v-model:children="value.children"
-              :active-id="activeId"
               :end-handler="props.endHandler"
               :select-handler="props.selectHandler"
               :start-handler="props.startHandler"
@@ -33,6 +32,7 @@ import { useVModel } from '@vueuse/core'
 import DraggableGroup from './DraggableGroup.vue'
 import ComponentRender from './ComponentRender'
 import type { VisualEditorBlockData } from '@/visual-editor/types'
+import { useVisualUtils } from '@/visual-editor/hooks/useVisualUtils'
 
 defineOptions({
   name: 'SlotItem',
@@ -40,15 +40,15 @@ defineOptions({
 
 interface Props {
   children: Array<VisualEditorBlockData>
-  activeId?: string
   selectHandler: (block: VisualEditorBlockData) => void
   startHandler: () => {}
   endHandler: () => {}
 }
 
+const { isActive, hasSlots } = useVisualUtils()
+
 const props = withDefaults(defineProps<Props>(), {
   children: () => [],
-  activeId: '',
 })
 const emit = defineEmits<{
   (e: 'update:children', value: Array<VisualEditorBlockData>): void

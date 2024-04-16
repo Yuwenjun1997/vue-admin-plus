@@ -1,3 +1,4 @@
+import { useGlobalProperties } from '@/visual-editor/hooks/useGlobalProperties'
 import type { VisualEditorComponent } from '@/visual-editor/types'
 import {
   createEditorColorProp,
@@ -16,10 +17,11 @@ export default {
       按钮
     </Button>
   ),
-  render: ({ props, styles }) => {
+  render: ({ props, styles, block }) => {
+    const { registerRef } = useGlobalProperties()
     return () => (
       <div style={styles}>
-        <Button {...props}></Button>
+        <Button ref={(el) => registerRef(el, block._vid)} {...props}></Button>
       </div>
     )
   },

@@ -118,3 +118,28 @@ export type ComponentModules = {
 }
 
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>
+
+export type VariableType = 'string' | 'number' | 'boolean' | 'object' | 'array'
+
+export interface VisualGlobalVariable {
+  uuid: string
+  name: string
+  variableName: string
+  valueType: VariableType
+  defaultValue?: any
+  description?: string
+}
+
+export interface VisualGlobalMethod {
+  uuid: string
+  name: string
+  methodName: string
+  methodToken: string
+  params?: string
+  description?: string
+}
+
+export interface VisualGlobal {
+  variables: VisualGlobalVariable[]
+  methods: VisualGlobalMethod[]
+}

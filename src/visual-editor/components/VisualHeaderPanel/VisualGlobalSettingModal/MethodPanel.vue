@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { useVisualGlobal } from '@/visual-editor/store/visual-global'
-import { MethodTriggerType, VisualBoxGlobalMethod } from '@/types/visual-box'
+import { VisualGlobalMethod } from '@/visual-editor/types'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
@@ -75,11 +75,10 @@ import { v4 as uuidv4 } from 'uuid'
 const visualGlobalStore = useVisualGlobal()
 const { methods } = storeToRefs(visualGlobalStore)
 
-class Method implements VisualBoxGlobalMethod {
+class Method implements VisualGlobalMethod {
   uuid: string = uuidv4()
   name: string = ''
   methodName: string = ''
-  trigger: MethodTriggerType = 'click'
   params: string = ''
   methodToken: string = ''
   description: string = ''
@@ -108,15 +107,14 @@ const handleEditJson = () => {
 }
 
 const formValidate = ref<FormInstance>()
-const form = ref<VisualBoxGlobalMethod>(new Method())
-const rules: FormRules<VisualBoxGlobalMethod> = {
+const form = ref<VisualGlobalMethod>(new Method())
+const rules: FormRules<VisualGlobalMethod> = {
   name: [{ required: true, message: '请输入事件名称', trigger: 'blur' }],
   methodName: [{ required: true, message: '请输入事件标识', trigger: 'blur' }],
-  trigger: [{ required: true, message: '请选择触发方式', trigger: 'change' }],
   methodToken: [{ required: true, message: '请输入代码片段', trigger: 'change' }],
 }
 
-const handleEdit = (row: VisualBoxGlobalMethod) => {
+const handleEdit = (row: VisualGlobalMethod) => {
   showModalType.value = 'form'
   form.value = { ...row }
   showEditModal.value = true
@@ -128,7 +126,7 @@ const handleAdd = () => {
   showEditModal.value = true
 }
 
-const handleRemove = async (row: VisualBoxGlobalMethod) => {
+const handleRemove = async (row: VisualGlobalMethod) => {
   try {
     await ElMessageBox.confirm('确定要删除该事件吗？', '提示', { type: 'warning' })
     visualGlobalStore.removeMethod(row)
@@ -143,7 +141,7 @@ const handleSave = async () => {
       await formValidate.value?.validate()
       visualGlobalStore.saveMethod(unref(form))
     } else {
-      const methods = JSON.parse(unref(methodsJson)) as VisualBoxGlobalMethod[]
+      const methods = JSON.parse(unref(methodsJson)) as VisualGlobalMethod[]
       visualGlobalStore.methods = methods
     }
     showEditModal.value = false

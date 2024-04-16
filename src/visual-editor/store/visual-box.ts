@@ -2,11 +2,10 @@ import { defineStore } from 'pinia'
 import { VisualEditorBlockData, VisualEditorComponent } from '../types'
 import { visualConfig } from '../visual.config'
 import { cloneDeep } from 'lodash'
-import { createNewBlock } from '../visual-editor.utils'
+import { createNewBlock, generateNanoid } from '../visual-editor.utils'
 import { CssEditorOption, cssEditorOptions } from '../configs/css-editor-options'
 import { CSSProperties } from 'vue'
 import { ElMessage } from 'element-plus'
-import { v4 as uuidv4 } from 'uuid'
 
 interface VisualBoxState {
   isDrag: boolean
@@ -137,7 +136,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
       if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
       const clone = cloneDeep(this.currentBlock)
       clone.label = `${clone.label}(clone)`
-      clone._vid = uuidv4()
+      clone._vid = generateNanoid()
       const { currentIndex, blocks } = this.findVisualWrap(this.visualBlocks)
       blocks.splice(currentIndex + 1, 0, clone)
       this.setCurrentBlock(clone)
