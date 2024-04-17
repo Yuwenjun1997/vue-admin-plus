@@ -1,20 +1,26 @@
 .visual-group {
-  position: relative;
   height: 100%;
   min-height: 40px;
+  $visual-item-gap: 2px;
+  --visual-navbar-height: calc(var(--van-nav-bar-height) + #{$visual-item-gap * 2});
 
-  &__drag {
-    cursor: move;
-    position: relative;
-    z-index: 10;
+  &__item {
+    cursor: pointer;
+
+    &.visual-fixed {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
 
     .visual-block {
-      position: relative;
-      padding: 2px;
+      padding: $visual-item-gap;
 
       &.is-active {
-        outline: 2px solid var(--el-color-primary) !important;
-        outline-offset: -2px !important;
+        outline: $visual-item-gap solid var(--el-color-primary) !important;
+        outline-offset: -$visual-item-gap !important;
       }
 
       &.has-slots {
@@ -22,16 +28,15 @@
         outline-offset: -1px;
       }
     }
+  }
 
-    // &::after {
-    //   content: '';
-    //   position: absolute;
-    //   inset: 0;
-    //   z-index: 10;
-    // }
+  &__drag {
+    cursor: move;
   }
 
   &.visual-group__dropzone {
+    position: relative;
+
     &::after {
       position: absolute;
       inset: 2px;

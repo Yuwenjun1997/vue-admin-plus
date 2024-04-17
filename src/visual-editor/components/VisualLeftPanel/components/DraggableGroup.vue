@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { useVModel } from '@vueuse/core'
 import draggable from 'vuedraggable'
-import { Options } from 'sortablejs'
+import { Options, SortableEvent } from 'sortablejs'
 import type { VisualEditorComponent, VisualEditorBlockData } from '@/visual-editor/types'
 import { createNewBlock } from '@/visual-editor/visual-editor.utils'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
@@ -52,9 +52,11 @@ const cloneHandler = (original: VisualEditorComponent) => {
   return cloneBlock
 }
 
-const handleDragEnd = () => {
+const handleDragEnd = (evt: SortableEvent) => {
   isDrag.value = false
-  if (cloneBlock) setCurrentBlock(cloneBlock)
+  if (evt.to !== evt.from && cloneBlock) {
+    setCurrentBlock(cloneBlock)
+  }
   cloneBlock = null
 }
 

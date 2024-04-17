@@ -9,7 +9,14 @@
     @start="props.startHandler"
   >
     <template #item="item">
-      <div class="visual-group__drag">
+      <div
+        class="visual-group__item"
+        :class="{
+          'visual-fixed': item.element.props.fixed,
+          'visual-group__drag': item.element.draggable && !item.element.props.fixed,
+        }"
+        :style="{ zIndex: item.element.props.zIndex }"
+      >
         <slot name="item" v-bind="item" />
       </div>
     </template>

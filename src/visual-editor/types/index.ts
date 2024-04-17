@@ -64,6 +64,7 @@ export type VisualEditorBlockData = {
   props: VisualBlockProps
   model: Record<string, string>
   draggable: boolean
+  fixed: boolean
   slots: VisualBlockSlotMap
 }
 
@@ -105,6 +106,7 @@ export type VisualEditorComponent = {
     custom: Record<string, any>
     slots?: VisualBlockSlotMap
   }) => () => JSX.Element
+  fixed?: boolean
   draggable?: boolean
   showStyleConfig?: boolean
   props?: Record<string, VisualEditorProps>

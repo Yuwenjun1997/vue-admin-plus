@@ -26,6 +26,7 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
       prev[propName] = propSchema?.defaultValue
       return prev
     }, {}),
+    fixed: component.fixed ?? false, // 是否固定位置
     draggable: component.draggable ?? true, // 是否可以拖拽
     slots: (component.slots || []).reduce((prev: VisualBlockSlotMap, slot, index) => {
       const props = Object.entries(slot).reduce((props: Record<string, any>, [propName, propSchema]) => {

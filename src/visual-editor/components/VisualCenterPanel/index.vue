@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import DraggableEditor from '../DraggableEditor/index.vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
+import { VisualEditorBlockData } from '@/visual-editor/types'
 import { storeToRefs } from 'pinia'
 import { CSSProperties } from 'vue'
 
@@ -29,7 +30,22 @@ const pageStyles = computed<CSSProperties | undefined>(() => {
     backgroundColor: currentPage.value.config.bgColor,
     backgroundImage: currentPage.value.config.bgImage ? `url(${currentPage.value.config.bgImage})` : '',
     backgroundRepeat: currentPage.value.config.bgRepeat ? 'repeat' : 'no-repeat',
+    paddingTop: hasFixedComponent.value ? 'var(--visual-navbar-height)' : '',
   }
+})
+
+const hasFixedComponent = computed<boolean>(() => {
+  let result = false
+  if (!currentPage.value) return result
+  const recursion = (blocks: VisualEditorBlockData[]) => {
+    blocks.forEach((block) => {
+      result = result || (block.componentKey === 'navbar' && block.props.fixed)
+      if (result) return
+      Object.entries(block.slots).forEach(([_key, value]) => recursion(value.children))
+    })
+  }
+  recursion(currentPage.value.blocks)
+  return result
 })
 </script>
 
@@ -38,6 +54,7 @@ const pageStyles = computed<CSSProperties | undefined>(() => {
   position: relative;
   flex: 1;
   background-color: var(--el-bg-color);
+  contain: layout;
 
   &.pc {
     width: 100%;

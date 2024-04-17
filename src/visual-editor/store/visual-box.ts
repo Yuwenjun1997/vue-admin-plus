@@ -13,7 +13,6 @@ interface VisualBoxState {
   currentBlock: VisualEditorBlockData | null
   visualEditor: VisualEditorComponent | null
   cssEditorOptions: CssEditorOption[]
-  visualBlocks: VisualEditorBlockData[]
   visualPages: VisualEditorPage[]
   currentPage: VisualEditorPage | null
 }
@@ -43,7 +42,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
     currentBlock: null,
     visualEditor: null,
     cssEditorOptions: [],
-    visualBlocks: [],
     visualPages: [],
     currentPage: null,
   }),
@@ -53,13 +51,8 @@ export const useVisualBoxStore = defineStore('visualBox', {
       this.device = name
     },
 
-    setVisualBlocks(blocks: VisualEditorBlockData[]) {
-      this.visualBlocks = blocks
-    },
-
     setCurrentPage(page: VisualEditorPage | null) {
       this.currentPage = page
-      this.visualBlocks = page?.blocks || []
       this.currentBlock = null
       this.visualEditor = null
     },
@@ -67,6 +60,11 @@ export const useVisualBoxStore = defineStore('visualBox', {
     setCurrentBlock(block: VisualEditorBlockData) {
       this.currentBlock = block
       this.initVisualEditor()
+    },
+
+    sortVisualBlocks() {
+      if (!this.currentPage) return
+      this.currentPage.blocks.sort((a, b) => Number(a.draggable) - Number(b.draggable))
     },
 
     initVisualEditor() {
