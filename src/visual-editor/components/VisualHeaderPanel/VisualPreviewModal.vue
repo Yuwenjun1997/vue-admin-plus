@@ -65,6 +65,7 @@ defineExpose({
   overflow: auto;
 
   .preview-el {
+    contain: layout;
     margin: 0 auto;
     border: 1px solid var(--el-border-color);
   }

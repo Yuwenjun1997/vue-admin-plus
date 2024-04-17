@@ -29,13 +29,14 @@ export default {
       border
     ></NavBar>
   ),
-  render: ({ props, styles, block }) => {
+  render: ({ props, styles, block }, isDesinger) => {
     const { registerRef } = useGlobalProperties()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     const { fixed, zIndex, safeAreaInsetTop, ...reset } = props
+    const bindProps = isDesinger ? reset : props
     return () => (
       <div style={styles}>
-        <NavBar ref={(el) => registerRef(el, block._vid)} {...reset} placeholder style={{ flex: 1 }}></NavBar>
+        <NavBar ref={(el) => registerRef(el, block._vid)} {...bindProps} placeholder style={{ flex: 1 }}></NavBar>
       </div>
     )
   },

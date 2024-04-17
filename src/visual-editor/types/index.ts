@@ -98,14 +98,17 @@ export type VisualEditorComponent = {
   moduleName: keyof ComponentModules
   label: string
   preview: () => JSX.Element
-  render: (data: {
-    props: any
-    model: any
-    styles: CSSProperties
-    block: VisualEditorBlockData
-    custom: Record<string, any>
-    slots?: VisualBlockSlotMap
-  }) => () => JSX.Element
+  render: (
+    data: {
+      props: any
+      model: any
+      styles: CSSProperties
+      block: VisualEditorBlockData
+      custom: Record<string, any>
+      slots?: VisualBlockSlotMap
+    },
+    isDesinger?: boolean
+  ) => () => JSX.Element
   fixed?: boolean
   draggable?: boolean
   showStyleConfig?: boolean
