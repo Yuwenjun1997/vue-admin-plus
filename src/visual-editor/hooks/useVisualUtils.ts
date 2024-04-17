@@ -1,7 +1,7 @@
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { storeToRefs } from 'pinia'
 import { VisualEditorBlockData } from '../types'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { cloneDeep } from 'lodash'
 import { generateNanoid } from '../visual-editor.utils'
 
@@ -69,12 +69,20 @@ export const useVisualUtils = () => {
   }
 
   const deleteFn = () => {
-    if (!currentPage.value) return
     if (!currentBlock.value) return ElMessage.warning('请先选中一个组件')
-    const { currentIndex, blocks } = findVisualWrap(currentPage.value.blocks)
-    blocks.splice(currentIndex, 1)
-    currentBlock.value = null
-    visualEditor.value = null
+    ElMessageBox.confirm('确定删除该组件吗?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+      .then(() => {
+        if (!currentPage.value) return
+        const { currentIndex, blocks } = findVisualWrap(currentPage.value.blocks)
+        blocks.splice(currentIndex, 1)
+        currentBlock.value = null
+        visualEditor.value = null
+      })
+      .catch(() => {})
   }
 
   const activeParent = () => {

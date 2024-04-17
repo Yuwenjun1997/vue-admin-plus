@@ -66,10 +66,6 @@ export const useVisualPages = () => {
     activeCurrentPage(null)
   }
 
-  watchEffect(() => {
-    console.log(flatVisualPages.value)
-  })
-
   return {
     add,
     remove,

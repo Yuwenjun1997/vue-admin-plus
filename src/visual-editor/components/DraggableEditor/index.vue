@@ -50,10 +50,6 @@ const handleDragStart = () => {
 const handleDragEnd = () => {
   isDrag.value = false
 }
-
-watchEffect(() => {
-  console.log('画布：', currentPage.value)
-})
 </script>
 
 <style scoped lang="scss"></style>

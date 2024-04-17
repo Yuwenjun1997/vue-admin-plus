@@ -107,9 +107,7 @@ const handleRemove = (data: VisualEditorPage) => {
     .then(() => {
       remove(data)
     })
-    .catch(() => {
-      //
-    })
+    .catch(() => {})
 }
 
 const rules: FormRules = {
@@ -138,16 +136,6 @@ const handleSave = () => {
 const handleCurrentChange = (data: VisualEditorPage) => {
   setCurrentPage(data)
 }
-
-watch(
-  visualPages,
-  () => {
-    console.log(visualPages.value)
-  },
-  {
-    deep: true,
-  }
-)
 </script>
 
 <style scoped></style>
