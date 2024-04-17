@@ -27,12 +27,16 @@
       <template v-if="option.type === VisualEditorPropsType.cssInput">
         <VisualCssInput v-model="option.defaultValue" @change="triggerHandler" />
       </template>
+      <template v-if="option.type === VisualEditorPropsType.image">
+        <VisualImageUpload v-model="option.defaultValue" @change="triggerHandler" />
+      </template>
     </el-form-item>
   </el-form>
 </template>
 
 <script setup lang="ts" name="AttrEditor">
 import VisualCssInput from './components/VisualCssInput.vue'
+import VisualImageUpload from './components/VisualImageUpload.vue'
 import { VisualEditorProps, VisualEditorPropsType } from '@/visual-editor/types'
 
 interface Props {

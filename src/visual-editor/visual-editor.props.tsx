@@ -105,3 +105,16 @@ export function createEditorTableProp<T = any>({ label, option, defaultValue }: 
     defaultValue,
   }
 }
+
+interface EditorImageProp<T> {
+  label: string
+  defaultValue?: T
+}
+
+export function createEditorImageProp<T = any>({ label, defaultValue }: EditorImageProp<T>) {
+  return {
+    type: VisualEditorPropsType.image,
+    label,
+    defaultValue,
+  }
+}

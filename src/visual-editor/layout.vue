@@ -61,21 +61,5 @@ const visualBoxStore = useVisualBoxStore()
     --el-aside-width: 40px;
     border-right: 1px dashed var(--el-border-color-light);
   }
-
-  :deep(.el-tabs) {
-    height: 100%;
-
-    .el-tabs__header {
-      margin-bottom: 0;
-    }
-
-    .el-tabs__content {
-      height: calc(100% - var(--el-tabs-header-height));
-
-      .el-tab-pane {
-        height: 100%;
-      }
-    }
-  }
 }
 </style>

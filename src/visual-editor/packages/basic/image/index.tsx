@@ -2,6 +2,7 @@ import { useGlobalProperties } from '@/visual-editor/hooks/useGlobalProperties'
 import type { VisualEditorComponent } from '@/visual-editor/types'
 import {
   createEditorCssInputProp,
+  createEditorImageProp,
   createEditorInputProp,
   createEditorSelectProp,
   createEditorSwitchProp,
@@ -22,7 +23,7 @@ export default {
     )
   },
   props: {
-    src: createEditorInputProp({ label: '图片链接', defaultValue: 'https://img.yzcdn.cn/vant/cat.jpeg' }),
+    src: createEditorImageProp({ label: '图片链接', defaultValue: 'https://img.yzcdn.cn/vant/cat.jpeg' }),
     width: createEditorCssInputProp({ label: '宽度', defaultValue: '100px' }),
     height: createEditorCssInputProp({ label: '高度', defaultValue: '100px' }),
     errorIcon: createEditorInputProp({ label: '失败时提示的图标名称或图片链接' }),

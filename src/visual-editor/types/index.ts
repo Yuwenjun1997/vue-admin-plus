@@ -25,6 +25,7 @@ export enum VisualEditorPropsType {
   select = 'select',
   switch = 'switch',
   table = 'table',
+  image = 'image',
 }
 
 export type VisualEditorTableOption = {
