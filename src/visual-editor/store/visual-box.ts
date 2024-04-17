@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia'
-import { VisualEditorBlockData, VisualEditorComponent } from '../types'
+import { VisualEditorBlockData, VisualEditorComponent, VisualEditorPage } from '../types'
 import { visualConfig } from '../visual.config'
 import { cloneDeep } from 'lodash'
-import { createNewBlock, generateNanoid } from '../visual-editor.utils'
+import { createNewBlock } from '../visual-editor.utils'
 import { CssEditorOption, cssEditorOptions } from '../configs/css-editor-options'
 import { CSSProperties } from 'vue'
-import { ElMessage } from 'element-plus'
 
 interface VisualBoxState {
   isDrag: boolean
@@ -15,6 +14,8 @@ interface VisualBoxState {
   visualEditor: VisualEditorComponent | null
   cssEditorOptions: CssEditorOption[]
   visualBlocks: VisualEditorBlockData[]
+  visualPages: VisualEditorPage[]
+  currentPage: VisualEditorPage | null
 }
 
 const replaceProps = (source: Record<string, any>, target: Record<string, any>) => {
@@ -34,11 +35,6 @@ const replaceProps = (source: Record<string, any>, target: Record<string, any>) 
   }
 }
 
-const moveComponet = (blocks: VisualEditorBlockData[], formIndex: number, toIndex: number) => {
-  const element = blocks.splice(formIndex, 1)[0]
-  blocks.splice(toIndex, 0, element)
-}
-
 export const useVisualBoxStore = defineStore('visualBox', {
   state: (): VisualBoxState => ({
     isDrag: false,
@@ -48,27 +44,24 @@ export const useVisualBoxStore = defineStore('visualBox', {
     visualEditor: null,
     cssEditorOptions: [],
     visualBlocks: [],
+    visualPages: [],
+    currentPage: null,
   }),
 
   actions: {
-    findVisualWrap(components: VisualEditorBlockData[]) {
-      let blocks: VisualEditorBlockData[] = []
-      let currentIndex: number = 0
-      let parent: VisualEditorBlockData | null = null
+    setDevice(name: string) {
+      this.device = name
+    },
 
-      const recursion = (components: VisualEditorBlockData[], prevParent: VisualEditorBlockData | null) => {
-        components.forEach((item, index) => {
-          if (item._vid === this.currentBlock?._vid) {
-            blocks = components
-            currentIndex = index
-            parent = prevParent
-          } else if (item.slots && Object.keys(item.slots).length) {
-            Object.entries(item.slots).forEach(([_key, value]) => recursion(value.children, item))
-          }
-        })
-      }
-      recursion(components, null)
-      return { blocks, currentIndex, parent }
+    setVisualBlocks(blocks: VisualEditorBlockData[]) {
+      this.visualBlocks = blocks
+    },
+
+    setCurrentPage(page: VisualEditorPage | null) {
+      this.currentPage = page
+      this.visualBlocks = page?.blocks || []
+      this.currentBlock = null
+      this.visualEditor = null
     },
 
     setCurrentBlock(block: VisualEditorBlockData) {
@@ -112,56 +105,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
         }, {})
         Object.assign(this.currentBlock?.styles || {}, cssRule)
       })
-    },
-
-    setDevice(name: string) {
-      this.device = name
-    },
-
-    moveUp() {
-      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
-      const { currentIndex, blocks } = this.findVisualWrap(this.visualBlocks)
-      if (currentIndex === 0) return ElMessage.warning('当前组件已在第一个位置')
-      moveComponet(blocks, currentIndex, currentIndex - 1)
-    },
-
-    moveDown() {
-      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
-      const { currentIndex, blocks } = this.findVisualWrap(this.visualBlocks)
-      if (currentIndex === blocks.length - 1) return ElMessage.warning('当前组件已在最后一个位置')
-      moveComponet(blocks, currentIndex, currentIndex + 1)
-    },
-
-    clone() {
-      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
-      const clone = cloneDeep(this.currentBlock)
-      clone.label = `${clone.label}(clone)`
-      clone._vid = generateNanoid()
-      const { currentIndex, blocks } = this.findVisualWrap(this.visualBlocks)
-      blocks.splice(currentIndex + 1, 0, clone)
-      this.setCurrentBlock(clone)
-    },
-
-    deleteFn() {
-      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
-      const { currentIndex, blocks } = this.findVisualWrap(this.visualBlocks)
-      blocks.splice(currentIndex, 1)
-      this.currentBlock = null
-      this.visualEditor = null
-    },
-
-    activeParent() {
-      if (!this.currentBlock) return ElMessage.warning('请先选中一个组件')
-      const { parent } = this.findVisualWrap(this.visualBlocks)
-      if (!parent) return ElMessage.warning('已经是顶级组件')
-      this.currentBlock.isActive = false
-      this.setCurrentBlock(parent)
-    },
-
-    clear() {
-      this.visualBlocks = []
-      this.currentBlock = null
-      this.visualEditor = null
     },
   },
 })

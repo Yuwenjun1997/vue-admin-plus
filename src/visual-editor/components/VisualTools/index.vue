@@ -33,8 +33,9 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
-const { moveDown, moveUp, clone, deleteFn, activeParent } = useVisualBoxStore()
+import { useVisualUtils } from '@/visual-editor/hooks/useVisualUtils'
+
+const { moveDown, moveUp, clone, deleteFn, activeParent } = useVisualUtils()
 </script>
 
 <style scoped lang="scss">

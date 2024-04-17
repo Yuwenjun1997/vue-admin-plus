@@ -1,7 +1,16 @@
 <template>
   <div class="VisualCenterPanel p-2 h-full">
     <el-scrollbar height="100%">
-      <DraggableEditor class="VisualCenterPanel-wrap" :class="[device, { 'is-drag': isDrag }]" />
+      <DraggableEditor
+        v-if="currentPage"
+        :key="currentPage.id"
+        class="VisualCenterPanel-wrap"
+        :class="[device, { 'is-drag': isDrag }]"
+        :style="pageStyles"
+      />
+      <div v-else class="VisualCenterPanel-wrap" :class="[device, { 'is-drag': isDrag }]">
+        <el-empty description="当前为选中页面" />
+      </div>
     </el-scrollbar>
   </div>
 </template>
@@ -10,8 +19,18 @@
 import DraggableEditor from '../DraggableEditor/index.vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { storeToRefs } from 'pinia'
+import { CSSProperties } from 'vue'
 
-const { device, isDrag } = storeToRefs(useVisualBoxStore())
+const { device, isDrag, currentPage } = storeToRefs(useVisualBoxStore())
+
+const pageStyles = computed<CSSProperties | undefined>(() => {
+  if (!currentPage.value) return
+  return {
+    backgroundColor: currentPage.value.config.bgColor,
+    backgroundImage: currentPage.value.config.bgImage ? `url(${currentPage.value.config.bgImage})` : '',
+    backgroundRepeat: currentPage.value.config.bgRepeat ? 'repeat' : 'no-repeat',
+  }
+})
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,10 @@
 <template>
-  <DraggableGroup v-model="visualBlocks" :end-handler="handleDragEnd" :start-handler="handleDragStart">
+  <DraggableGroup
+    v-if="currentPage"
+    v-model="currentPage.blocks"
+    :end-handler="handleDragEnd"
+    :start-handler="handleDragStart"
+  >
     <template #item="{ element: outElement }">
       <div
         class="visual-block"
@@ -35,7 +40,7 @@ import { storeToRefs } from 'pinia'
 import { useVisualUtils } from '@/visual-editor/hooks/useVisualUtils'
 
 const { setCurrentBlock } = useVisualBoxStore()
-const { visualBlocks, isDrag } = storeToRefs(useVisualBoxStore())
+const { currentPage, isDrag } = storeToRefs(useVisualBoxStore())
 
 const { isActive, hasSlots } = useVisualUtils()
 
@@ -45,6 +50,10 @@ const handleDragStart = () => {
 const handleDragEnd = () => {
   isDrag.value = false
 }
+
+watchEffect(() => {
+  console.log('画布：', currentPage.value)
+})
 </script>
 
 <style scoped lang="scss"></style>

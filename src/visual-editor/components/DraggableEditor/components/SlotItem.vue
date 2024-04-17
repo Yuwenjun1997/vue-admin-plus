@@ -41,8 +41,8 @@ defineOptions({
 interface Props {
   children: Array<VisualEditorBlockData>
   selectHandler: (block: VisualEditorBlockData) => void
-  startHandler: () => {}
-  endHandler: () => {}
+  startHandler: () => void
+  endHandler: () => void
 }
 
 const { isActive, hasSlots } = useVisualUtils()

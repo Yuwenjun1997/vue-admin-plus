@@ -43,7 +43,7 @@ interface TreeData {
 
 const treeRef = ref<TreeInstance>()
 
-const { visualBlocks, currentBlock } = storeToRefs(useVisualBoxStore())
+const { currentPage, currentBlock } = storeToRefs(useVisualBoxStore())
 const { setCurrentBlock } = useVisualBoxStore()
 
 const genTreeData = (block: VisualEditorBlockData): TreeData => {
@@ -59,13 +59,14 @@ const genTreeData = (block: VisualEditorBlockData): TreeData => {
   return { _vid, title: label, value: block, children }
 }
 
-const treeData = computed<TreeData[]>(() => visualBlocks.value.map(genTreeData))
+const treeData = computed<TreeData[]>(() => currentPage.value?.blocks.map(genTreeData) || [])
 
 watch(currentBlock, () => {
   treeRef.value?.setCurrentKey(currentBlock.value?._vid, true)
 })
 
 const handleCurrentChange = (data: TreeData) => {
+  if (!data) return
   setCurrentBlock(data.value)
 }
 </script>

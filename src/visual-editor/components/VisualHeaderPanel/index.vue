@@ -19,7 +19,7 @@
       <el-tooltip content="页面全局设置" effect="dark">
         <div class="visual-tools__control" @click.stop="handleShowGlobalSettingModal">
           <Icon icon="ion:ios-settings-strong" />
-          <span>页面全局设置</span>
+          <span>全局设置</span>
         </div>
       </el-tooltip>
     </div>
@@ -85,12 +85,14 @@ import { Icon } from '@iconify/vue'
 import { useRefHistory, useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { ElMessageBox } from 'element-plus'
+import { useVisualUtils } from '@/visual-editor/hooks/useVisualUtils'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen, device, visualBlocks } = storeToRefs(visualBoxStore)
+const { isFullscreen, device, visualPages } = storeToRefs(visualBoxStore)
 const toggleFullscreen = useToggle(isFullscreen)
+const { clear } = useVisualUtils()
 
-const { undo, redo, canRedo, canUndo } = useRefHistory(visualBlocks, { deep: true })
+const { undo, redo, canRedo, canUndo } = useRefHistory(visualPages, { deep: true })
 
 // 清空画布
 const handleClearScreen = async () => {
@@ -100,7 +102,7 @@ const handleClearScreen = async () => {
       cancelButtonText: '取消',
       type: 'warning',
     })
-    visualBoxStore.clear()
+    clear()
   } catch (error) {
     console.log(error)
   }

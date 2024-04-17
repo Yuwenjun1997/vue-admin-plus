@@ -71,16 +71,19 @@ export type VisualEditorBlockData = {
 export type PageConfig = {
   bgImage: string
   bgColor: string
-  keepAlive: boolean
+  bgRepeat: boolean
 }
 
 // 页面对象
 export type VisualEditorPage = {
+  parentId?: string
+  id: string
   title: string
   path: string
   isDefault?: boolean
   config: PageConfig
   blocks: VisualEditorBlockData[]
+  children: VisualEditorPage[]
 }
 
 // 可以认为是 路由=>页面

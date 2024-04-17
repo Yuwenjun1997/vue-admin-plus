@@ -8,7 +8,7 @@
             <span class="text-xs">页面</span>
           </div>
         </template>
-        <div class="VisualLeftPanel-header">页面节点</div>
+        <div class="VisualLeftPanel-header">全部页面</div>
         <el-scrollbar height="calc(100% - 30px)">
           <VisualPagesTree />
         </el-scrollbar>
@@ -17,10 +17,10 @@
         <template #label>
           <div class="flex flex-col items-center gap-1">
             <Icon class="text-xl" icon="bi:bounding-box" />
-            <span class="text-xs">节点</span>
+            <span class="text-xs">大纲</span>
           </div>
         </template>
-        <div class="VisualLeftPanel-header">组件节点</div>
+        <div class="VisualLeftPanel-header">组件大纲{{ currentPage ? '-' + currentPage.title : '' }}</div>
         <el-scrollbar height="calc(100% - 30px)">
           <VisualNodesTree />
         </el-scrollbar>
@@ -69,11 +69,15 @@ import { visualConfig } from '@/visual-editor/visual.config'
 import VisualComponents from './components/VisualComponents.vue'
 import VisualPagesTree from './components/VisualPagesTree/index.vue'
 import VisualNodesTree from './components/VisualNodesTree/index.vue'
+import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
+import { storeToRefs } from 'pinia'
 
-const activeTab = ref<string>('nodes')
+const activeTab = ref<string>('pages')
 
 const basicWidgets = visualConfig.componentModules.basicWidgets
 const containerWidgets = visualConfig.componentModules.containerWidgets
+
+const { currentPage } = storeToRefs(useVisualBoxStore())
 </script>
 
 <style scoped lang="scss">
