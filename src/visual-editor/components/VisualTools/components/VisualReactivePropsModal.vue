@@ -2,21 +2,21 @@
   <el-dialog v-if="visible" :model-value="visible" title="配置响应字段" width="1200">
     <el-scrollbar height="400px">
       <el-table border :data="tableData" size="small">
-        <el-table-column label="绑定来源" prop="sourceKey">
+        <el-table-column label="响应来源" prop="sourceKey">
           <template #default="{ row }">
             <el-select v-model="row.sourceKey" clearable size="small">
               <el-option label="全局store" value="$store" />
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="绑定字段" prop="bindProp">
+        <el-table-column label="响应字段" prop="bindProp">
           <template #default="{ row }">
             <el-select v-model="row.bindProp" allow-create clearable :disabled="!row.sourceKey" filterable size="small">
               <el-option v-for="item in bindProps" :key="item" :label="item" :value="item" />
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="变量名" prop="propName">
+        <el-table-column label="绑定属性" prop="propName">
           <template #default="{ row }">
             <el-select v-model="row.propName" clearable size="small">
               <template #prefix>$props.</template>
@@ -24,7 +24,7 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="变量描述" prop="propName">
+        <el-table-column label="属性描述" prop="propName">
           <template #default="{ row }">
             <span v-if="visualEditor && visualEditor.props">
               {{ visualEditor.props[row.propName]?.label }}
