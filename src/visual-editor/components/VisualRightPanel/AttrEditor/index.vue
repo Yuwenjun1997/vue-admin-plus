@@ -3,7 +3,7 @@
     <el-form-item v-for="(option, key) in props.options" :key="key" :label="option.label">
       <template #label v-if="showBind">
         <div class="flex items-center gap-1">
-          <el-tooltip :content="option.reactive ? '响应式' : '非响应式'" placement="top">
+          <el-tooltip :content="`（${key}）${option.reactive ? '响应式' : '非响应式'} `" placement="top">
             <Icon
               class="text-base cursor-pointer"
               :icon="option.reactive ? 'ion:link-sharp' : 'ion:unlink-sharp'"

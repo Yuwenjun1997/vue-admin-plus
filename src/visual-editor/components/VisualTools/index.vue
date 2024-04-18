@@ -28,14 +28,33 @@
         <Icon icon="ep:files" />
       </div>
     </el-tooltip>
+    <el-tooltip content="配置响应" effect="dark" placement="left">
+      <div class="visual-tools__control" @click="handleEditReactive">
+        <Icon class="text-base cursor-pointer" icon="ion:link-sharp" />
+      </div>
+    </el-tooltip>
+    <!-- 响应配置弹窗 -->
+    <VisualReactivePropsModal v-model="showReactivePropsModal" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import VisualReactivePropsModal from './components/VisualReactivePropsModal.vue'
 import { useVisualUtils } from '@/visual-editor/hooks/useVisualUtils'
+import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
+import { storeToRefs } from 'pinia'
+import { ElMessage } from 'element-plus'
 
 const { moveDown, moveUp, clone, deleteFn, activeParent } = useVisualUtils()
+const { visualEditor } = storeToRefs(useVisualBoxStore())
+
+const showReactivePropsModal = ref(false)
+
+const handleEditReactive = () => {
+  if (!visualEditor.value) return ElMessage.warning('请先选择组件')
+  showReactivePropsModal.value = true
+}
 </script>
 
 <style scoped lang="scss">

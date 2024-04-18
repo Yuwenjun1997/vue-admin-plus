@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { VisualEditorBlockData, VisualEditorComponent, VisualEditorPage } from '../types'
+import { VisualEditorBlockData, VisualEditorComponent, VisualEditorPage, VisualReactiveProp } from '../types'
 import { visualConfig } from '../visual.config'
 import { cloneDeep } from 'lodash'
 import { createNewBlock } from '../visual-editor.utils'
@@ -16,6 +16,7 @@ interface VisualBoxState {
   visualPages: VisualEditorPage[]
   currentPage: VisualEditorPage | null
   visualStore: Record<string, any>
+  visualReactiveProps: VisualReactiveProp[]
 }
 
 const replaceProps = (source: Record<string, any>, target: Record<string, any>) => {
@@ -46,6 +47,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     visualPages: [],
     currentPage: null,
     visualStore: {},
+    visualReactiveProps: [],
   }),
 
   actions: {
@@ -71,7 +73,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
       Object.entries(visualEditor.props || {}).forEach(([key, value]) => {
         visualEditor.props = visualEditor.props || {}
         value.defaultValue = this.currentBlock?.props[key]
-        value.reactive = Object.keys(this.currentBlock?.model || {}).includes(key)
       })
 
       // 处理插槽
@@ -94,7 +95,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
       const block = createNewBlock(this.visualEditor)
       replaceProps(this.currentBlock.props, block.props)
       replaceProps(this.currentBlock.slots, block.slots)
-      replaceProps(this.currentBlock.model, block.model)
 
       this.cssEditorOptions.forEach((item) => {
         const cssRule = Object.entries(item.optionMap).reduce((cssRule: Record<string, any>, [key, value]) => {

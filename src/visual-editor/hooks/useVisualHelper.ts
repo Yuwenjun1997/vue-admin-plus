@@ -14,9 +14,8 @@ export const useVisualHelper = () => {
       $ref: visualRefMap[block._vid],
       $refs: visualRefMap,
       $event: event,
-      $state: block.model,
-      $rootStore: visualStore.value,
-      $store: block.store,
+      $store: visualStore.value,
+      $props: block.props,
     }
     value.forEach((item) => {
       if (item.custom) {

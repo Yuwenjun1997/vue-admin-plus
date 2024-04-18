@@ -82,12 +82,11 @@ export type VisualEditorBlockData = {
   isActive: boolean
   styles: CSSProperties
   props: VisualBlockProps
-  model: Record<string, string>
   draggable: boolean
   fixed: boolean
   slots: VisualBlockSlotMap
   events: VisualBlockEventMap
-  store: Record<string, string>
+  model: Record<string, string>
 }
 
 // 页面配置
@@ -122,11 +121,11 @@ export type VisualEditorComponent = {
   render: (
     data: {
       props: any
-      model: any
       styles: CSSProperties
       block: VisualEditorBlockData
       slots?: VisualBlockSlotMap
       events?: VisualBlockEventMap
+      model?: Record<string, string>
     },
     isDesinger?: boolean
   ) => () => JSX.Element
@@ -140,6 +139,7 @@ export type VisualEditorComponent = {
   deleteSlot?: (index: number) => void
   initSlotsOptions?: (slotMap: VisualBlockSlotMap) => void
   events?: VisualEditorEvent[]
+  model?: Record<string, string>
 }
 
 // 组件模块
@@ -149,3 +149,9 @@ export type ComponentModules = {
 }
 
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>
+
+export type VisualReactiveProp = {
+  sourceKey: string
+  bindProp: any
+  propName: string
+}

@@ -19,13 +19,13 @@ export default {
       按钮
     </Button>
   ),
-  render: ({ props, styles, block, model }) => {
+  render: ({ props, styles, block }) => {
     const { registerRef } = useVisualRef()
     const { genEventMap } = useVisualHelper()
 
     return () => (
       <div style={styles}>
-        <Button ref={(el) => registerRef(el, block._vid)} {...props} {...model} {...genEventMap(block)}></Button>
+        <Button ref={(el) => registerRef(el, block._vid)} {...props} {...genEventMap(block)}></Button>
       </div>
     )
   },
