@@ -5,7 +5,9 @@
   --visual-navbar-height: calc(var(--van-nav-bar-height) + #{$visual-item-gap * 2});
 
   &__item {
+    position: relative;
     cursor: pointer;
+    z-index: 10;
 
     &.visual-fixed {
       position: fixed;
@@ -23,10 +25,10 @@
         outline-offset: -$visual-item-gap !important;
       }
 
-      &.has-slots {
-        outline: 1px dashed var(--el-color-info-light-7);
-        outline-offset: -1px;
-      }
+      // &.has-slots {
+      //   outline: 1px dashed var(--el-color-info-light-7);
+      //   outline-offset: -1px;
+      // }
     }
   }
 
@@ -56,15 +58,18 @@
   }
 
   &.is-drag {
-    .visual-group__dropzone {
-      &::after {
-        outline-color: var(--el-color-info-light-3);
-        background: var(--el-color-primary-light-9);
+    .visual-block:not(.is-active) {
+      .visual-group__dropzone {
+        &::after {
+          outline-color: var(--el-color-info-light-3);
+          background: var(--el-color-primary-light-9);
+        }
       }
     }
 
-    .visual-block.has-slots {
-      outline-color: var(--el-color-primary);
+    .visual-block:not(.is-active).has-slots {
+      outline: 1px dashed var(--el-color-primary);
+      outline-offset: -1px;
     }
   }
 }

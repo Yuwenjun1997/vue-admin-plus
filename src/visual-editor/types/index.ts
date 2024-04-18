@@ -78,13 +78,12 @@ export type PageConfig = {
 // 页面对象
 export type VisualEditorPage = {
   parentId?: string
-  id: string
+  pageId: string
   title: string
   path: string
   isDefault?: boolean
   config: PageConfig
   blocks: VisualEditorBlockData[]
-  children: VisualEditorPage[]
 }
 
 // 可以认为是 路由=>页面

@@ -31,7 +31,7 @@ import { saveAs } from 'file-saver'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { storeToRefs } from 'pinia'
 
-const { currentPage } = storeToRefs(useVisualBoxStore())
+const { visualPages } = storeToRefs(useVisualBoxStore())
 
 // 导入导出json
 const showJsonCodeModal = ref<boolean>(false)
@@ -49,7 +49,7 @@ const handleCopyJsonCode = () => {
 const handleImportJson = () => {
   try {
     const data = JSON.parse(jsonCode.value)
-    currentPage.value = data
+    visualPages.value = data
     showJsonCodeModal.value = false
   } catch (error) {
     ElMessage.error('导入失败，请检查Json格式')
@@ -64,7 +64,7 @@ const handleSaveJsonAsFile = () => {
 const showJsonExportModal = () => {
   jsonCodeModalType.value = 'export'
   jsonCodeModalTitle.value = '导出Json'
-  jsonCode.value = JSON.stringify(currentPage.value)
+  jsonCode.value = JSON.stringify(visualPages.value)
   showJsonCodeModal.value = true
 }
 

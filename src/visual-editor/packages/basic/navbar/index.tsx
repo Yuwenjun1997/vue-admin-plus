@@ -52,7 +52,7 @@ export default {
     // placeholder: createEditorSwitchProp({ label: '固定在顶部时，生成一个等高的占位元素', defaultValue: true }),
     zIndex: createEditorInputNumberProp({ label: '导航栏 z-index' }),
     safeAreaInsetTop: createEditorSwitchProp({ label: '是否开启顶部安全区适配', defaultValue: false }),
-    clickable: createEditorSwitchProp({ label: '是否开启两侧按钮的点击反馈', defaultValue: false }),
+    clickable: createEditorSwitchProp({ label: '是否开启两侧按钮的点击反馈', defaultValue: true }),
   },
   fixed: true,
 } as VisualEditorComponent

@@ -1,7 +1,7 @@
 <template>
   <div class="VisualRightPanel h-full">
     <el-tabs v-model="activeTab" stretch>
-      <el-tab-pane label="属性" name="BasicAttribute">
+      <el-tab-pane label="属性" lazy name="BasicAttribute">
         <template #label>
           <Icon icon="line-md:cog-filled-loop" />
           <span class="ml-1">属性</span>
@@ -24,7 +24,7 @@
           </div>
         </el-scrollbar>
       </el-tab-pane>
-      <el-tab-pane label="样式" name="ComponentAttribute">
+      <el-tab-pane label="样式" lazy name="ComponentAttribute">
         <template #label>
           <Icon icon="ep:set-up" />
           <span class="ml-1">样式</span>
@@ -38,7 +38,7 @@
           </div>
         </el-scrollbar>
       </el-tab-pane>
-      <el-tab-pane label="事件" name="ComponentData">
+      <el-tab-pane label="事件" lazy name="ComponentData">
         <template #label>
           <Icon icon="line-md:telegram" />
           <span class="ml-1">事件</span>

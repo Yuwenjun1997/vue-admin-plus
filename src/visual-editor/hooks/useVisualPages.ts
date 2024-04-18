@@ -5,21 +5,19 @@ import { generateNanoid } from '../visual-editor.utils'
 
 export class VisualEditorPageForm implements VisualEditorPage {
   parentId?: string | undefined
-  id: string = ''
+  pageId: string = ''
   path: string = ''
   isDefault?: boolean | undefined = false
   config: PageConfig = { bgColor: '', bgImage: '', bgRepeat: false }
   blocks: VisualEditorBlockData[] = []
-  children: VisualEditorPage[] = []
   title: string = ''
 }
 
-const flatVisualPagesFn = (pages: VisualEditorPage[], result: VisualEditorPage[] = []) => {
-  pages?.forEach((page) => {
-    result.push(page)
-    flatVisualPagesFn(page.children, result)
-  })
-  return result
+export interface VisualEditorPageTree {
+  title: string
+  value: string
+  data: VisualEditorPage
+  children?: VisualEditorPageTree[]
 }
 
 export const useVisualPages = () => {
@@ -27,50 +25,45 @@ export const useVisualPages = () => {
 
   const { setCurrentPage: activeCurrentPage } = useVisualBoxStore()
 
-  const flatVisualPages = computed(() => flatVisualPagesFn(visualPages.value))
-
   const setCurrentPage = (current: VisualEditorPage) => {
-    const page = flatVisualPages.value.find((item) => item.id === current.id)
-    if (!page) return
-    activeCurrentPage(page)
+    activeCurrentPage(current)
   }
 
   const add = (form: VisualEditorPageForm) => {
-    form.id = `page_${generateNanoid()}`
-    if (form.parentId) {
-      const parent = flatVisualPages.value.find((item) => item.id === form.parentId)
-      if (parent) parent.children.push(form)
-    } else {
-      visualPages.value.push(form)
-    }
+    form.pageId = `page_${generateNanoid()}`
+    visualPages.value.push(form)
   }
 
   const update = (form: VisualEditorPageForm) => {
-    const page = flatVisualPages.value.find((item) => item.id === form.id)
+    const page = visualPages.value.find((item) => item.pageId === form.pageId)
     if (!page) return
-    Object.assign(page.config, form.config)
     page.title = form.title
     page.path = form.path
+    page.parentId = form.parentId
+    Object.assign(page.config, form.config)
   }
 
   const remove = (form: VisualEditorPageForm) => {
-    if (form.parentId) {
-      const parent = flatVisualPages.value.find((item) => item.id === form.parentId)
-      if (!parent) return
-      const index = parent.children.findIndex((item) => item.id === form.id)
-      if (index > -1) parent.children.splice(index, 1)
-    } else {
-      const index = visualPages.value.findIndex((item) => item.id === form.id)
-      if (index > -1) visualPages.value.splice(index, 1)
-    }
+    visualPages.value = visualPages.value.filter((item) => item.pageId !== form.pageId)
     activeCurrentPage(null)
   }
+
+  const genTreeData = (page: VisualEditorPage): VisualEditorPageTree => {
+    const { pageId, title } = page
+    const children = visualPages.value.filter((item) => item.parentId === pageId).map((page) => genTreeData(page))
+    return { value: pageId, title, children, data: page }
+  }
+
+  const visualPagesTree = computed<VisualEditorPageTree[]>(() => {
+    return visualPages.value.filter((page) => !page.parentId).map((page) => genTreeData(page))
+  })
 
   return {
     add,
     remove,
     update,
     setCurrentPage,
+    visualPagesTree,
     visualPages,
   }
 }

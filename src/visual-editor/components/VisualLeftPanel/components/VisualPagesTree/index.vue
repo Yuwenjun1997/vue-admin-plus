@@ -3,11 +3,11 @@
     <el-tree
       ref="treeRef"
       class="w-full"
-      :data="visualPages"
+      :data="visualPagesTree"
       default-expand-all
       :expand-on-click-node="false"
       highlight-current
-      node-key="_vid"
+      node-key="value"
       @current-change="handleCurrentChange"
     >
       <template #default="{ data }">
@@ -21,13 +21,13 @@
       </template>
       <template #empty>
         <el-empty description="暂无数据" :image-size="60">
-          <template v-if="visualPages.length === 0">
+          <template v-if="visualPagesTree.length === 0">
             <el-button size="small" type="primary" @click="handleAdd"> 新增页面 </el-button>
           </template>
         </el-empty>
       </template>
     </el-tree>
-    <el-button v-if="visualPages.length" class="w-full mt-2" size="small" @click="handleAdd">
+    <el-button v-if="visualPagesTree.length" class="w-full mt-2" size="small" @click="handleAdd">
       新增页面
       <Icon class="text-sm" icon="ion:add" />
     </el-button>
@@ -42,7 +42,7 @@
     >
       <el-form ref="formRef" label-width="80px" :model="form" :rules="rules" size="small">
         <el-form-item label="父级菜单">
-          <el-cascader v-model="form.parentId" clearable :options="visualPages" :props="cascaderProps" />
+          <el-cascader v-model="form.parentId" clearable :options="visualPagesTree as any" :props="cascaderProps" />
         </el-form-item>
         <el-form-item label="菜单标题" prop="title">
           <el-input v-model="form.title" clearable placeholder="请输入菜单标题" />
@@ -72,13 +72,13 @@
 
 <script setup lang="ts" name="VisualPagesTree">
 import { Icon } from '@iconify/vue'
-import { VisualEditorPageForm, useVisualPages } from '@/visual-editor/hooks/useVisualPages'
+import { VisualEditorPageForm, VisualEditorPageTree, useVisualPages } from '@/visual-editor/hooks/useVisualPages'
 import VisualImageUpload from '@/visual-editor/components/VisualRightPanel/AttrEditor/components/VisualImageUpload.vue'
 import { VisualEditorPage } from '@/visual-editor/types'
-import { FormRules, FormInstance, ElMessageBox } from 'element-plus'
+import { FormRules, FormInstance, ElMessageBox, ElMessage } from 'element-plus'
 import { cloneDeep } from 'lodash'
 
-const { visualPages, update, add, setCurrentPage, remove } = useVisualPages()
+const { visualPagesTree, update, add, setCurrentPage, remove } = useVisualPages()
 
 const dialogVisible = ref(false)
 
@@ -93,19 +93,19 @@ const handleAdd = () => {
   dialogVisible.value = true
 }
 
-const handleEdit = (data: VisualEditorPage) => {
-  form.value = cloneDeep(data)
+const handleEdit = (item: VisualEditorPageTree) => {
+  form.value = cloneDeep(item.data)
   editTitle.value = '编辑菜单'
   dialogVisible.value = true
 }
-const handleRemove = (data: VisualEditorPage) => {
+const handleRemove = (item: VisualEditorPageTree) => {
   ElMessageBox.confirm('确定要删除该菜单吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   })
     .then(() => {
-      remove(data)
+      remove(item.data)
     })
     .catch(() => {})
 }
@@ -116,9 +116,10 @@ const rules: FormRules = {
 }
 
 const cascaderProps = {
-  value: 'id',
+  value: 'value',
   label: 'title',
   emitPath: false,
+  checkStrictly: true,
 }
 
 const handleCancel = () => {
@@ -128,13 +129,17 @@ const handleCancel = () => {
 const handleSave = () => {
   formRef.value?.validate((valid) => {
     if (!valid) return
-    form.value.id ? update(cloneDeep(form.value)) : add(cloneDeep(form.value))
+    if (form.value.pageId === form.value.parentId) {
+      form.value.parentId = undefined
+      return ElMessage.warning('父级菜单不能选择自己')
+    }
+    form.value.pageId ? update(cloneDeep(form.value)) : add(cloneDeep(form.value))
     dialogVisible.value = false
   })
 }
 
-const handleCurrentChange = (data: VisualEditorPage) => {
-  setCurrentPage(data)
+const handleCurrentChange = (item: VisualEditorPageTree) => {
+  setCurrentPage(item.data)
 }
 </script>
 
