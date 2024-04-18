@@ -5,8 +5,13 @@ export const useVisualGlobal = defineStore('visualGlobal', {
   state: (): VisualGlobal => ({
     methods: [],
     variables: [],
+    reactiveMap: {},
   }),
   actions: {
+    addReactiveMap(key: string, value: Record<string, any>) {
+      this.reactiveMap[key] = value
+    },
+
     init(option: VisualGlobal) {
       this.methods = option.methods
       this.variables = option.variables

@@ -3,6 +3,7 @@ import { customAlphabet } from 'nanoid'
 
 import {
   ComponentModules,
+  VisualBlockEventMap,
   VisualBlockSlotMap,
   VisualEditorBlockData,
   VisualEditorComponent,
@@ -22,10 +23,12 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
       display: 'flex',
       justifyContent: 'flex-start',
     },
-    props: Object.entries(component.props || {}).reduce((prev: Record<string, any>, [propName, propSchema]) => {
-      prev[propName] = propSchema?.defaultValue
-      return prev
-    }, {}),
+    props: Object.entries(component.props || {})
+      .filter(([_propName, propSchema]) => !propSchema.reactive)
+      .reduce((prev: Record<string, any>, [propName, propSchema]) => {
+        prev[propName] = propSchema?.defaultValue
+        return prev
+      }, {}),
     fixed: component.fixed ?? false, // 是否固定位置
     draggable: component.draggable ?? true, // 是否可以拖拽
     slots: (component.slots || []).reduce((prev: VisualBlockSlotMap, slot, index) => {
@@ -41,6 +44,10 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
       return prev
     }, {}),
     model: {},
+    events: (component.events || []).reduce((prev: VisualBlockEventMap, event) => {
+      prev[event.eventName] = []
+      return prev
+    }, {}),
   }
 }
 

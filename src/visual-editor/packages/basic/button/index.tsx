@@ -1,4 +1,6 @@
-import { useGlobalProperties } from '@/visual-editor/hooks/useGlobalProperties'
+import { useVisualEvents } from '@/visual-editor/hooks/useVisualEvents'
+import { useVisualRef } from '@/visual-editor/hooks/useVisualRef'
+import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import type { VisualEditorComponent } from '@/visual-editor/types'
 import {
   createEditorColorProp,
@@ -6,6 +8,7 @@ import {
   createEditorSelectProp,
   createEditorSwitchProp,
 } from '@/visual-editor/visual-editor.props'
+import { storeToRefs } from 'pinia'
 import { Button } from 'vant'
 
 export default {
@@ -17,11 +20,29 @@ export default {
       按钮
     </Button>
   ),
-  render: ({ props, styles, block }) => {
-    const { registerRef } = useGlobalProperties()
+  render: ({ props, styles, block, events }) => {
+    const { registerRef } = useVisualRef()
+    const { reactiveMap } = storeToRefs(useVisualBoxStore())
+    const { callFuncs } = useVisualEvents()
+
+    const reactiveProps = computed(() => reactiveMap.value[block._vid])
+
+    const bindEventMap = Object.entries(events || {}).reduce((prev: Record<string, Function>, [key, value]) => {
+      const eventName = key.charAt(0).toUpperCase() + key.slice(1) // 首字母大写
+      if (value.length) {
+        prev[`on${eventName}`] = (...args: any[]) => callFuncs(value, block._vid, ...args)
+      }
+      return prev
+    }, {})
+
     return () => (
       <div style={styles}>
-        <Button ref={(el) => registerRef(el, block._vid)} {...props}></Button>
+        <Button
+          ref={(el) => registerRef(el, block._vid)}
+          {...props}
+          {...reactiveProps.value}
+          {...bindEventMap}
+        ></Button>
       </div>
     )
   },
@@ -91,4 +112,8 @@ export default {
       defaultValue: 'circular',
     }),
   },
+  events: [
+    { label: '点击按钮，且按钮状态不为加载或禁用时触发', eventName: 'click' },
+    { label: '开始触摸按钮时触发', eventName: 'touchstart' },
+  ],
 } as VisualEditorComponent

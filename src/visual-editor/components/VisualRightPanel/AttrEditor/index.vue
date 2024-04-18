@@ -1,6 +1,19 @@
 <template>
   <el-form size="small">
     <el-form-item v-for="(option, key) in props.options" :key="key" :label="option.label">
+      <template #label>
+        <div class="flex items-center gap-1">
+          <el-tooltip :content="option.reactive ? '响应式' : '非响应式'" placement="top">
+            <Icon
+              class="text-base cursor-pointer"
+              :icon="option.reactive ? 'ion:link-sharp' : 'ion:unlink-sharp'"
+              @click.prevent="handleToggleReactive(option)"
+            />
+          </el-tooltip>
+          <span>{{ option.label }}</span>
+        </div>
+      </template>
+
       <template v-if="option.type === VisualEditorPropsType.input">
         <el-input v-model="option.defaultValue" clearable @blur="triggerHandler" />
       </template>
@@ -35,6 +48,7 @@
 </template>
 
 <script setup lang="ts" name="AttrEditor">
+import { Icon } from '@iconify/vue'
 import VisualCssInput from './components/VisualCssInput.vue'
 import VisualImageUpload from './components/VisualImageUpload.vue'
 import { VisualEditorProps, VisualEditorPropsType } from '@/visual-editor/types'
@@ -45,6 +59,11 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const handleToggleReactive = (option: VisualEditorProps) => {
+  option.reactive = !option.reactive
+  props.triggerHandler && props.triggerHandler(option)
+}
 </script>
 
 <style scoped></style>

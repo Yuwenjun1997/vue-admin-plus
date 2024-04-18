@@ -1,4 +1,4 @@
-import { useGlobalProperties } from '@/visual-editor/hooks/useGlobalProperties'
+import { useVisualRef } from '@/visual-editor/hooks/useVisualRef'
 import { VisualEditorComponent } from '@/visual-editor/types'
 import {
   createEditorInputNumberProp,
@@ -30,7 +30,7 @@ export default {
     ></NavBar>
   ),
   render: ({ props, styles, block }, isDesinger) => {
-    const { registerRef } = useGlobalProperties()
+    const { registerRef } = useVisualRef()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     const { fixed, zIndex, safeAreaInsetTop, ...reset } = props
     const bindProps = isDesinger ? reset : props

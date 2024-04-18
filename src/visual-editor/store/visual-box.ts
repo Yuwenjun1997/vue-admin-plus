@@ -15,6 +15,7 @@ interface VisualBoxState {
   cssEditorOptions: CssEditorOption[]
   visualPages: VisualEditorPage[]
   currentPage: VisualEditorPage | null
+  reactiveMap: Record<string, Record<string, any>>
 }
 
 const replaceProps = (source: Record<string, any>, target: Record<string, any>) => {
@@ -44,6 +45,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     cssEditorOptions: [],
     visualPages: [],
     currentPage: null,
+    reactiveMap: {},
   }),
 
   actions: {
@@ -70,11 +72,15 @@ export const useVisualBoxStore = defineStore('visualBox', {
     initVisualEditor() {
       if (!this.currentBlock) return
       const visualEditor = cloneDeep(visualConfig.componentMap[this.currentBlock.componentKey])
-      // 处理属性
-      Object.keys(visualEditor.props || {}).forEach((propKey) => {
+
+      const _vid = this.currentBlock._vid
+
+      Object.entries(visualEditor.props || {}).forEach(([key, value]) => {
         visualEditor.props = visualEditor.props || {}
-        visualEditor.props[propKey].defaultValue = this.currentBlock?.props[propKey]
+        value.defaultValue = this.currentBlock?.props[key]
+        value.reactive = Object.keys(this.reactiveMap[_vid] || {}).includes(key)
       })
+
       // 处理插槽
       visualEditor.initSlotsOptions && visualEditor.initSlotsOptions(this.currentBlock.slots)
 
@@ -102,6 +108,13 @@ export const useVisualBoxStore = defineStore('visualBox', {
           return cssRule
         }, {})
         Object.assign(this.currentBlock?.styles || {}, cssRule)
+      })
+
+      // 处理响应式属性
+      const reactiveMap = {} as Record<string, any>
+      this.reactiveMap[this.currentBlock._vid] = reactiveMap
+      Object.entries(this.visualEditor.props || {}).forEach(([key, value]) => {
+        if (value.reactive) reactiveMap[key] = value.defaultValue
       })
     },
   },

@@ -1,4 +1,4 @@
-import { useGlobalProperties } from '@/visual-editor/hooks/useGlobalProperties'
+import { useVisualRef } from '@/visual-editor/hooks/useVisualRef'
 import type { VisualEditorComponent } from '@/visual-editor/types'
 import {
   createEditorCssInputProp,
@@ -15,7 +15,7 @@ export default {
   label: '图片',
   preview: () => <Image iconSize={44} />,
   render: ({ props, styles, block }) => {
-    const { registerRef } = useGlobalProperties()
+    const { registerRef } = useVisualRef()
     return () => (
       <div style={styles}>
         <Image ref={(el) => registerRef(el, block._vid)} {...props}></Image>

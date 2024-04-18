@@ -19,6 +19,7 @@ export default defineComponent({
         block: props.element,
         custom: {},
         slots: props.element.slots,
+        events: props.element.events,
       },
       true
     )

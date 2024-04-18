@@ -44,8 +44,11 @@
           <span class="ml-1">事件</span>
         </template>
         <el-scrollbar height="100%">
-          <div class="overflow-hidden p-2">
+          <div v-if="!visualEditor" class="overflow-hidden p-2">
             <el-empty description="当前未选中组件" />
+          </div>
+          <div v-else class="p-4">
+            <EventEditor :vid="currentBlock?._vid" />
           </div>
         </el-scrollbar>
       </el-tab-pane>
@@ -60,6 +63,7 @@ import { storeToRefs } from 'pinia'
 import AttrEditor from './AttrEditor/index.vue'
 import SlotEditor from './SlotEditor/index.vue'
 import StyleEditor from './StyleEditor/index.vue'
+import EventEditor from './EventEditor/index.vue'
 
 const activeTab = ref<string>('BasicAttribute')
 
@@ -82,8 +86,20 @@ const handleDeleteSlot = (index: number) => {
 
 <style scoped lang="scss">
 .VisualRightPanel {
-  :deep(.el-tabs__header) {
-    padding: 0 0.5rem;
+  :deep(.el-tabs) {
+    height: 100%;
+    .el-tabs__header {
+      padding: 0 0.5rem;
+      margin-bottom: 0;
+    }
+
+    .el-tabs__content {
+      height: calc(100% - 40px);
+
+      .el-tab-pane {
+        height: 100%;
+      }
+    }
   }
 }
 </style>

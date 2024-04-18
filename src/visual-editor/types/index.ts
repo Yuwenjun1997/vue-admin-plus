@@ -43,6 +43,7 @@ export type VisualEditorProps = {
   tips?: string
   labelPosition?: string
   defaultValue?: any
+  reactive?: boolean
 } & {
   options?: VisualEditorSelectOptions
   multiple?: boolean
@@ -52,6 +53,25 @@ export type VisualEditorProps = {
 } & {
   table?: VisualEditorTableOption
 }
+
+// 组件事件编辑配置
+export type VisualEditorEvent = {
+  label: string
+  eventName: string
+}
+
+// 组件事件绑定内容
+export type VisualEventData = {
+  _vid?: string
+  key: string
+  custom: boolean
+  eventValue?: string
+  methodToken: string
+  description: string
+}
+
+// 组件事件绑定
+export type VisualBlockEventMap = Record<string, VisualEventData[]>
 
 // 组件属性
 export type VisualEditorBlockData = {
@@ -66,6 +86,7 @@ export type VisualEditorBlockData = {
   draggable: boolean
   fixed: boolean
   slots: VisualBlockSlotMap
+  events: VisualBlockEventMap
 }
 
 // 页面配置
@@ -105,6 +126,7 @@ export type VisualEditorComponent = {
       block: VisualEditorBlockData
       custom: Record<string, any>
       slots?: VisualBlockSlotMap
+      events?: VisualBlockEventMap
     },
     isDesinger?: boolean
   ) => () => JSX.Element
@@ -117,6 +139,7 @@ export type VisualEditorComponent = {
   addSlot?: () => void
   deleteSlot?: (index: number) => void
   initSlotsOptions?: (slotMap: VisualBlockSlotMap) => void
+  events?: VisualEditorEvent[]
 }
 
 // 组件模块
@@ -150,4 +173,5 @@ export interface VisualGlobalMethod {
 export interface VisualGlobal {
   variables: VisualGlobalVariable[]
   methods: VisualGlobalMethod[]
+  reactiveMap: Record<string, Record<string, any>>
 }
