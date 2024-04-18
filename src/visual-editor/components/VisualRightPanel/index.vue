@@ -11,7 +11,7 @@
             <el-empty description="当前未选中组件" />
           </div>
           <div v-else :key="currentBlock?._vid" class="p-4">
-            <AttrEditor :options="visualEditor.props" :trigger-handler="handleAttrChange" />
+            <AttrEditor :options="visualEditor.props" show-bind :trigger-handler="handleAttrChange" />
             <template v-if="visualEditor.slots && visualEditor.slots.length">
               <el-divider>插槽配置</el-divider>
               <SlotEditor

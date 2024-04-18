@@ -15,7 +15,7 @@ interface VisualBoxState {
   cssEditorOptions: CssEditorOption[]
   visualPages: VisualEditorPage[]
   currentPage: VisualEditorPage | null
-  reactiveMap: Record<string, Record<string, any>>
+  visualStore: Record<string, any>
 }
 
 const replaceProps = (source: Record<string, any>, target: Record<string, any>) => {
@@ -45,7 +45,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     cssEditorOptions: [],
     visualPages: [],
     currentPage: null,
-    reactiveMap: {},
+    visualStore: {},
   }),
 
   actions: {
@@ -64,21 +64,14 @@ export const useVisualBoxStore = defineStore('visualBox', {
       this.initVisualEditor()
     },
 
-    sortVisualBlocks() {
-      if (!this.currentPage) return
-      this.currentPage.blocks.sort((a, b) => Number(a.draggable) - Number(b.draggable))
-    },
-
     initVisualEditor() {
       if (!this.currentBlock) return
       const visualEditor = cloneDeep(visualConfig.componentMap[this.currentBlock.componentKey])
 
-      const _vid = this.currentBlock._vid
-
       Object.entries(visualEditor.props || {}).forEach(([key, value]) => {
         visualEditor.props = visualEditor.props || {}
         value.defaultValue = this.currentBlock?.props[key]
-        value.reactive = Object.keys(this.reactiveMap[_vid] || {}).includes(key)
+        value.reactive = Object.keys(this.currentBlock?.model || {}).includes(key)
       })
 
       // 处理插槽
@@ -101,6 +94,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
       const block = createNewBlock(this.visualEditor)
       replaceProps(this.currentBlock.props, block.props)
       replaceProps(this.currentBlock.slots, block.slots)
+      replaceProps(this.currentBlock.model, block.model)
 
       this.cssEditorOptions.forEach((item) => {
         const cssRule = Object.entries(item.optionMap).reduce((cssRule: Record<string, any>, [key, value]) => {
@@ -108,13 +102,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
           return cssRule
         }, {})
         Object.assign(this.currentBlock?.styles || {}, cssRule)
-      })
-
-      // 处理响应式属性
-      const reactiveMap = {} as Record<string, any>
-      this.reactiveMap[this.currentBlock._vid] = reactiveMap
-      Object.entries(this.visualEditor.props || {}).forEach(([key, value]) => {
-        if (value.reactive) reactiveMap[key] = value.defaultValue
       })
     },
   },

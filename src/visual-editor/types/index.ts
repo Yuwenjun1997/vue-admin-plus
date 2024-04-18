@@ -87,6 +87,7 @@ export type VisualEditorBlockData = {
   fixed: boolean
   slots: VisualBlockSlotMap
   events: VisualBlockEventMap
+  store: Record<string, string>
 }
 
 // 页面配置
@@ -124,7 +125,6 @@ export type VisualEditorComponent = {
       model: any
       styles: CSSProperties
       block: VisualEditorBlockData
-      custom: Record<string, any>
       slots?: VisualBlockSlotMap
       events?: VisualBlockEventMap
     },
@@ -149,29 +149,3 @@ export type ComponentModules = {
 }
 
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>
-
-export type VariableType = 'string' | 'number' | 'boolean' | 'object' | 'array'
-
-export interface VisualGlobalVariable {
-  uuid: string
-  name: string
-  variableName: string
-  valueType: VariableType
-  defaultValue?: any
-  description?: string
-}
-
-export interface VisualGlobalMethod {
-  uuid: string
-  name: string
-  methodName: string
-  methodToken: string
-  params?: string
-  description?: string
-}
-
-export interface VisualGlobal {
-  variables: VisualGlobalVariable[]
-  methods: VisualGlobalMethod[]
-  reactiveMap: Record<string, Record<string, any>>
-}

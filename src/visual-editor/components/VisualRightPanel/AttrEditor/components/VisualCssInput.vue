@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts" name="VisualCssInput">
-import { useExtractValueAndUnit } from '@/visual-editor/hooks/useExtractValueAndUnit'
+import { extractValueAndUnit } from '@/visual-editor/utils'
 import { Icon } from '@iconify/vue'
 
 interface Props {
@@ -63,7 +63,7 @@ const handleUnitChange = () => {
 
 watchEffect(() => {
   if (props.modelValue) {
-    const result = useExtractValueAndUnit(props.modelValue)
+    const result = extractValueAndUnit(props.modelValue)
     if (!result) return
     inputValue.value = sliderValue.value = Number(result[0])
     unit.value = (result[1] as string).toLowerCase()

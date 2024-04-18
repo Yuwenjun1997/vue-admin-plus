@@ -1,14 +1,13 @@
-import { useVisualEvents } from '@/visual-editor/hooks/useVisualEvents'
+import { useVisualHelper } from '@/visual-editor/hooks/useVisualHelper'
 import { useVisualRef } from '@/visual-editor/hooks/useVisualRef'
-import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import type { VisualEditorComponent } from '@/visual-editor/types'
+
 import {
   createEditorColorProp,
   createEditorInputProp,
   createEditorSelectProp,
   createEditorSwitchProp,
 } from '@/visual-editor/visual-editor.props'
-import { storeToRefs } from 'pinia'
 import { Button } from 'vant'
 
 export default {
@@ -20,29 +19,13 @@ export default {
       按钮
     </Button>
   ),
-  render: ({ props, styles, block, events }) => {
+  render: ({ props, styles, block, model }) => {
     const { registerRef } = useVisualRef()
-    const { reactiveMap } = storeToRefs(useVisualBoxStore())
-    const { callFuncs } = useVisualEvents()
-
-    const reactiveProps = computed(() => reactiveMap.value[block._vid])
-
-    const bindEventMap = Object.entries(events || {}).reduce((prev: Record<string, Function>, [key, value]) => {
-      const eventName = key.charAt(0).toUpperCase() + key.slice(1) // 首字母大写
-      if (value.length) {
-        prev[`on${eventName}`] = (...args: any[]) => callFuncs(value, block._vid, ...args)
-      }
-      return prev
-    }, {})
+    const { genEventMap } = useVisualHelper()
 
     return () => (
       <div style={styles}>
-        <Button
-          ref={(el) => registerRef(el, block._vid)}
-          {...props}
-          {...reactiveProps.value}
-          {...bindEventMap}
-        ></Button>
+        <Button ref={(el) => registerRef(el, block._vid)} {...props} {...model} {...genEventMap(block)}></Button>
       </div>
     )
   },

@@ -43,11 +43,17 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
       }
       return prev
     }, {}),
-    model: {},
+    model: Object.entries(component.props || {})
+      .filter(([_propName, propSchema]) => propSchema.reactive)
+      .reduce((prev: Record<string, any>, [propName, propSchema]) => {
+        prev[propName] = propSchema?.defaultValue
+        return prev
+      }, {}),
     events: (component.events || []).reduce((prev: VisualBlockEventMap, event) => {
       prev[event.eventName] = []
       return prev
     }, {}),
+    store: {},
   }
 }
 
@@ -74,7 +80,6 @@ export function createVisualEditorConfig() {
           model: Partial<{ [k in keyof Model]: any }>
           styles: CSSProperties
           block: VisualEditorBlockData
-          custom: Record<string, any>
         }) => () => JSX.Element
         props?: Props
         model?: Model

@@ -1,20 +1,21 @@
 import { storeToRefs } from 'pinia'
 import { useVisualBoxStore } from '../store/visual-box'
-import { VisualEventData } from '../types'
+import { VisualEditorBlockData, VisualEventData } from '../types'
 import { generateNanoid } from '../visual-editor.utils'
 import { useVisualRef } from './useVisualRef'
 
 export const useVisualEvents = () => {
-  const { currentBlock, reactiveMap } = storeToRefs(useVisualBoxStore())
+  const { currentBlock } = storeToRefs(useVisualBoxStore())
   const { visualRefMap } = useVisualRef()
 
-  const callFuncs = (value: VisualEventData[], _vid: string, ...event: any[]) => {
+  const callFuncs = (value: VisualEventData[], block: VisualEditorBlockData, ...event: any[]) => {
     const _self = {
-      _vid,
+      _vid: block._vid,
+      $block: block,
+      $ref: visualRefMap[block._vid],
       $refs: visualRefMap,
       $event: event,
-      $state: reactiveMap.value,
-      $data: reactiveMap.value[_vid],
+      $state: block.model,
     }
     value.forEach((item) => {
       if (item.custom) {

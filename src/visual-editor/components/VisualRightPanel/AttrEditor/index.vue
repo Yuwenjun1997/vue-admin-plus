@@ -1,7 +1,7 @@
 <template>
   <el-form size="small">
     <el-form-item v-for="(option, key) in props.options" :key="key" :label="option.label">
-      <template #label>
+      <template #label v-if="showBind">
         <div class="flex items-center gap-1">
           <el-tooltip :content="option.reactive ? '响应式' : '非响应式'" placement="top">
             <Icon
@@ -54,6 +54,7 @@ import VisualImageUpload from './components/VisualImageUpload.vue'
 import { VisualEditorProps, VisualEditorPropsType } from '@/visual-editor/types'
 
 interface Props {
+  showBind?: boolean
   options?: Record<string, VisualEditorProps> | null
   triggerHandler?: (e: any) => void
 }
