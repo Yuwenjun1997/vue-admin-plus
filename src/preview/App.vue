@@ -14,7 +14,7 @@ const { currentPage } = storeToRefs(useVisualBoxStore())
 const { setCurrentPage, setVisualStore } = useVisualBoxStore()
 const { pageStyles } = useVisualTheme()
 
-const init = () => {
+onMounted(() => {
   try {
     const currentPageStr = localStorage.getItem('currentPage')
     const storeStateStr = localStorage.getItem('storeState')
@@ -30,9 +30,5 @@ const init = () => {
   } catch (error) {
     console.log(error)
   }
-}
-
-onMounted(() => {
-  init()
 })
 </script>

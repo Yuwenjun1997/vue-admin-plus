@@ -172,26 +172,6 @@ export const menus: MenuOption[] = [
           component: '@/views/others/visual-design/index.vue',
         },
       },
-      {
-        name: 'OthersHighlight',
-        path: '/others/highlight',
-        meta: {
-          menuId: 'OthersHighlight',
-          title: '代码高亮',
-          icon: 'bi:brightness-alt-high',
-          component: '@/views/others/highlight/index.vue',
-        },
-      },
-      {
-        name: 'OthersCodeEditor',
-        path: '/others/codeEditor',
-        meta: {
-          menuId: 'OthersCodeEditor',
-          title: '代码编辑器',
-          icon: 'bi:file-earmark-code',
-          component: '@/views/others/code-editor/index.vue',
-        },
-      },
     ],
   },
 ]
