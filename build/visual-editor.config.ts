@@ -1,6 +1,8 @@
 import { defineConfig, mergeConfig } from 'vite'
-import baseConfig from './build/base.config'
+import baseConfig from './base.config'
 import path from 'path'
+
+const baseSrc = path.resolve(__dirname, '../')
 
 // https://vitejs.dev/config/
 export default defineConfig(
@@ -8,8 +10,8 @@ export default defineConfig(
     build: {
       rollupOptions: {
         input: {
-          main: path.resolve(__dirname, './index.html'),
-          'visual-preview': path.resolve(__dirname, './visual-preview.html'),
+          main: path.resolve(baseSrc, './visual-editor.html'),
+          'visual-preview': path.resolve(baseSrc, './visual-preview.html'),
         },
       },
     },

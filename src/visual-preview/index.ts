@@ -8,4 +8,4 @@ const app = createApp(App)
 setupVant(app)
 setupStore(app)
 
-app.mount('#preview')
+app.mount('#visual-preview')

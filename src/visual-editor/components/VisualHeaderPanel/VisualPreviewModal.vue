@@ -18,7 +18,7 @@
       </el-radio-group>
     </template>
     <div v-loading="isLoading" class="preview-container visual-preview-container">
-      <iframe ref="iframeRef" class="h-full preview-el" src="/preview.html" :style="{ width: previewWidth }" />
+      <iframe ref="iframeRef" class="h-full preview-el" src="/visual-preview.html" :style="{ width: previewWidth }" />
     </div>
   </el-dialog>
 </template>
