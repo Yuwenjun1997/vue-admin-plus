@@ -54,7 +54,7 @@
           <span>导出代码</span>
         </div>
       </el-tooltip>
-      <el-tooltip :content="isFullscreen ? '恢复窗口大小' : '窗口最大化'" effect="dark">
+      <el-tooltip v-if="!hideFullscreen" :content="isFullscreen ? '恢复窗口大小' : '窗口最大化'" effect="dark">
         <div class="visual-tools__control" @click.stop="toggleFullscreen()">
           <Icon icon="bi:window-fullscreen" />
         </div>
@@ -88,7 +88,7 @@ import { ElMessageBox } from 'element-plus'
 import { useVisualUtils } from '@/visual-editor/hooks/useVisualUtils'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen, device, visualPages } = storeToRefs(visualBoxStore)
+const { isFullscreen, device, visualPages, hideFullscreen } = storeToRefs(visualBoxStore)
 const toggleFullscreen = useToggle(isFullscreen)
 const { clear } = useVisualUtils()
 

@@ -24,6 +24,7 @@ export default defineConfig({
         main: path.resolve(__dirname, 'index.html'),
         // other entry points...
         preview: path.resolve(__dirname, 'preview.html'),
+        'visual-editor': path.resolve(__dirname, 'visual-editor.html'),
       },
     },
   },

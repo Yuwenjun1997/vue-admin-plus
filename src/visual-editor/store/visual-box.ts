@@ -10,6 +10,7 @@ interface VisualBoxState {
   isDrag: boolean
   device: string
   isFullscreen: boolean
+  hideFullscreen: boolean
   currentBlock: VisualEditorBlockData | null
   visualEditor: VisualEditorComponent | null
   cssEditorOptions: CssEditorOption[]
@@ -41,6 +42,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     isDrag: false,
     device: 'h5',
     isFullscreen: false,
+    hideFullscreen: false,
     currentBlock: null,
     visualEditor: null,
     cssEditorOptions: [],

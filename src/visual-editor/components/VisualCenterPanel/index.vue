@@ -9,7 +9,7 @@
         :style="pageStyles"
       />
       <div v-else class="VisualCenterPanel-wrap" :class="[device, { 'is-drag': isDrag }]">
-        <el-empty description="当前为选中页面" />
+        <el-empty description="当前未选中页面" />
       </div>
     </el-scrollbar>
   </div>
