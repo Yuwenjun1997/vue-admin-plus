@@ -1,3 +1,5 @@
+import { useVisualEvents } from '@/visual-editor/hooks/useVisualEvents'
+import { useVisualProps } from '@/visual-editor/hooks/useVisualProps'
 import { useVisualRef } from '@/visual-editor/hooks/useVisualRef'
 import type { VisualEditorComponent } from '@/visual-editor/types'
 import {
@@ -14,11 +16,17 @@ export default {
   moduleName: 'basicWidgets',
   label: '图片',
   preview: () => <Image iconSize={44} />,
-  render: ({ props, styles, block }) => {
+  render: ({ styles, block }) => {
     const { registerRef } = useVisualRef()
+    const { genEvents } = useVisualEvents()
+    const { genProps } = useVisualProps()
+
+    const props = computed(() => genProps(block))
+    const events = computed(() => genEvents(block))
+
     return () => (
       <div style={styles}>
-        <Image ref={(el) => registerRef(el, block._vid)} {...props}></Image>
+        <Image ref={(el) => registerRef(el, block._vid)} {...props.value} {...events.value}></Image>
       </div>
     )
   },

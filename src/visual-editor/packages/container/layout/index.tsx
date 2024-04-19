@@ -7,6 +7,7 @@ import {
   createEditorInputProp,
   createEditorSelectProp,
 } from '@/visual-editor/visual-editor.props'
+import { useVisualProps } from '@/visual-editor/hooks/useVisualProps'
 
 const slotsTemp = {} as any
 
@@ -27,9 +28,14 @@ export default {
       </Col>
     </Row>
   ),
-  render: ({ props, styles, block, custom, slots: vslots }) => {
+  render: ({ styles, block, slots: vslots }) => {
     const slots = useSlots()
     slotsTemp[block._vid] ??= {}
+
+    const { genProps } = useVisualProps()
+
+    const props = computed(() => genProps(block))
+
     watchEffect(() => {
       if (Object.keys(vslots || {}).length) {
         Object.entries<VisualBlockSlotData>(vslots || {}).forEach(([key, vslot]) => {
@@ -42,7 +48,7 @@ export default {
 
     return () => (
       <div style={styles}>
-        <Row {...custom} {...props} class={styleModule['van-row1']}>
+        <Row {...props.value} class={styleModule['van-row1']}>
           {Object.entries<VisualBlockSlotData>(vslots || {}).map(([key, vslot]) => {
             slotsTemp[block._vid][key] = vslot
             return <Col {...vslot.props}>{renderSlot(slots, key)}</Col>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { VisualEditorBlockData, VisualEditorComponent, VisualEditorPage, VisualReactiveProp } from '../types'
+import { VisualBindProp, VisualEditorBlockData, VisualEditorComponent, VisualEditorPage } from '../types'
 import { visualConfig } from '../visual.config'
 import { cloneDeep } from 'lodash'
 import { createNewBlock } from '../visual-editor.utils'
@@ -16,7 +16,7 @@ interface VisualBoxState {
   visualPages: VisualEditorPage[]
   currentPage: VisualEditorPage | null
   visualStore: Record<string, any>
-  visualReactiveProps: VisualReactiveProp[]
+  visualBindProps: VisualBindProp[]
 }
 
 const replaceProps = (source: Record<string, any>, target: Record<string, any>) => {
@@ -47,7 +47,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
     visualPages: [],
     currentPage: null,
     visualStore: {},
-    visualReactiveProps: [],
+    visualBindProps: [],
   }),
 
   actions: {
@@ -70,10 +70,19 @@ export const useVisualBoxStore = defineStore('visualBox', {
       if (!this.currentBlock) return
       const visualEditor = cloneDeep(visualConfig.componentMap[this.currentBlock.componentKey])
 
+      const bindPropKeys = Object.keys(this.currentBlock.bindProps)
+
+      // 处理属性
       Object.entries(visualEditor.props || {}).forEach(([key, value]) => {
         visualEditor.props = visualEditor.props || {}
         value.defaultValue = this.currentBlock?.props[key]
+        value.reactive = !!bindPropKeys.includes(key)
       })
+
+      // 处理绑定属性
+      if (bindPropKeys.length) {
+        visualEditor.bindProps = Object.assign({}, this.currentBlock.bindProps)
+      }
 
       // 处理插槽
       visualEditor.initSlotsOptions && visualEditor.initSlotsOptions(this.currentBlock.slots)
@@ -93,9 +102,33 @@ export const useVisualBoxStore = defineStore('visualBox', {
     applyVisualEditor() {
       if (!this.visualEditor || !this.currentBlock) return
       const block = createNewBlock(this.visualEditor)
-      replaceProps(this.currentBlock.props, block.props)
-      replaceProps(this.currentBlock.slots, block.slots)
 
+      // 合并属性
+      replaceProps(this.currentBlock.props, block.props)
+      // 合并插槽
+      replaceProps(this.currentBlock.slots, block.slots)
+      // 合并绑定属性
+      replaceProps(this.currentBlock.bindProps, block.bindProps)
+
+      // 向store中添加属性
+      Object.entries(this.currentBlock.bindProps).forEach(([key, value]) => {
+        if (value.bindSourceKey === 'currentPage' && this.currentPage) {
+          this.currentPage.store = this.currentPage.store || {}
+          if (!Object.prototype.hasOwnProperty.call(this.currentPage.store, key)) {
+            if (value.bindProp) {
+              this.currentPage.store[value.bindProp] = this.currentBlock?.props[key]
+            }
+          }
+        } else if (value.bindSourceKey === 'global' && this.visualStore) {
+          if (!Object.prototype.hasOwnProperty.call(this.visualStore, key)) {
+            if (value.bindProp) {
+              this.visualStore[key] = this.currentBlock?.props[key]
+            }
+          }
+        }
+      })
+
+      // 合并css样式
       this.cssEditorOptions.forEach((item) => {
         const cssRule = Object.entries(item.optionMap).reduce((cssRule: Record<string, any>, [key, value]) => {
           cssRule[key] = value.defaultValue
@@ -103,6 +136,10 @@ export const useVisualBoxStore = defineStore('visualBox', {
         }, {})
         Object.assign(this.currentBlock?.styles || {}, cssRule)
       })
+
+      console.log(this.currentPage)
+      console.log(this.visualStore)
+      console.log(this.currentBlock)
     },
   },
 })

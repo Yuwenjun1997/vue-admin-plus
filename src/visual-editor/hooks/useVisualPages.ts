@@ -29,6 +29,28 @@ export const useVisualPages = () => {
     activeCurrentPage(current)
   }
 
+  const getPageBlockMap = (pages: VisualEditorPage[]) => {
+    const visualPageBlocks: Record<string, string[]> = {}
+    const recursion = (block: VisualEditorBlockData, page: VisualEditorPage) => {
+      visualPageBlocks[page.pageId] = visualPageBlocks[page.pageId] || []
+      visualPageBlocks[page.pageId].push(block._vid)
+      Object.entries(block.slots).forEach(([_key, value]) => {
+        value.children.forEach((child) => recursion(child, page))
+      })
+    }
+    pages.forEach((page) => {
+      page.blocks.forEach((block) => recursion(block, page))
+    })
+    return visualPageBlocks
+  }
+
+  const getPage = (block: VisualEditorBlockData) => {
+    const pageBlockMap = getPageBlockMap(visualPages.value)
+    return visualPages.value.find((page) => {
+      return pageBlockMap[page.pageId] && pageBlockMap[page.pageId].includes(block._vid)
+    })
+  }
+
   const add = (form: VisualEditorPageForm) => {
     form.pageId = `page_${generateNanoid()}`
     visualPages.value.push(form)
@@ -63,6 +85,8 @@ export const useVisualPages = () => {
     remove,
     update,
     setCurrentPage,
+    getPage,
+    getPageBlockMap,
     visualPagesTree,
     visualPages,
   }

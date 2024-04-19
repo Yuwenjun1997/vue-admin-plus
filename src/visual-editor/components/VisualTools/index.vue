@@ -34,7 +34,7 @@
       </div>
     </el-tooltip>
     <!-- 响应配置弹窗 -->
-    <VisualReactivePropsModal v-model="showReactivePropsModal" />
+    <VisualReactivePropsModal v-if="showReactivePropsModal" v-model="showReactivePropsModal" />
   </div>
 </template>
 

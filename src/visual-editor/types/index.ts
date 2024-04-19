@@ -83,10 +83,9 @@ export type VisualEditorBlockData = {
   styles: CSSProperties
   props: VisualBlockProps
   draggable: boolean
-  fixed: boolean
   slots: VisualBlockSlotMap
   events: VisualBlockEventMap
-  model: Record<string, string>
+  bindProps: Record<string, VisualBindProp>
 }
 
 // 页面配置
@@ -105,6 +104,7 @@ export type VisualEditorPage = {
   isDefault?: boolean
   config: PageConfig
   blocks: VisualEditorBlockData[]
+  store?: Record<string, any>
 }
 
 // 可以认为是 路由=>页面
@@ -118,20 +118,12 @@ export type VisualEditorComponent = {
   moduleName: keyof ComponentModules
   label: string
   preview: () => JSX.Element
-  render: (
-    data: {
-      props: any
-      styles: CSSProperties
-      block: VisualEditorBlockData
-      slots?: VisualBlockSlotMap
-      events?: VisualBlockEventMap
-      model?: Record<string, string>
-    },
-    isDesinger?: boolean
-  ) => () => JSX.Element
-  fixed?: boolean
+  render: (data: {
+    styles: CSSProperties
+    block: VisualEditorBlockData
+    slots?: VisualBlockSlotMap
+  }) => () => JSX.Element
   draggable?: boolean
-  showStyleConfig?: boolean
   props?: Record<string, VisualEditorProps>
   styles?: CSSProperties
   slots?: Record<string, VisualEditorProps>[]
@@ -139,7 +131,7 @@ export type VisualEditorComponent = {
   deleteSlot?: (index: number) => void
   initSlotsOptions?: (slotMap: VisualBlockSlotMap) => void
   events?: VisualEditorEvent[]
-  model?: Record<string, string>
+  bindProps?: Record<string, VisualBindProp>
 }
 
 // 组件模块
@@ -150,8 +142,8 @@ export type ComponentModules = {
 
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>
 
-export type VisualReactiveProp = {
-  sourceKey: string
-  bindProp: any
+export type VisualBindProp = {
   propName: string
+  bindSourceKey?: 'global' | 'currentPage'
+  bindProp?: string
 }

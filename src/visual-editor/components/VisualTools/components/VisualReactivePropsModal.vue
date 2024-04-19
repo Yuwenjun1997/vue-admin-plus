@@ -1,24 +1,26 @@
 <template>
-  <el-dialog v-if="visible" :model-value="visible" title="配置响应字段" width="1200">
+  <el-dialog v-model="visible" title="配置响应字段" width="1200">
     <el-scrollbar height="400px">
       <el-table border :data="tableData" size="small">
         <el-table-column label="响应来源" prop="sourceKey">
           <template #default="{ row }">
-            <el-select v-model="row.sourceKey" clearable size="small">
-              <el-option label="全局store" value="$store" />
+            <el-select v-model="row.bindSourceKey" size="small">
+              <el-option label="全局" value="global" />
+              <el-option label="当前页面" value="currentPage" />
             </el-select>
           </template>
         </el-table-column>
         <el-table-column label="响应字段" prop="bindProp">
           <template #default="{ row }">
-            <el-select v-model="row.bindProp" allow-create clearable :disabled="!row.sourceKey" filterable size="small">
-              <el-option v-for="item in bindProps" :key="item" :label="item" :value="item" />
+            <el-select v-model="row.bindProp" allow-create :disabled="!row.bindSourceKey" filterable size="small">
+              <template #prefix>${{ row.bindSourceKey }}.</template>
+              <el-option v-for="item in bindProps(row.bindSourceKey)" :key="item" :label="item" :value="item" />
             </el-select>
           </template>
         </el-table-column>
         <el-table-column label="绑定属性" prop="propName">
           <template #default="{ row }">
-            <el-select v-model="row.propName" clearable size="small">
+            <el-select v-model="row.propName" size="small">
               <template #prefix>$props.</template>
               <el-option v-for="(_item, key) in visualEditor?.props" :key="key" :label="key" :value="key" />
             </el-select>
@@ -32,15 +34,15 @@
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" prop="address">
-          <template #default>
+          <template #default="{ $index }">
             <div class="flex justify-center">
-              <Icon icon="ion:trash-outline" />
+              <Icon class="remove-btn" icon="ion:trash-outline" @click="handleRemove($index)" />
             </div>
           </template>
         </el-table-column>
       </el-table>
 
-      <el-button class="w-full mt-2" size="small"> <Icon icon="ep:plus" />添加字段 </el-button>
+      <el-button class="w-full mt-2" size="small" @click="handleAddProp"> <Icon icon="ep:plus" />添加字段 </el-button>
     </el-scrollbar>
 
     <template #footer>
@@ -54,16 +56,18 @@
 
 <script setup lang="ts">
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
-import { VisualReactiveProp } from '@/visual-editor/types'
+import { VisualBindProp } from '@/visual-editor/types'
 import { Icon } from '@iconify/vue'
 import { useVModel } from '@vueuse/core'
+import { ElMessage } from 'element-plus'
 import { storeToRefs } from 'pinia'
 
 interface Props {
   modelValue: boolean
 }
 
-const { visualEditor } = storeToRefs(useVisualBoxStore())
+const { visualEditor, visualStore, currentPage } = storeToRefs(useVisualBoxStore())
+const { applyVisualEditor } = useVisualBoxStore()
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
@@ -73,19 +77,41 @@ const props = defineProps<Props>()
 
 const visible = useVModel(props, 'modelValue', emit)
 
-const bindProps = ['prop1', 'prop2']
+const bindProps = (key: string) => {
+  if (key === 'global') return Object.keys(visualStore.value) || []
+  if (key === 'currentPage') return Object.keys(currentPage.value?.store || {})
+  return []
+}
 
-const tableData = ref<VisualReactiveProp[]>([
-  {
-    bindProp: '',
-    propName: '',
-    sourceKey: '',
-  },
-])
+const tableData = ref<VisualBindProp[]>(Object.values(visualEditor.value?.bindProps || {}))
 
 const handleConfirm = () => {
-  console.log(tableData.value)
+  const valid = tableData.value.every((item) => item.bindProp && item.propName && item.bindSourceKey)
+  if (!valid) return ElMessage.warning('请填写完整')
+  if (!visualEditor.value) return
+  visualEditor.value.bindProps = tableData.value.reduce((prev: Record<string, VisualBindProp>, current) => {
+    prev[current.propName] = current
+    return prev
+  }, {})
+  Object.entries(visualEditor.value.props || {}).forEach(([key, value]) => {
+    value.reactive = tableData.value.some((item) => item.propName === key)
+  })
+  applyVisualEditor()
+  visible.value = false
+}
+
+const handleAddProp = () => {
+  tableData.value.push({ bindProp: '', propName: '', bindSourceKey: 'currentPage' })
+}
+
+const handleRemove = (index: number) => {
+  tableData.value.splice(index, 1)
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.remove-btn {
+  color: var(--el-color-danger);
+  cursor: pointer;
+}
+</style>

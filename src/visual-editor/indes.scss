@@ -73,3 +73,15 @@
     }
   }
 }
+
+.visual-preview-container {
+  --visual-navbar-height: var(--van-nav-bar-height);
+
+  .visual-fixed {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+}

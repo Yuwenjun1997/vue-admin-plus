@@ -11,16 +11,10 @@ export default defineComponent({
     },
   },
   setup(props) {
-    return visualConfig.componentMap[props.element.componentKey].render(
-      {
-        styles: props.element.styles || {},
-        props: props.element.props || {},
-        model: props.element.model,
-        block: props.element,
-        slots: props.element.slots,
-        events: props.element.events,
-      },
-      true
-    )
+    return visualConfig.componentMap[props.element.componentKey].render({
+      styles: props.element.styles || {},
+      block: props.element,
+      slots: props.element.slots,
+    })
   },
 })

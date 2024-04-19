@@ -17,8 +17,8 @@
         <el-radio-button label="H5" value="h5" />
       </el-radio-group>
     </template>
-    <div v-loading="isLoading" class="preview-container">
-      <div ref="previewEl" class="h-full preview-el" :style="{ width: previewWidth }" />
+    <div v-loading="isLoading" class="preview-container visual-preview-container">
+      <div ref="previewEl" class="h-full preview-el" :style="{ width: previewWidth, ...pageStyles }" />
     </div>
   </el-dialog>
 </template>
@@ -26,8 +26,10 @@
 <script setup lang="ts">
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { preview } from '@/visual-editor/preview'
+import { useVisualTheme } from '@/visual-editor/hooks/useVisualTheme'
 
 const visualBoxStore = useVisualBoxStore()
+const { pageStyles } = useVisualTheme()
 
 const handleDeviceChange = (name: string | number | boolean | undefined) => {
   visualBoxStore.setDevice(name as string)

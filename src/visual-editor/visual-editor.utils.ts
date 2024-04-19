@@ -27,7 +27,6 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
       prev[propName] = propSchema?.defaultValue
       return prev
     }, {}),
-    fixed: component.fixed ?? false, // 是否固定位置
     draggable: component.draggable ?? true, // 是否可以拖拽
     slots: (component.slots || []).reduce((prev: VisualBlockSlotMap, slot, index) => {
       const props = Object.entries(slot).reduce((props: Record<string, any>, [propName, propSchema]) => {
@@ -45,7 +44,7 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
       prev[event.eventName] = []
       return prev
     }, {}),
-    model: component.model ?? {},
+    bindProps: component.bindProps ?? {},
   }
 }
 
@@ -61,19 +60,18 @@ export function createVisualEditorConfig() {
   return {
     componentModules,
     componentMap,
-    registry: <_, Props extends Record<string, VisualEditorProps> = {}, Model extends Record<string, string> = {}>(
+    registry: <_, Props extends Record<string, VisualEditorProps> = {}>(
       moduleName: keyof ComponentModules,
       key: string,
       component: {
         label: string
         preview: () => JSX.Element
         render: (data: {
-          props: { [k in keyof Props]: any }
           styles: CSSProperties
           block: VisualEditorBlockData
+          slots?: VisualBlockSlotMap
         }) => () => JSX.Element
         props?: Props
-        model?: Model
         styles?: CSSProperties
       }
     ) => {

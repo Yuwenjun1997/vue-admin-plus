@@ -1,4 +1,5 @@
-import { useVisualHelper } from '@/visual-editor/hooks/useVisualHelper'
+import { useVisualEvents } from '@/visual-editor/hooks/useVisualEvents'
+import { useVisualProps } from '@/visual-editor/hooks/useVisualProps'
 import { useVisualRef } from '@/visual-editor/hooks/useVisualRef'
 import type { VisualEditorComponent } from '@/visual-editor/types'
 
@@ -19,13 +20,17 @@ export default {
       按钮
     </Button>
   ),
-  render: ({ props, styles, block }) => {
+  render: ({ styles, block }) => {
     const { registerRef } = useVisualRef()
-    const { genEventMap } = useVisualHelper()
+    const { genEvents } = useVisualEvents()
+    const { genProps } = useVisualProps()
+
+    const props = computed(() => genProps(block))
+    const events = computed(() => genEvents(block))
 
     return () => (
       <div style={styles}>
-        <Button ref={(el) => registerRef(el, block._vid)} {...props} {...genEventMap(block)}></Button>
+        <Button ref={(el) => registerRef(el, block._vid)} {...props.value} {...events.value}></Button>
       </div>
     )
   },

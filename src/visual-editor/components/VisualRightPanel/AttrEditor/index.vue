@@ -4,11 +4,7 @@
       <template #label v-if="showBind">
         <div class="flex items-center gap-1">
           <el-tooltip :content="`（${key}）${option.reactive ? '响应式' : '非响应式'} `" placement="top">
-            <Icon
-              class="text-base cursor-pointer"
-              :icon="option.reactive ? 'ion:link-sharp' : 'ion:unlink-sharp'"
-              @click.prevent="handleToggleReactive(option)"
-            />
+            <Icon class="text-base cursor-pointer" :icon="option.reactive ? 'ion:link-sharp' : 'ion:unlink-sharp'" />
           </el-tooltip>
           <span>{{ option.label }}</span>
         </div>
@@ -60,11 +56,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-const handleToggleReactive = (option: VisualEditorProps) => {
-  option.reactive = !option.reactive
-  props.triggerHandler && props.triggerHandler(option)
-}
 </script>
 
 <style scoped></style>

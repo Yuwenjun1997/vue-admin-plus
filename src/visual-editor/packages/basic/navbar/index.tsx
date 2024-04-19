@@ -1,3 +1,4 @@
+import { useVisualProps } from '@/visual-editor/hooks/useVisualProps'
 import { useVisualRef } from '@/visual-editor/hooks/useVisualRef'
 import { VisualEditorComponent } from '@/visual-editor/types'
 import {
@@ -29,14 +30,20 @@ export default {
       border
     ></NavBar>
   ),
-  render: ({ props, styles, block }, isDesinger) => {
+  render: ({ styles, block }) => {
     const { registerRef } = useVisualRef()
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-    const { fixed, zIndex, safeAreaInsetTop, ...reset } = props
-    const bindProps = isDesinger ? reset : props
+    const { genProps } = useVisualProps()
+
+    const props = computed(() => {
+      const bindProps = genProps(block)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+      const { fixed, zIndex, safeAreaInsetTop, ...reset } = bindProps
+      return reset
+    })
+
     return () => (
       <div style={styles}>
-        <NavBar ref={(el) => registerRef(el, block._vid)} {...bindProps} placeholder style={{ flex: 1 }}></NavBar>
+        <NavBar ref={(el) => registerRef(el, block._vid)} {...props.value} style={{ flex: 1 }}></NavBar>
       </div>
     )
   },
@@ -54,5 +61,4 @@ export default {
     safeAreaInsetTop: createEditorSwitchProp({ label: '是否开启顶部安全区适配', defaultValue: false }),
     clickable: createEditorSwitchProp({ label: '是否开启两侧按钮的点击反馈', defaultValue: true }),
   },
-  fixed: true,
 } as VisualEditorComponent

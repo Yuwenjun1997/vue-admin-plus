@@ -3,7 +3,7 @@
     <el-scrollbar height="100%">
       <DraggableEditor
         v-if="currentPage"
-        :key="currentPage.id"
+        :key="currentPage.pageId"
         class="VisualCenterPanel-wrap"
         :class="[device, { 'is-drag': isDrag }]"
         :style="pageStyles"
@@ -18,35 +18,12 @@
 <script setup lang="ts">
 import DraggableEditor from '../DraggableEditor/index.vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
-import { VisualEditorBlockData } from '@/visual-editor/types'
 import { storeToRefs } from 'pinia'
-import { CSSProperties } from 'vue'
+import { useVisualTheme } from '@/visual-editor/hooks/useVisualTheme'
 
 const { device, isDrag, currentPage } = storeToRefs(useVisualBoxStore())
 
-const pageStyles = computed<CSSProperties | undefined>(() => {
-  if (!currentPage.value) return
-  return {
-    backgroundColor: currentPage.value.config.bgColor,
-    backgroundImage: currentPage.value.config.bgImage ? `url(${currentPage.value.config.bgImage})` : '',
-    backgroundRepeat: currentPage.value.config.bgRepeat ? 'repeat' : 'no-repeat',
-    paddingTop: hasFixedComponent.value ? 'var(--visual-navbar-height)' : '',
-  }
-})
-
-const hasFixedComponent = computed<boolean>(() => {
-  let result = false
-  if (!currentPage.value) return result
-  const recursion = (blocks: VisualEditorBlockData[]) => {
-    blocks.forEach((block) => {
-      result = result || (block.componentKey === 'navbar' && block.props.fixed)
-      if (result) return
-      Object.entries(block.slots).forEach(([_key, value]) => recursion(value.children))
-    })
-  }
-  recursion(currentPage.value.blocks)
-  return result
-})
+const { pageStyles } = useVisualTheme()
 </script>
 
 <style scoped lang="scss">

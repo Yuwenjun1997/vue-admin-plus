@@ -1,6 +1,12 @@
 <!-- eslint-disable vue/no-multiple-template-root -->
 <template>
-  <ComponentRender v-for="element in props.blocks" :key="element._vid" :element="element">
+  <ComponentRender
+    v-for="element in props.blocks"
+    :key="element._vid"
+    :class="{ 'visual-fixed': element.props.fixed }"
+    :element="element"
+    :style="{ zIndex: element.props.zIndex }"
+  >
     <template v-for="(value, key) in element.slots" :key="key" #[key]>
       <RenderBlocks :blocks="value.children" />
     </template>
