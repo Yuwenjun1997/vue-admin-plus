@@ -26,11 +26,14 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="属性描述" prop="propName">
+        <el-table-column align="center" label="属性描述">
           <template #default="{ row }">
-            <span v-if="visualEditor && visualEditor.props">
-              {{ visualEditor.props[row.propName]?.label }}
-            </span>
+            {{ getDescription(row.propName) }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="属性值">
+          <template #default="{ row }">
+            <el-tag v-if="getDefaultValue(row.propName)">{{ getDefaultValue(row.propName) }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" prop="address">
@@ -81,6 +84,18 @@ const bindProps = (key: string) => {
   if (key === 'global') return Object.keys(visualStore.value) || []
   if (key === 'currentPage') return Object.keys(currentPage.value?.store || {})
   return []
+}
+
+const getDescription = (propName: string) => {
+  if (!visualEditor.value?.props) return ''
+  return visualEditor.value.props[propName]?.label
+}
+
+const getDefaultValue = (propName: string) => {
+  if (!visualEditor.value?.props) return ''
+  const value = visualEditor.value.props[propName]?.defaultValue
+  if (typeof value === 'string' && !value.length) return ''
+  return JSON.stringify(value)
 }
 
 const tableData = ref<VisualBindProp[]>(Object.values(visualEditor.value?.bindProps || {}))

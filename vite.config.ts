@@ -18,6 +18,15 @@ export default defineConfig({
       '~/': `${pathSrc}/`,
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        // other entry points...
+        preview: path.resolve(__dirname, 'preview.html'),
+      },
+    },
+  },
   plugins: [
     vue(),
     vueJsx(),

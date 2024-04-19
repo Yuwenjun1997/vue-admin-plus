@@ -55,6 +55,10 @@ export const useVisualBoxStore = defineStore('visualBox', {
       this.device = name
     },
 
+    setVisualStore(state: Record<string, any>) {
+      this.visualStore = state
+    },
+
     setCurrentPage(page: VisualEditorPage | null) {
       this.currentPage = page
       this.currentBlock = null
@@ -122,7 +126,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
         } else if (value.bindSourceKey === 'global' && this.visualStore) {
           if (!Object.prototype.hasOwnProperty.call(this.visualStore, key)) {
             if (value.bindProp) {
-              this.visualStore[key] = this.currentBlock?.props[key]
+              this.visualStore[value.bindProp] = this.currentBlock?.props[key]
             }
           }
         }
@@ -136,10 +140,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
         }, {})
         Object.assign(this.currentBlock?.styles || {}, cssRule)
       })
-
-      console.log(this.currentPage)
-      console.log(this.visualStore)
-      console.log(this.currentBlock)
     },
   },
 })

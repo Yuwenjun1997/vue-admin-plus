@@ -18,25 +18,23 @@
       </el-radio-group>
     </template>
     <div v-loading="isLoading" class="preview-container visual-preview-container">
-      <div ref="previewEl" class="h-full preview-el" :style="{ width: previewWidth, ...pageStyles }" />
+      <iframe ref="iframeRef" class="h-full preview-el" src="/preview.html" :style="{ width: previewWidth }" />
     </div>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
-import { preview } from '@/visual-editor/preview'
-import { useVisualTheme } from '@/visual-editor/hooks/useVisualTheme'
 
 const visualBoxStore = useVisualBoxStore()
-const { pageStyles } = useVisualTheme()
 
 const handleDeviceChange = (name: string | number | boolean | undefined) => {
   visualBoxStore.setDevice(name as string)
 }
 
+const iframeRef = ref<HTMLIFrameElement>()
+
 // 预览
-const previewEl = ref<HTMLElement>()
 const previewModal = ref<boolean>(false)
 const isLoading = ref<boolean>(true)
 
@@ -49,10 +47,13 @@ const previewWidth = computed(() => {
 const showPreviewModal = async () => {
   previewModal.value = true
   isLoading.value = true
+  window.localStorage.setItem('currentPage', JSON.stringify(visualBoxStore.currentPage))
+  window.localStorage.setItem('storeState', JSON.stringify(visualBoxStore.visualStore))
   await nextTick()
-  if (!previewEl.value) return
-  preview(previewEl.value)
-  isLoading.value = false
+  if (!iframeRef.value) return
+  iframeRef.value.onload = () => {
+    isLoading.value = false
+  }
 }
 
 defineExpose({

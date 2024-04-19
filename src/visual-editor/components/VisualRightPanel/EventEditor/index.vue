@@ -1,6 +1,6 @@
 <template>
   <div class="event-editor">
-    <el-collapse v-model="activeIndex">
+    <el-collapse v-if="Object.keys(currentBlock?.events || {}).length" v-model="activeIndex">
       <el-collapse-item v-for="(item, key) in currentBlock?.events" :key="key" :name="key">
         <template #title>
           <el-tooltip :content="getToolTipContent(key)" placement="left">
@@ -24,6 +24,7 @@
         <el-empty v-if="!item.length" description="暂未添加事件" />
       </el-collapse-item>
     </el-collapse>
+    <el-empty v-else description="暂无可绑定事件" />
 
     <!-- 编辑弹窗 -->
     <EventFormModal
