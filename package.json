@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:visual": "vite -c ./build/visual-editor.config.ts",
     "build": "vue-tsc && vite build",
     "build:visual": "vue-tsc && vite build -c ./build/visual-editor.config.ts",
     "preview": "vite preview",
