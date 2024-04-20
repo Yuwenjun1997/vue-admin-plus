@@ -1,10 +1,5 @@
 <template>
-  <DraggableGroup
-    v-if="currentPage"
-    v-model="currentPage.blocks"
-    :end-handler="handleDragEnd"
-    :start-handler="handleDragStart"
-  >
+  <DraggableGroup v-if="currentPage" v-model="currentPage.blocks" :end-handler="dragEnd" :start-handler="dragStart">
     <template #item="{ element: outElement }">
       <div
         class="visual-block"
@@ -20,9 +15,9 @@
           <template v-for="(value, key) in outElement.slots" :key="key" #[key]>
             <SlotItem
               v-model:children="value.children"
-              :end-handler="handleDragEnd"
+              :end-handler="dragEnd"
               :select-handler="setCurrentBlock"
-              :start-handler="handleDragStart"
+              :start-handler="dragStart"
             />
           </template>
         </ComponentRender>
@@ -40,16 +35,9 @@ import { storeToRefs } from 'pinia'
 import { useVisualUtils } from '@/visual-editor/hooks/useVisualUtils'
 
 const { setCurrentBlock } = useVisualBoxStore()
-const { currentPage, isDrag } = storeToRefs(useVisualBoxStore())
+const { currentPage } = storeToRefs(useVisualBoxStore())
 
-const { isActive, hasSlots } = useVisualUtils()
-
-const handleDragStart = () => {
-  isDrag.value = true
-}
-const handleDragEnd = () => {
-  isDrag.value = false
-}
+const { isActive, hasSlots, dragStart, dragEnd } = useVisualUtils()
 </script>
 
 <style scoped lang="scss"></style>

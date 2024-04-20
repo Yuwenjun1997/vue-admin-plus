@@ -82,17 +82,18 @@ import VisualPreviewModal from './VisualPreviewModal.vue'
 import VisualGlobalSettingModal from './VisualGlobalSettingModal/index.vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { Icon } from '@iconify/vue'
-import { useRefHistory, useToggle } from '@vueuse/core'
+import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { ElMessageBox } from 'element-plus'
 import { useVisualUtils } from '@/visual-editor/hooks/useVisualUtils'
+import { useVisualHistory } from '@/visual-editor/hooks/useVisualHistory'
 
 const visualBoxStore = useVisualBoxStore()
-const { isFullscreen, device, visualPages, hideFullscreen } = storeToRefs(visualBoxStore)
+const { isFullscreen, device, hideFullscreen } = storeToRefs(visualBoxStore)
+const { undo, redo, canRedo, canUndo } = useVisualHistory()
+
 const toggleFullscreen = useToggle(isFullscreen)
 const { clear } = useVisualUtils()
-
-const { undo, redo, canRedo, canUndo } = useRefHistory(visualPages, { deep: true })
 
 // 清空画布
 const handleClearScreen = async () => {

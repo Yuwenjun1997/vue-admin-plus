@@ -3,7 +3,7 @@
     <el-container class="visual-design-container" :class="{ 'is-full-screen': visualBoxStore.isFullscreen }">
       <el-header v-if="visualBoxStore.isFullscreen" class="vad-nav">
         <VisualLogo />
-        <VadTools align="end" />
+        <VadTools align="end" hide-refresh />
       </el-header>
       <el-container class="visual-design-wrap">
         <el-aside class="vad-bg-color" style="width: 340px">

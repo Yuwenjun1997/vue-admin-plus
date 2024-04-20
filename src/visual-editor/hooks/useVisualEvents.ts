@@ -26,7 +26,7 @@ export const useVisualEvents = () => {
     currentBlock.value?.events[form.key]?.splice(index, 1, { ...form })
   }
 
-  const callFuncs = (value: VisualEventData[], block: VisualEditorBlockData, ...event: any[]) => {
+  const callFuncs = (value: VisualEventData[], block: VisualEditorBlockData, ...events: any[]) => {
     const { getPage } = useVisualPages()
     const page = getPage(block)
     const _self = {
@@ -34,14 +34,14 @@ export const useVisualEvents = () => {
       $block: block,
       $ref: visualRefMap[block._vid],
       $refs: visualRefMap,
-      $event: event,
+      $events: events,
       $store: visualStore.value,
       $props: block.props,
       $page: page?.store,
     }
     value.forEach((item) => {
       if (item.custom) {
-        item.methodToken && new Function(item.methodToken).call(_self, ...event)
+        item.methodToken && new Function(item.methodToken).call(_self, ...events)
       } else {
         item.eventValue && console.log('方法调用中', item.eventValue)
       }

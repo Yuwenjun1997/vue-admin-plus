@@ -21,7 +21,7 @@ export interface VisualEditorPageTree {
 }
 
 export const useVisualPages = () => {
-  const { visualPages } = storeToRefs(useVisualBoxStore())
+  const { visualPages, currentPage } = storeToRefs(useVisualBoxStore())
 
   const { setCurrentPage: activeCurrentPage } = useVisualBoxStore()
 
@@ -54,6 +54,9 @@ export const useVisualPages = () => {
   const add = (form: VisualEditorPageForm) => {
     form.pageId = `page_${generateNanoid()}`
     visualPages.value.push(form)
+    if (form.isDefault) {
+      visualPages.value.forEach((item) => (item.isDefault = item.pageId === form.pageId))
+    }
   }
 
   const update = (form: VisualEditorPageForm) => {
@@ -62,7 +65,11 @@ export const useVisualPages = () => {
     page.title = form.title
     page.path = form.path
     page.parentId = form.parentId
+    page.isDefault = form.isDefault
     Object.assign(page.config, form.config)
+    if (form.isDefault) {
+      visualPages.value.forEach((item) => (item.isDefault = item.pageId === form.pageId))
+    }
   }
 
   const remove = (form: VisualEditorPageForm) => {
@@ -89,5 +96,6 @@ export const useVisualPages = () => {
     getPageBlockMap,
     visualPagesTree,
     visualPages,
+    currentPage,
   }
 }

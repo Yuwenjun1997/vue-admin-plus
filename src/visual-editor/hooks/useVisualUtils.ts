@@ -11,7 +11,7 @@ const moveComponet = (blocks: VisualEditorBlockData[], formIndex: number, toInde
 }
 
 export const useVisualUtils = () => {
-  const { currentBlock, visualEditor, currentPage } = storeToRefs(useVisualBoxStore())
+  const { currentBlock, visualEditor, currentPage, isDrag } = storeToRefs(useVisualBoxStore())
   const { setCurrentBlock } = useVisualBoxStore()
 
   const isActive = (block: VisualEditorBlockData) => currentBlock.value && currentBlock.value._vid === block._vid
@@ -101,6 +101,14 @@ export const useVisualUtils = () => {
     visualEditor.value = null
   }
 
+  const dragStart = () => {
+    isDrag.value = true
+  }
+
+  const dragEnd = () => {
+    isDrag.value = false
+  }
+
   return {
     isActive,
     hasSlots,
@@ -110,5 +118,7 @@ export const useVisualUtils = () => {
     deleteFn,
     activeParent,
     clear,
+    dragStart,
+    dragEnd,
   }
 }

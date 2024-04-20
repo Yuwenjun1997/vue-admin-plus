@@ -21,7 +21,6 @@ export default {
         '--van-padding-md': '2px',
         '--van-font-size-md': '10px',
         '--van-nav-bar-height': '26px',
-        '--van-nav-bar-background': '#f9f9f9',
       }}
       leftArrow
       leftText="返回"

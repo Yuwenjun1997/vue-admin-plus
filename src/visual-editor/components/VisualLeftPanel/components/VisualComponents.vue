@@ -12,7 +12,6 @@
 import { VisualEditorComponent } from '@/visual-editor/types'
 import DraggableGroup from './DraggableGroup.vue'
 import ComponentRender from './ComponentRender'
-import { cloneDeep } from 'lodash'
 
 interface Props {
   data: VisualEditorComponent[]
@@ -25,15 +24,11 @@ const group = { name: 'component', pull: 'clone', put: false }
 const widgets = ref<VisualEditorComponent[]>([])
 
 const init = (data: VisualEditorComponent[]) => {
-  widgets.value = cloneDeep(data)
+  widgets.value = data
 }
 
-watchEffect(() => {
+onMounted(() => {
   init(props.data)
-})
-
-defineExpose({
-  init,
 })
 </script>
 
@@ -45,9 +40,10 @@ defineExpose({
   justify-content: center;
   height: 100px;
   padding: 6px 6px 26px;
-  border: 2px solid var(--el-border-color-light);
+  border: 2px solid var(--el-color-info-light-9);
   cursor: move;
   transition: var(--el-transition-all);
+  background-color: var(--el-fill-color-lighter);
 
   &:hover {
     border-color: var(--el-color-primary);

@@ -1,6 +1,6 @@
 <template>
   <div :class="clsObj">
-    <VadRefresh />
+    <VadRefresh v-if="!hideRefresh" />
     <VadFullscreen />
     <VadNotice />
     <VadTheme />
@@ -18,10 +18,12 @@ import { prefixCls } from '@/layout/config/index'
 
 interface Props {
   align: 'start' | 'center' | 'end'
+  hideRefresh?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   align: 'center',
+  hideRefresh: false,
 })
 
 const clsObj = computed(() => {

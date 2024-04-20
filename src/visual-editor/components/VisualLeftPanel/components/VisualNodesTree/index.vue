@@ -61,9 +61,13 @@ const genTreeData = (block: VisualEditorBlockData): TreeData => {
 
 const treeData = computed<TreeData[]>(() => currentPage.value?.blocks.map(genTreeData) || [])
 
-watch(currentBlock, () => {
-  treeRef.value?.setCurrentKey(currentBlock.value?._vid, true)
-})
+watch(
+  currentBlock,
+  () => {
+    treeRef.value?.setCurrentKey(currentBlock.value?._vid, true)
+  },
+  { deep: true }
+)
 
 const handleCurrentChange = (data: TreeData) => {
   if (!data) return

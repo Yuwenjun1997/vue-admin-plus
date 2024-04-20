@@ -21,7 +21,7 @@ export default defineConfig(
           },
           {
             filename: 'visual-preview.html',
-            entry: 'src/visual-preview/index.ts',
+            entry: 'src/visual-editor/preview.ts',
             template: 'visual-preview.html',
           },
         ],

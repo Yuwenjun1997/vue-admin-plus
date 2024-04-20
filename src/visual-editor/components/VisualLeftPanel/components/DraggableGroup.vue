@@ -65,6 +65,7 @@ const moduleList = useVModel(props, 'modelValue', emit)
 const sortableOptions = computed<Options>(() => ({
   draggable: '.visual-group__drag',
   animation: 150,
+  sort: false
 }))
 </script>
 

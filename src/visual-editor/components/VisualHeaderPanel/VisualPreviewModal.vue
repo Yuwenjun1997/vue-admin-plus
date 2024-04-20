@@ -18,15 +18,17 @@
       </el-radio-group>
     </template>
     <div v-loading="isLoading" class="preview-container visual-preview-container">
-      <iframe ref="iframeRef" class="h-full preview-el" src="/visual-preview.html" :style="{ width: previewWidth }" />
+      <iframe ref="iframeRef" class="h-full preview-el" :src="previewLink" :style="{ width: previewWidth }" />
     </div>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
+import { useVisualStorage } from '@/visual-editor/hooks/useVisualStorage'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 
 const visualBoxStore = useVisualBoxStore()
+const { previewLink } = useVisualStorage()
 
 const handleDeviceChange = (name: string | number | boolean | undefined) => {
   visualBoxStore.setDevice(name as string)
@@ -47,8 +49,6 @@ const previewWidth = computed(() => {
 const showPreviewModal = async () => {
   previewModal.value = true
   isLoading.value = true
-  window.localStorage.setItem('currentPage', JSON.stringify(visualBoxStore.currentPage))
-  window.localStorage.setItem('storeState', JSON.stringify(visualBoxStore.visualStore))
   await nextTick()
   if (!iframeRef.value) return
   iframeRef.value.onload = () => {

@@ -15,7 +15,9 @@ export default {
   key: 'image',
   moduleName: 'basicWidgets',
   label: '图片',
-  preview: () => <Image iconSize={44} />,
+  preview: () => (
+    <Image iconSize={44} src={'https://img.yzcdn.cn/vant/cat.jpeg'} width={'100%'} height={'100%'} fit={'cover'} />
+  ),
   render: ({ styles, block }) => {
     const { registerRef } = useVisualRef()
     const { genEvents } = useVisualEvents()
@@ -44,7 +46,7 @@ export default {
         { label: '保持图片原有尺寸', value: 'none' },
         { label: '取 none 或 contain 中较小的一个', value: 'scale-down' },
       ],
-      defaultValue: 'fill',
+      defaultValue: 'cover',
     }),
     iconPrefix: createEditorInputProp({
       label: '图标类名前缀',
@@ -59,4 +61,9 @@ export default {
     showLoading: createEditorSwitchProp({ label: '是否展示图片加载中提示' }),
     alt: createEditorInputProp({ label: '替代文本' }),
   },
+  events: [
+    { eventName: 'click', label: '点击图片时触发' },
+    { eventName: 'load', label: '图片加载完毕时触发' },
+    { eventName: 'error', label: '图片加载失败时触发' },
+  ],
 } as VisualEditorComponent

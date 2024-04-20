@@ -19,16 +19,13 @@
 
     .visual-block {
       padding: $visual-item-gap;
+      outline: 1px dashed var(--el-color-info-light-7) !important;
+      outline-offset: -2px !important;
 
       &.is-active {
         outline: $visual-item-gap solid var(--el-color-primary) !important;
         outline-offset: -$visual-item-gap !important;
       }
-
-      // &.has-slots {
-      //   outline: 1px dashed var(--el-color-info-light-7);
-      //   outline-offset: -1px;
-      // }
     }
   }
 

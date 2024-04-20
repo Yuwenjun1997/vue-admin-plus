@@ -10,7 +10,7 @@
         </template>
         <div class="VisualLeftPanel-header">全部页面</div>
         <el-scrollbar height="calc(100% - 30px)">
-          <VisualPagesTree />
+          <VisualPagesTree v-if="activeTab === 'pages'" />
         </el-scrollbar>
       </el-tab-pane>
       <el-tab-pane name="nodes">
@@ -22,7 +22,7 @@
         </template>
         <div class="VisualLeftPanel-header">组件大纲{{ currentPage ? '-' + currentPage.title : '' }}</div>
         <el-scrollbar height="calc(100% - 30px)">
-          <VisualNodesTree />
+          <VisualNodesTree v-if="activeTab === 'nodes'" />
         </el-scrollbar>
       </el-tab-pane>
       <el-tab-pane name="basicWidgets">
@@ -65,17 +65,16 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { visualConfig } from '@/visual-editor/visual.config'
 import VisualComponents from './components/VisualComponents.vue'
 import VisualPagesTree from './components/VisualPagesTree/index.vue'
 import VisualNodesTree from './components/VisualNodesTree/index.vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { storeToRefs } from 'pinia'
+import { useVisualComponents } from '@/visual-editor/hooks/useVisualComponents'
 
 const activeTab = ref<string>('pages')
 
-const basicWidgets = visualConfig.componentModules.basicWidgets
-const containerWidgets = visualConfig.componentModules.containerWidgets
+const { basicWidgets, containerWidgets } = useVisualComponents()
 
 const { currentPage } = storeToRefs(useVisualBoxStore())
 </script>

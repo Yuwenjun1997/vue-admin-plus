@@ -3,6 +3,7 @@
     <el-tree
       ref="treeRef"
       class="w-full"
+      :current-node-key="currentPage?.pageId"
       :data="visualPagesTree"
       default-expand-all
       :expand-on-click-node="false"
@@ -50,6 +51,9 @@
         <el-form-item label="菜单路径" prop="path">
           <el-input v-model="form.path" clearable placeholder="请输入菜单路径" />
         </el-form-item>
+        <el-form-item label="设为首页" prop="isDefault">
+          <el-switch v-model="form.isDefault" />
+        </el-form-item>
         <el-form-item label="背景颜色" prop="config.bgColor">
           <el-color-picker v-model="form.config.bgColor" placeholder="请输入菜单路径" />
         </el-form-item>
@@ -75,12 +79,14 @@ import { Icon } from '@iconify/vue'
 import { VisualEditorPageForm, VisualEditorPageTree, useVisualPages } from '@/visual-editor/hooks/useVisualPages'
 import VisualImageUpload from '@/visual-editor/components/VisualRightPanel/AttrEditor/components/VisualImageUpload.vue'
 import { VisualEditorPage } from '@/visual-editor/types'
-import { FormRules, FormInstance, ElMessageBox, ElMessage } from 'element-plus'
+import { FormRules, FormInstance, ElMessageBox, ElMessage, TreeInstance } from 'element-plus'
 import { cloneDeep } from 'lodash'
 
-const { visualPagesTree, update, add, setCurrentPage, remove } = useVisualPages()
+const { visualPagesTree, update, add, setCurrentPage, remove, currentPage } = useVisualPages()
 
 const dialogVisible = ref(false)
+
+const treeRef = ref<TreeInstance>()
 
 const formRef = ref<FormInstance>()
 const form = ref<VisualEditorPage>(new VisualEditorPageForm())
