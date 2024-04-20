@@ -1,4 +1,5 @@
 import '@/plugins/nprogress'
+import '@/styles/preflight.css'
 import './preview/styles/index.scss'
 import { createApp } from 'vue'
 import App from './Preview.vue'

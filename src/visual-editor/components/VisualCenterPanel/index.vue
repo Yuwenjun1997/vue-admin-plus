@@ -1,7 +1,7 @@
 <template>
   <div class="VisualCenterPanel p-2 h-full">
     <el-scrollbar height="100%">
-      <div class="VisualCenterPanel-wrap" :class="[device, { 'is-drag': isDrag }]" :style="pageStyles">
+      <div class="VisualCenterPanel-wrap" :class="[device, { 'is-drag': isDrag }]" :style="!isEmpty && pageStyles">
         <template v-if="currentPage">
           <DraggableEditor :key="currentPage.pageId" class="flex-1" />
         </template>

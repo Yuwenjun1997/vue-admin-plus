@@ -61,17 +61,25 @@ export const useVisualBoxStore = defineStore('visualBox', {
 
     setVisualStore(state: Record<string, any>) {
       this.visualStore = state
+      useVisualStorage().setState()
+    },
+
+    setVisualPages(pages: VisualEditorPage[]) {
+      this.visualPages = pages
+      useVisualStorage().setState()
     },
 
     setCurrentPage(page: VisualEditorPage | null) {
       this.currentPage = page
       this.currentBlock = null
       this.visualEditor = null
+      useVisualStorage().setState()
     },
 
     setCurrentBlock(block: VisualEditorBlockData) {
       this.currentBlock = block
       this.initVisualEditor()
+      useVisualStorage().setState()
     },
 
     initVisualEditor() {
