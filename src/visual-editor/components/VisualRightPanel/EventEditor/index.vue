@@ -41,7 +41,7 @@ import { Icon } from '@iconify/vue'
 import EventFormModal from './components/EventFormModal.vue'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { storeToRefs } from 'pinia'
-import { VisualEventData } from '@/visual-editor/types'
+import { VisualEventData, VisualEventName } from '@/visual-editor/types'
 import { ElMessageBox } from 'element-plus'
 import { useVisualEvents } from '@/visual-editor/hooks/useVisualEvents'
 
@@ -49,7 +49,8 @@ class VisualEventDataFrom implements VisualEventData {
   _vid: string | undefined
   key: string = ''
   custom: boolean = false
-  eventValue?: string | undefined
+  eventName: VisualEventName = 'routerEvent'
+  eventParams: Record<string, any> = {}
   methodToken: string = ''
   description: string = ''
 }

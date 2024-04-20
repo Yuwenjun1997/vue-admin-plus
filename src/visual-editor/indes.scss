@@ -1,72 +1,75 @@
-.visual-group {
-  height: 100%;
-  min-height: 40px;
+.VisualCenterPanel-wrap {
   $visual-item-gap: 2px;
   --visual-navbar-height: calc(var(--van-nav-bar-height) + #{$visual-item-gap * 2});
 
-  &__item {
-    position: relative;
-    cursor: pointer;
-    z-index: 10;
+  .visual-group {
+    height: 100%;
+    min-height: 40px;
 
-    &.visual-fixed {
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-    }
+    &__item {
+      position: relative;
+      cursor: pointer;
+      z-index: 10;
 
-    .visual-block {
-      padding: $visual-item-gap;
-      outline: 1px dashed var(--el-color-info-light-7) !important;
-      outline-offset: -2px !important;
-
-      &.is-active {
-        outline: $visual-item-gap solid var(--el-color-primary) !important;
-        outline-offset: -$visual-item-gap !important;
+      &.visual-fixed {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
       }
-    }
-  }
 
-  &__drag {
-    cursor: move;
-  }
+      .visual-block {
+        padding: $visual-item-gap;
+        outline: 1px dashed var(--el-color-info-light-7) !important;
+        outline-offset: -2px !important;
 
-  &.visual-group__dropzone {
-    position: relative;
-
-    &::after {
-      position: absolute;
-      inset: 2px;
-      display: flex;
-      height: auto;
-      min-height: 36px;
-      font-size: 12px;
-      text-align: center;
-      content: attr(data-slot);
-      outline: 1px dashed var(--el-color-info-light-7);
-      outline-offset: -1px;
-      flex-direction: column;
-      justify-content: center;
-      color: var(--el-text-color-placeholder);
-      background: var(--el-color-info-light-9);
-    }
-  }
-
-  &.is-drag {
-    .visual-block:not(.is-active) {
-      .visual-group__dropzone {
-        &::after {
-          outline-color: var(--el-color-info-light-3);
-          background: var(--el-color-primary-light-9);
+        &.is-active {
+          outline: $visual-item-gap solid var(--el-color-primary) !important;
+          outline-offset: -$visual-item-gap !important;
         }
       }
     }
 
-    .visual-block:not(.is-active).has-slots {
-      outline: 1px dashed var(--el-color-primary);
-      outline-offset: -1px;
+    &__drag {
+      cursor: move;
+    }
+
+    &.visual-group__dropzone {
+      position: relative;
+
+      &::after {
+        position: absolute;
+        inset: 2px;
+        display: flex;
+        height: auto;
+        min-height: 36px;
+        font-size: 12px;
+        text-align: center;
+        content: attr(data-slot);
+        outline: 1px dashed var(--el-color-info-light-7);
+        outline-offset: -1px;
+        flex-direction: column;
+        justify-content: center;
+        color: var(--el-text-color-placeholder);
+        background: var(--el-color-info-light-9);
+      }
+    }
+
+    &.is-drag {
+      .visual-block:not(.is-active) {
+        .visual-group__dropzone {
+          &::after {
+            outline-color: var(--el-color-info-light-3);
+            background: var(--el-color-primary-light-9);
+          }
+        }
+      }
+
+      .visual-block:not(.is-active).has-slots {
+        outline: 1px dashed var(--el-color-primary);
+        outline-offset: -1px;
+      }
     }
   }
 }

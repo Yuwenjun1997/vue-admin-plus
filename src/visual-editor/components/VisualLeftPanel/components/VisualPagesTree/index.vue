@@ -43,7 +43,7 @@
     >
       <el-form ref="formRef" label-width="80px" :model="form" :rules="rules" size="small">
         <el-form-item label="父级菜单">
-          <el-cascader v-model="form.parentId" clearable :options="visualPagesTree as any" :props="cascaderProps" />
+          <el-cascader v-model="form.parentId" clearable :options="visualPagesTree" :props="cascaderProps" />
         </el-form-item>
         <el-form-item label="菜单标题" prop="title">
           <el-input v-model="form.title" clearable placeholder="请输入菜单标题" />

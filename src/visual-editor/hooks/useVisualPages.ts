@@ -13,9 +13,10 @@ export class VisualEditorPageForm implements VisualEditorPage {
   title: string = ''
 }
 
-export interface VisualEditorPageTree {
+export interface VisualEditorPageTree extends Record<string, any> {
   title: string
   value: string
+  path: string
   data: VisualEditorPage
   children?: VisualEditorPageTree[]
 }
@@ -78,9 +79,9 @@ export const useVisualPages = () => {
   }
 
   const genTreeData = (page: VisualEditorPage): VisualEditorPageTree => {
-    const { pageId, title } = page
+    const { pageId, title, path } = page
     const children = visualPages.value.filter((item) => item.parentId === pageId).map((page) => genTreeData(page))
-    return { value: pageId, title, children, data: page }
+    return { value: pageId, title, path, children, data: page }
   }
 
   const visualPagesTree = computed<VisualEditorPageTree[]>(() => {

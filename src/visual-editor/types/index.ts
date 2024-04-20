@@ -60,14 +60,17 @@ export type VisualEditorEvent = {
   eventName: string
 }
 
+export type VisualEventName = 'routerEvent' | 'apiEvent' // 内置事件名称
+
 // 组件事件绑定内容
 export type VisualEventData = {
   _vid?: string
-  key: string
-  custom: boolean
-  eventValue?: string
-  methodToken: string
-  description: string
+  key: string // 绑定事件名称
+  custom: boolean // 是否自定义事件
+  methodToken: string // 自定义事件内容
+  eventName?: VisualEventName // 内置事件名称
+  eventParams: Record<string, any> // 内置事件参数
+  description: string // 事件描述
 }
 
 // 组件事件绑定

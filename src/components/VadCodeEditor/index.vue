@@ -27,6 +27,7 @@ interface Props {
   userWorker?: boolean
   maxLines?: number
   minLines?: number
+  placeholder?: string
 }
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>()
@@ -37,13 +38,14 @@ const props = withDefaults(defineProps<Props>(), {
   userWorker: false,
   maxLines: 40,
   minLines: 40,
+  placeholder: '',
 })
 
 const aceDom = ref<HTMLElement>()
 const aceEditor = ref<ace.Ace.Editor>()
 const themePath = ref<string>('ace/theme/github')
 const modePath = ref<string>('ace/mode/javascript')
-const codeValue = ref<string>(props.modelValue)
+const codeValue = ref<string>(props.modelValue.length ? props.modelValue : props.placeholder + props.modelValue)
 
 watchEffect(() => {
   themePath.value = isDark.value ? 'ace/theme/github_dark' : 'ace/theme/github'
@@ -90,6 +92,7 @@ onMounted(() => {
   //编辑时同步数据
   aceEditor.value.getSession().on('change', () => {
     if (!aceEditor.value) return
+    console.log(aceEditor.value.getValue())
     emit('update:modelValue', aceEditor.value.getValue())
   })
 })

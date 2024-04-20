@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash'
 import { createNewBlock } from '../visual-editor.utils'
 import { CssEditorOption, cssEditorOptions } from '../configs/css-editor-options'
 import { CSSProperties } from 'vue'
+import { useVisualStorage } from '../hooks/useVisualStorage'
 
 interface VisualBoxState {
   isDrag: boolean
@@ -55,6 +56,7 @@ export const useVisualBoxStore = defineStore('visualBox', {
   actions: {
     setDevice(name: string) {
       this.device = name
+      useVisualStorage().setState()
     },
 
     setVisualStore(state: Record<string, any>) {

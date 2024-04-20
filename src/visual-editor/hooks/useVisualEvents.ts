@@ -4,6 +4,7 @@ import { VisualEditorBlockData, VisualEventData } from '../types'
 import { generateNanoid } from '../visual-editor.utils'
 import { useVisualPages } from './useVisualPages'
 import { useVisualRef } from './useVisualRef'
+import { useVisualEventHook } from './useVisualEventHook'
 
 export const useVisualEvents = () => {
   const { visualRefMap } = useVisualRef()
@@ -26,6 +27,8 @@ export const useVisualEvents = () => {
     currentBlock.value?.events[form.key]?.splice(index, 1, { ...form })
   }
 
+  const { emitRouter } = useVisualEventHook()
+
   const callFuncs = (value: VisualEventData[], block: VisualEditorBlockData, ...events: any[]) => {
     const { getPage } = useVisualPages()
     const page = getPage(block)
@@ -37,13 +40,15 @@ export const useVisualEvents = () => {
       $events: events,
       $store: visualStore.value,
       $props: block.props,
-      $page: page?.store,
+      $pageStore: page?.store,
     }
     value.forEach((item) => {
       if (item.custom) {
         item.methodToken && new Function(item.methodToken).call(_self, ...events)
       } else {
-        item.eventValue && console.log('方法调用中', item.eventValue)
+        if (item.eventName === 'routerEvent') {
+          emitRouter(item.eventParams)
+        }
       }
     })
   }

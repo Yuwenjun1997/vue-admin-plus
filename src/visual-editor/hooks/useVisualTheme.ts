@@ -20,6 +20,10 @@ export const useVisualTheme = () => {
     return result
   })
 
+  watchEffect(() => {
+    console.log(hasFixedComponent.value)
+  })
+
   const pageStyles = computed<CSSProperties | undefined>(() => {
     if (!currentPage.value) return
     return {

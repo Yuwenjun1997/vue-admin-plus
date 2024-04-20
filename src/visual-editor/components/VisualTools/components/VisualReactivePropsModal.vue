@@ -1,7 +1,7 @@
 <template>
-  <el-dialog v-model="visible" title="配置响应字段" width="1200">
+  <el-dialog v-model="visible" append-to-body draggable title="配置响应字段" width="1200">
     <el-scrollbar height="400px">
-      <el-table border :data="tableData" size="small">
+      <el-table border :data="tableData" empty-text="暂无绑定" size="small">
         <el-table-column label="响应来源" prop="sourceKey">
           <template #default="{ row }">
             <el-select v-model="row.bindSourceKey" size="small">
