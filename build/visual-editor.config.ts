@@ -12,7 +12,7 @@ export default defineConfig(
           {
             filename: 'index.html',
             entry: 'src/visual-editor/main.ts',
-            template: 'index.html',
+            template: 'visual-editor.html',
           },
           {
             filename: 'visual-preview.html',
