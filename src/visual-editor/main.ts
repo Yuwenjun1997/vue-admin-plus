@@ -11,7 +11,7 @@ import { setupLayout } from '@/layout'
 async function bootstrap() {
   // 加载动画
   const loading = createApp(Loading)
-  loading.mount('#visual-editor')
+  loading.mount('#app')
 
   // 应用渲染
   const app = createApp(App)
@@ -29,7 +29,7 @@ async function bootstrap() {
   await setupLayout()
 
   loading.unmount()
-  app.mount('#visual-editor')
+  app.mount('#app')
 }
 
 bootstrap()

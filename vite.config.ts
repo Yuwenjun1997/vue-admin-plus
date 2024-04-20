@@ -1,17 +1,26 @@
 import { defineConfig, mergeConfig } from 'vite'
 import baseConfig from './build/base.config'
-import path from 'path'
+import { createHtmlPlugin } from 'vite-plugin-html'
 
 // https://vitejs.dev/config/
 export default defineConfig(
   mergeConfig(baseConfig, {
-    build: {
-      rollupOptions: {
-        input: {
-          main: path.resolve(__dirname, './index.html'),
-          'visual-preview': path.resolve(__dirname, './visual-preview.html'),
-        },
-      },
-    },
+    plugins: [
+      createHtmlPlugin({
+        minify: true,
+        pages: [
+          {
+            filename: 'index.html',
+            entry: 'src/main.ts',
+            template: 'index.html',
+          },
+          {
+            filename: 'visual-preview.html',
+            entry: 'src/visual-preview/index.ts',
+            template: 'visual-preview.html',
+          },
+        ],
+      }),
+    ],
   })
 )
