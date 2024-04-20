@@ -38,13 +38,11 @@ export default {
     const props = computed(() => {
       const bindProps = genProps(block)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-      const { fixed, zIndex, safeAreaInsetTop, ...reset } = bindProps
+      const { fixedTop, zIndex, safeAreaInsetTop, ...reset } = bindProps
       return reset
     })
 
     const events = computed(() => genEvents(block))
-
-    console.log(events.value)
 
     return () => (
       <div style={styles}>
@@ -65,7 +63,7 @@ export default {
     rightDisabled: createEditorSwitchProp({ label: '是否禁用右侧按钮', defaultValue: false }),
     leftArrow: createEditorSwitchProp({ label: '是否显示左侧箭头', defaultValue: true }),
     border: createEditorSwitchProp({ label: '是否显示下边框', defaultValue: true }),
-    fixed: createEditorSwitchProp({ label: '是否固定在顶部', defaultValue: true }),
+    fixedTop: createEditorSwitchProp({ label: '是否固定在顶部', defaultValue: true }),
     // placeholder: createEditorSwitchProp({ label: '固定在顶部时，生成一个等高的占位元素', defaultValue: true }),
     zIndex: createEditorInputNumberProp({ label: '导航栏 z-index' }),
     safeAreaInsetTop: createEditorSwitchProp({ label: '是否开启顶部安全区适配', defaultValue: false }),

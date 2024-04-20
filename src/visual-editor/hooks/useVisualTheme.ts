@@ -6,12 +6,26 @@ import { CSSProperties } from 'vue'
 export const useVisualTheme = () => {
   const { currentPage } = storeToRefs(useVisualBoxStore())
 
-  const hasFixedComponent = computed<boolean>(() => {
+  const hasNavbar = computed<boolean>(() => {
     let result = false
     if (!currentPage.value) return result
     const recursion = (blocks: VisualEditorBlockData[]) => {
       blocks.forEach((block) => {
-        result = result || (block.componentKey === 'navbar' && block.props.fixed)
+        result = result || (block.componentKey === 'navbar' && block.props.fixedTop)
+        if (result) return
+        Object.entries(block.slots).forEach(([_key, value]) => recursion(value.children))
+      })
+    }
+    recursion(currentPage.value.blocks)
+    return result
+  })
+
+  const hasTabbar = computed<boolean>(() => {
+    let result = false
+    if (!currentPage.value) return result
+    const recursion = (blocks: VisualEditorBlockData[]) => {
+      blocks.forEach((block) => {
+        result = result || (block.componentKey === 'tabbar' && block.props.fixedBottom)
         if (result) return
         Object.entries(block.slots).forEach(([_key, value]) => recursion(value.children))
       })
@@ -26,9 +40,10 @@ export const useVisualTheme = () => {
       backgroundColor: currentPage.value.config.bgColor,
       backgroundImage: currentPage.value.config.bgImage ? `url(${currentPage.value.config.bgImage})` : '',
       backgroundRepeat: currentPage.value.config.bgRepeat ? 'repeat' : 'no-repeat',
-      paddingTop: hasFixedComponent.value ? 'var(--visual-navbar-height)' : '',
+      paddingTop: hasNavbar.value ? 'var(--visual-navbar-height)' : '',
+      paddingBottom: hasTabbar.value ? 'var(--visual-tabbar-height)' : '',
     }
   })
 
-  return { isFixed: hasFixedComponent, pageStyles }
+  return { hasNavbar, hasTabbar, pageStyles }
 }

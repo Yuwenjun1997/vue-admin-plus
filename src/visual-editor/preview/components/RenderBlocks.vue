@@ -3,7 +3,10 @@
   <ComponentRender
     v-for="element in props.blocks"
     :key="element._vid"
-    :class="{ 'visual-fixed': element.props.fixed }"
+    :class="{
+      'visual-fixed--top': element.props.fixedTop,
+      'visual-fixed--bottom': element.props.fixedBottom,
+    }"
     :element="element"
     :style="{ zIndex: element.props.zIndex }"
   >

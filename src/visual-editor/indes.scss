@@ -1,6 +1,7 @@
 .VisualCenterPanel-wrap {
   $visual-item-gap: 2px;
   --visual-navbar-height: calc(var(--van-nav-bar-height) + #{$visual-item-gap * 2});
+  --visual-tabbar-height: calc(var(--van-tabbar-height) + #{$visual-item-gap * 2});
 
   .visual-group {
     height: 100%;
@@ -11,14 +12,6 @@
       cursor: pointer;
       z-index: 10;
 
-      &.visual-fixed {
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-      }
-
       .visual-block {
         padding: $visual-item-gap;
         outline: 1px dashed var(--el-color-info-light-7) !important;
@@ -28,6 +21,22 @@
           outline: $visual-item-gap solid var(--el-color-primary) !important;
           outline-offset: -$visual-item-gap !important;
         }
+      }
+
+      &.visual-fixed--top {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+      }
+
+      &.visual-fixed--bottom {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
       }
     }
 
@@ -74,14 +83,6 @@
   }
 }
 
-.visual-preview-container {
-  --visual-navbar-height: var(--van-nav-bar-height);
-
-  .visual-fixed {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-  }
+.van-tabbar--fixed {
+  position: relative !important;
 }

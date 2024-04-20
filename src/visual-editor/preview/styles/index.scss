@@ -20,14 +20,26 @@ body {
   background-color: #ddd;
 }
 
+.van-tabbar--fixed {
+  position: relative !important;
+}
+
 .visual-preview-container {
   --visual-navbar-height: var(--van-nav-bar-height);
-  min-height: 100vh;
+  --visaul-tabbar-height: var(--van-tabbar-height);
 
-  .visual-fixed {
-    position: fixed;
+  .visual-fixed--top {
+    position: fixed !important;
     width: 100%;
     top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  .visual-fixed--bottom {
+    position: fixed !important;
+    width: 100%;
+    bottom: 0;
     left: 0;
     z-index: 1000;
   }

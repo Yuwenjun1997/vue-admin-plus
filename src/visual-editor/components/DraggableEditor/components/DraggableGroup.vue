@@ -12,8 +12,10 @@
       <div
         class="visual-group__item"
         :class="{
-          'visual-fixed': item.element.props.fixed,
-          'visual-group__drag': item.element.draggable && !item.element.props.fixed,
+          'visual-fixed--top': item.element.props.fixedTop,
+          'visual-fixed--bottom': item.element.props.fixedBottom,
+          'visual-group__drag':
+            item.element.draggable && (!item.element.props.fixedTop || !item.element.props.fixedBottom),
         }"
         :style="{ zIndex: item.element.props.zIndex }"
       >
