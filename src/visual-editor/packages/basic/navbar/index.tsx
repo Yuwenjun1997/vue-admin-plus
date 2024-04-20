@@ -1,3 +1,4 @@
+import { useVisualEvents } from '@/visual-editor/hooks/useVisualEvents'
 import { useVisualProps } from '@/visual-editor/hooks/useVisualProps'
 import { useVisualRef } from '@/visual-editor/hooks/useVisualRef'
 import { VisualEditorComponent } from '@/visual-editor/types'
@@ -32,6 +33,7 @@ export default {
   render: ({ styles, block }) => {
     const { registerRef } = useVisualRef()
     const { genProps } = useVisualProps()
+    const { genEvents } = useVisualEvents()
 
     const props = computed(() => {
       const bindProps = genProps(block)
@@ -40,9 +42,18 @@ export default {
       return reset
     })
 
+    const events = computed(() => genEvents(block))
+
+    console.log(events.value)
+
     return () => (
       <div style={styles}>
-        <NavBar ref={(el) => registerRef(el, block._vid)} {...props.value} style={{ flex: 1 }}></NavBar>
+        <NavBar
+          ref={(el) => registerRef(el, block._vid)}
+          {...props.value}
+          {...events.value}
+          style={{ flex: 1 }}
+        ></NavBar>
       </div>
     )
   },
@@ -60,4 +71,8 @@ export default {
     safeAreaInsetTop: createEditorSwitchProp({ label: '是否开启顶部安全区适配', defaultValue: false }),
     clickable: createEditorSwitchProp({ label: '是否开启两侧按钮的点击反馈', defaultValue: true }),
   },
+  events: [
+    { label: '点击左侧按钮时触发', eventName: 'click-left' },
+    { label: '点击右侧按钮时触发', eventName: 'click-right' },
+  ],
 } as VisualEditorComponent

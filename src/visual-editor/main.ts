@@ -7,6 +7,7 @@ import { setupElementPlus } from '@/plugins/element-ui'
 import { setupVant } from '@/plugins/vant'
 import { setupStore } from './store'
 import { setupLayout } from '@/layout'
+import { setupRouter } from './router'
 
 async function bootstrap() {
   // 加载动画
@@ -24,6 +25,9 @@ async function bootstrap() {
 
   // 配置 store
   setupStore(app)
+
+  // 配置路由
+  setupRouter(app)
 
   // 初始化布局
   await setupLayout()

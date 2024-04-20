@@ -10,6 +10,8 @@ export const useVisualEvents = () => {
   const { visualRefMap } = useVisualRef()
   const { currentBlock, visualStore } = storeToRefs(useVisualBoxStore())
 
+  const router = useRouter()
+
   const add = (form: VisualEventData) => {
     form._vid = `event_${generateNanoid()}`
     currentBlock.value?.events[form.key]?.push({ ...form })
@@ -41,6 +43,7 @@ export const useVisualEvents = () => {
       $store: visualStore.value,
       $props: block.props,
       $pageStore: page?.store,
+      $router: router,
     }
     value.forEach((item) => {
       if (item.custom) {
@@ -53,9 +56,18 @@ export const useVisualEvents = () => {
     })
   }
 
+  function toCamelCase(eventName: string) {
+    return eventName
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join('')
+  }
+
   const genEvents = (block: VisualEditorBlockData) => {
     return Object.entries(block.events || {}).reduce((prev: Record<string, Function>, [key, value]) => {
-      const eventName = key.charAt(0).toUpperCase() + key.slice(1) // 首字母大写
+      // 将事件名转换为大驼峰命名
+      // 例如：on-click 转换为 OnClick
+      const eventName = toCamelCase(key)
       if (value.length) {
         prev[`on${eventName}`] = (...args: any[]) => callFuncs(value, block, ...args)
       }

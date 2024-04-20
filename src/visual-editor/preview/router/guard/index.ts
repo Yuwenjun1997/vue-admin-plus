@@ -12,8 +12,9 @@ export function setupRouterGuard(router: Router) {
 // function createPageGuard(router: Router) {}
 
 export function createProgressGuard(router: Router) {
-  router.beforeEach(async () => {
+  router.beforeEach(async (to) => {
     nProgress.start()
+    document.title = to.meta.title
     return true
   })
 

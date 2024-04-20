@@ -10,8 +10,10 @@ import { NOT_FOUND, VIEW_COMPONENT } from '../constant'
 export function generateRoutes(menus: VisualEditorPage[]): RouteRecordRaw[] {
   return menus.map((menu) => {
     const route = {} as RouteRecordRaw
+    route.path = `/:pageId${menu.path}`
     route.path = menu.path
-    route.name = menu.title
+    route.name = menu.pageId
+    route.meta = { menuId: menu.pageId, title: menu.title }
     route.component = VIEW_COMPONENT
     return route
   })
@@ -24,4 +26,5 @@ export function generateRoutes(menus: VisualEditorPage[]): RouteRecordRaw[] {
 export function addAllRoutes(routes: RouteRecordRaw[]) {
   routes.forEach((route) => router.addRoute(route))
   router.addRoute({ path: '/404', name: '404', component: NOT_FOUND })
+  router.addRoute({ path: '/:pathMatch(.*)*', redirect: '/404' })
 }

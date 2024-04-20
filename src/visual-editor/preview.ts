@@ -2,10 +2,10 @@ import '@/plugins/nprogress'
 import './preview/styles/index.scss'
 import { createApp } from 'vue'
 import App from './Preview.vue'
+import { router, setupRouter } from './preview/router'
+import { setupRouterGuard } from './preview/router/guard'
 import { setupVant } from '@/plugins/vant'
 import { setupStore } from './store'
-import { setupRouterGuard } from './preview/router/guard'
-import { router, setupRouter } from './preview/router'
 
 function bootstrap() {
   const app = createApp(App)
