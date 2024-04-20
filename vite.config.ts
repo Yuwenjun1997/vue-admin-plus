@@ -20,8 +20,8 @@ export default defineConfig(
             },
           },
           {
-            filename: 'visual-preview.html',
-            entry: 'src/visual-preview/index.ts',
+            filename: 'visual-editor.html',
+            entry: 'src/visual-editor/preview.ts',
             template: 'visual-preview.html',
           },
         ],
