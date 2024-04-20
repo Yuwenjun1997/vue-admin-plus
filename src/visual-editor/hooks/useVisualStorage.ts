@@ -14,6 +14,12 @@ export const useVisualStorage = () => {
     currentPageId: currentPage.value?.pageId,
   })
 
+  const setState = () => {
+    state.value.currentPageId = currentPage.value?.pageId
+    state.value.visualPages = visualPages.value
+    state.value.visualStore = visualStore.value
+  }
+
   // 初始化预览数据
   const init = () => {
     visualPages.value = state.value.visualPages
@@ -24,5 +30,6 @@ export const useVisualStorage = () => {
   return {
     previewLink,
     init,
+    setState,
   }
 }

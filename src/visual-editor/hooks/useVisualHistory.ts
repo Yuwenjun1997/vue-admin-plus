@@ -2,9 +2,11 @@ import { storeToRefs } from 'pinia'
 import { useVisualBoxStore } from '../store/visual-box'
 import { useRefHistory } from '@vueuse/core'
 import { VisualEditorPage } from '../types'
+import { useVisualStorage } from './useVisualStorage'
 
 export const useVisualHistory = () => {
   const { currentPage, visualPages } = storeToRefs(useVisualBoxStore())
+  const { setState } = useVisualStorage()
 
   const { undo, redo, canRedo, canUndo } = useRefHistory(currentPage, { deep: true })
 
@@ -19,6 +21,7 @@ export const useVisualHistory = () => {
     currentPage,
     (nVal, oldVal) => {
       if (nVal !== oldVal && nVal) updatePages(nVal)
+      setState()
     },
     { deep: true }
   )
