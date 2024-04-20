@@ -13,6 +13,11 @@ export default defineConfig(
             filename: 'index.html',
             entry: 'src/main.ts',
             template: 'index.html',
+            injectOptions: {
+              data: {
+                title: '中后台系统',
+              },
+            },
           },
           {
             filename: 'visual-preview.html',

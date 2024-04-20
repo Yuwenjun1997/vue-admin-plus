@@ -12,7 +12,12 @@ export default defineConfig(
           {
             filename: 'index.html',
             entry: 'src/visual-editor/main.ts',
-            template: 'visual-editor.html',
+            template: 'index.html',
+            injectOptions: {
+              data: {
+                title: '可视化设计',
+              },
+            },
           },
           {
             filename: 'visual-preview.html',
