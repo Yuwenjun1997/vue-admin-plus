@@ -16,7 +16,7 @@ export default {
   moduleName: 'basicWidgets',
   label: '图片',
   preview: () => (
-    <Image iconSize={44} src={'https://img.yzcdn.cn/vant/cat.jpeg'} width={'100%'} height={'100%'} fit={'cover'} />
+    <Image iconSize={44} src={'https://img.yzcdn.cn/vant/cat.jpeg'} width={'100px'} height={'100px'} fit={'cover'} />
   ),
   render: ({ styles, block }) => {
     const { registerRef } = useVisualRef()

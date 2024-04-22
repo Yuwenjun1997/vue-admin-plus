@@ -28,7 +28,7 @@ import { useVisualStorage } from '@/visual-editor/hooks/useVisualStorage'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 
 const visualBoxStore = useVisualBoxStore()
-const { previewLink } = useVisualStorage()
+const { previewLink, setState } = useVisualStorage()
 
 const handleDeviceChange = (name: string | number | boolean | undefined) => {
   visualBoxStore.setDevice(name as string)
@@ -47,6 +47,7 @@ const previewWidth = computed(() => {
 })
 
 const showPreviewModal = async () => {
+  setState()
   previewModal.value = true
   isLoading.value = true
   await nextTick()

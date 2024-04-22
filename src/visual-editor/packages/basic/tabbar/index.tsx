@@ -9,7 +9,14 @@ export default {
   key: 'navbar',
   moduleName: 'basicWidgets',
   label: '标签栏',
-  preview: () => <div>标签栏</div>,
+  preview: () => (
+    <Tabbar style={{ width: '100%' }}>
+      <TabbarItem icon="home-o">标签</TabbarItem>
+      <TabbarItem icon="search">标签</TabbarItem>
+      <TabbarItem icon="friends-o">标签</TabbarItem>
+      <TabbarItem icon="setting-o">标签</TabbarItem>
+    </Tabbar>
+  ),
   render: ({ styles, block }) => {
     const { registerRef } = useVisualRef()
     const { genProps } = useVisualProps()

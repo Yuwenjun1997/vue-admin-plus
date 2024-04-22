@@ -2,7 +2,9 @@
   <DraggableGroup v-model="widgets" :group="group">
     <template #item="{ element: outElement }">
       <div class="visual-item" :data-label="outElement.label">
-        <ComponentRender :key="outElement._vid" :element="outElement" style="pointer-events: none" />
+        <div class="visual-item__content">
+          <ComponentRender :key="outElement._vid" :element="outElement" style="pointer-events: none" />
+        </div>
       </div>
     </template>
   </DraggableGroup>
@@ -39,11 +41,23 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   height: 100px;
-  padding: 6px 6px 26px;
+  padding: 4px 4px 24px;
   border: 2px solid var(--el-color-info-light-9);
   cursor: move;
   transition: var(--el-transition-all);
   background-color: var(--el-fill-color-lighter);
+  overflow: hidden;
+
+  .visual-item__content {
+    width: 261px;
+    position: absolute;
+    transform: scale(0.42);
+    transform-origin: center;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   &:hover {
     border-color: var(--el-color-primary);

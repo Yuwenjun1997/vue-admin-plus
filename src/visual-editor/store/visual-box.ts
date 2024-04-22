@@ -6,6 +6,7 @@ import { createNewBlock } from '../visual-editor.utils'
 import { CssEditorOption, cssEditorOptions } from '../configs/css-editor-options'
 import { CSSProperties } from 'vue'
 import { useVisualStorage } from '../hooks/useVisualStorage'
+import { useVisualSlots } from '../hooks/useVisualSlots'
 
 interface VisualBoxState {
   isDrag: boolean
@@ -100,8 +101,10 @@ export const useVisualBoxStore = defineStore('visualBox', {
         visualEditor.bindProps = Object.assign({}, this.currentBlock.bindProps)
       }
 
+      this.visualEditor = visualEditor
+
       // 处理插槽
-      visualEditor.initSlotsOptions && visualEditor.initSlotsOptions(this.currentBlock.slots)
+      useVisualSlots().init(this.currentBlock.slots)
 
       // 处理css样式
       if (!this.cssEditorOptions.length) {
@@ -112,7 +115,6 @@ export const useVisualBoxStore = defineStore('visualBox', {
           value.defaultValue = this.currentBlock?.styles[key as keyof CSSProperties]
         })
       })
-      this.visualEditor = visualEditor
     },
 
     applyVisualEditor() {

@@ -5,6 +5,7 @@ import { VisualEditorBlockData } from '../types'
 
 export const useVisualStorage = () => {
   const { visualPages, visualStore, currentPage, device, currentBlock } = storeToRefs(useVisualBoxStore())
+  const { setCurrentBlock } = useVisualBoxStore()
 
   const previewLink = computed(() => `/visual-preview.html#${currentPage.value?.path || ''}`)
 
@@ -17,6 +18,7 @@ export const useVisualStorage = () => {
     currentBlockId: currentBlock.value?._vid,
   })
 
+  // 保存编辑状态
   const setState = () => {
     state.value.currentPageId = currentPage.value?.pageId
     state.value.visualPages = visualPages.value
@@ -30,6 +32,7 @@ export const useVisualStorage = () => {
       if (currentBlock.value) return
       if (block._vid === state.value.currentBlockId) {
         currentBlock.value = block
+        setCurrentBlock(block)
       } else {
         Object.entries(block.slots).forEach(([_key, value]) => setCurrentBlockFn(value.children))
       }
@@ -45,6 +48,7 @@ export const useVisualStorage = () => {
     if (currentPage.value) {
       setCurrentBlockFn(currentPage.value.blocks)
     }
+    console.log(currentBlock.value)
   }
 
   return {

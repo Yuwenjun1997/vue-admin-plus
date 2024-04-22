@@ -14,21 +14,7 @@ export default {
   moduleName: 'basicWidgets',
   label: '导航栏',
   preview: () => (
-    <NavBar
-      style={{
-        width: '100%',
-        '--van-nav-bar-title-font-size': '10px',
-        '--van-nav-bar-arrow-size': '10px',
-        '--van-padding-md': '2px',
-        '--van-font-size-md': '10px',
-        '--van-nav-bar-height': '26px',
-      }}
-      leftArrow
-      leftText="返回"
-      rightText="按钮"
-      title="标题"
-      border
-    ></NavBar>
+    <NavBar style={{ width: '100%' }} leftArrow leftText="返回" rightText="按钮" title="标题" border></NavBar>
   ),
   render: ({ styles, block }) => {
     const { registerRef } = useVisualRef()

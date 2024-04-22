@@ -130,6 +130,7 @@ export type VisualEditorComponent = {
   props?: Record<string, VisualEditorProps>
   styles?: CSSProperties
   slots?: Record<string, VisualEditorProps>[]
+  createSlotHandler?: () => Record<string, VisualEditorProps>
   addSlot?: () => void
   deleteSlot?: (index: number) => void
   initSlotsOptions?: (slotMap: VisualBlockSlotMap) => void

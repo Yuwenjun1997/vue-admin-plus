@@ -73,7 +73,6 @@ const sortableOptions = computed<Options>(() => ({
 .visual-group {
   position: relative;
   height: 100%;
-  min-height: 40px;
 
   &__drag {
     cursor: move;

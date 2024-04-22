@@ -17,8 +17,8 @@
               <SlotEditor
                 :options="visualEditor.slots"
                 :trigger-handler="handleAttrChange"
-                @add-slot="handleAddSlot"
-                @delete-slot="handleDeleteSlot"
+                @add-slot="add"
+                @delete-slot="remove"
               />
             </template>
           </div>
@@ -64,22 +64,16 @@ import AttrEditor from './AttrEditor/index.vue'
 import SlotEditor from './SlotEditor/index.vue'
 import StyleEditor from './StyleEditor/index.vue'
 import EventEditor from './EventEditor/index.vue'
+import { useVisualSlots } from '@/visual-editor/hooks/useVisualSlots'
 
 const activeTab = ref<string>('BasicAttribute')
 
 const visualBoxStore = useVisualBoxStore()
 const { visualEditor, cssEditorOptions, currentBlock } = storeToRefs(visualBoxStore)
 
-const handleAttrChange = () => {
-  visualBoxStore.applyVisualEditor()
-}
+const { add, remove } = useVisualSlots()
 
-const handleAddSlot = () => {
-  visualEditor.value?.addSlot && visualEditor.value?.addSlot()
-  visualBoxStore.applyVisualEditor()
-}
-const handleDeleteSlot = (index: number) => {
-  visualEditor.value?.deleteSlot && visualEditor.value?.deleteSlot(index)
+const handleAttrChange = () => {
   visualBoxStore.applyVisualEditor()
 }
 </script>

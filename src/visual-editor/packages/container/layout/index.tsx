@@ -1,4 +1,4 @@
-import { VisualBlockSlotData, VisualEditorComponent, VisualBlockSlotMap } from '@/visual-editor/types'
+import { VisualBlockSlotData, VisualEditorComponent } from '@/visual-editor/types'
 import { Row, Col } from 'vant'
 import { renderSlot } from 'vue'
 import styleModule from './index.module.scss'
@@ -8,8 +8,13 @@ import {
   createEditorSelectProp,
 } from '@/visual-editor/visual-editor.props'
 import { useVisualProps } from '@/visual-editor/hooks/useVisualProps'
+import { useVisualStorage } from '@/visual-editor/hooks/useVisualStorage'
 
 const slotsTemp = {} as any
+
+const createSlot = () => ({
+  span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12, max: 24, min: 1 }),
+})
 
 export default {
   key: 'layout',
@@ -43,6 +48,7 @@ export default {
             vslot.children = slotsTemp[block._vid][key].children
           }
         })
+        useVisualStorage().setState()
       }
     })
 
@@ -78,27 +84,6 @@ export default {
       ],
     }),
   },
-  slots: [
-    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12, max: 24, min: 1 }) },
-    { span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 12, max: 24, min: 1 }) },
-  ],
-  addSlot() {
-    this.slots = this.slots || []
-    this.slots.push({ span: createEditorInputNumberProp({ label: '栅格宽度', defaultValue: 24, max: 24, min: 1 }) })
-  },
-  deleteSlot(index: number) {
-    this.slots?.splice(index, 1)
-  },
-  initSlotsOptions(slopMap: VisualBlockSlotMap) {
-    this.slots = Object.entries(slopMap).map(([_slotKey, slotValue]) => {
-      return {
-        span: createEditorInputNumberProp({
-          label: '栅格宽度',
-          defaultValue: slotValue.props.span,
-          max: 24,
-          min: 1,
-        }),
-      }
-    })
-  },
+  slots: [createSlot(), createSlot()],
+  createSlotHandler: createSlot,
 } as VisualEditorComponent

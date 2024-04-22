@@ -16,7 +16,7 @@ export default {
   moduleName: 'basicWidgets',
   label: '按钮',
   preview: () => (
-    <Button size="small" type="primary" square>
+    <Button type="primary" square>
       按钮
     </Button>
   ),
