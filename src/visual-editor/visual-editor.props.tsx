@@ -118,3 +118,16 @@ export function createEditorImageProp<T = any>({ label, defaultValue }: EditorIm
     defaultValue,
   }
 }
+
+interface EditorOptionsProp<T> {
+  label: string
+  defaultValue: T
+}
+
+export function createEditorOptionsProps<T = any>({ label, defaultValue }: EditorOptionsProp<T>) {
+  return {
+    type: VisualEditorPropsType.options,
+    label,
+    defaultValue,
+  }
+}

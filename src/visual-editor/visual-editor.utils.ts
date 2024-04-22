@@ -9,6 +9,7 @@ import {
   VisualEditorComponent,
   VisualEditorProps,
 } from './types'
+import { isArray } from 'lodash'
 
 export const generateNanoid = customAlphabet('123456ABCDEF', 6)
 
@@ -45,6 +46,22 @@ export function createNewBlock(component: VisualEditorComponent): VisualEditorBl
       return prev
     }, {}),
     bindProps: component.bindProps ?? {},
+    sourceData: Object.entries(component.sourceData || {}).reduce((source: Record<string, any>, [key, item]) => {
+      if (isArray(item.value)) {
+        source[key] = item.value.map((item) =>
+          Object.entries(item).reduce((prev: Record<string, any>, [prop, propSchema]) => {
+            prev[prop] = propSchema?.defaultValue
+            return prev
+          }, {})
+        )
+      } else {
+        source[key] = Object.entries(item.value).reduce((prev: Record<string, any>, [prop, propSchema]) => {
+          prev[prop] = propSchema?.defaultValue
+          return prev
+        }, {})
+      }
+      return source
+    }, {}),
   }
 }
 

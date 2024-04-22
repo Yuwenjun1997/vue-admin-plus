@@ -15,6 +15,7 @@ export default defineComponent({
       styles: props.element.styles || {},
       block: props.element,
       slots: props.element.slots,
+      sourceData: props.element.sourceData || {},
     })
   },
 })

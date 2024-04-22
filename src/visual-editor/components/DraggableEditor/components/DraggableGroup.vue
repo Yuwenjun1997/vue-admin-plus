@@ -15,7 +15,7 @@
           'visual-fixed--top': item.element.props.fixedTop,
           'visual-fixed--bottom': item.element.props.fixedBottom,
           'visual-group__drag':
-            item.element.draggable && (!item.element.props.fixedTop || !item.element.props.fixedBottom),
+            item.element.draggable && !item.element.props.fixedTop && !item.element.props.fixedBottom,
         }"
         :style="{ zIndex: item.element.props.zIndex }"
       >

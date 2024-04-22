@@ -5,7 +5,7 @@
         <template #title>
           <div class="flex items-center gap-1">
             <template v-if="props.options && props.options.length > 1">
-              <Icon class="slot-del-btn" icon="ep:circle-close-filled" @click="emit('delete-slot', index)" />
+              <Icon class="slot-del-btn" icon="ep:circle-close-filled" @click.stop="remove(index)" />
             </template>
             <span>插槽{{ index + 1 }}</span>
           </div>
@@ -13,7 +13,7 @@
         <AttrEditor :options="option" :trigger-handler="triggerHandler" />
       </el-collapse-item>
     </el-collapse>
-    <el-button class="w-full" size="small" type="primary" @click="emit('add-slot')">添加插槽</el-button>
+    <el-button class="w-full" size="small" type="primary" @click="add">添加插槽</el-button>
   </div>
 </template>
 
@@ -21,6 +21,7 @@
 import { Icon } from '@iconify/vue'
 import AttrEditor from '../AttrEditor/index.vue'
 import { VisualBlockSlot } from '@/visual-editor/types'
+import { useVisualSlots } from '@/visual-editor/hooks/useVisualSlots'
 
 interface Props {
   options?: VisualBlockSlot[]
@@ -29,10 +30,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const emit = defineEmits<{
-  (e: 'add-slot'): void
-  (e: 'delete-slot', index: number): void
-}>()
+const { add, remove } = useVisualSlots()
 
 const activeIndex = ref<number[]>([])
 </script>

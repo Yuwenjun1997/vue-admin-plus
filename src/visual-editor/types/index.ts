@@ -16,6 +16,18 @@ export type VisualBlockSlotMap = Record<string, VisualBlockSlotData>
 
 export type VisualBlockProps = Record<string, any>
 
+export type VisualEditorSourceData = {
+  label: string
+  value: Record<string, VisualEditorProps> | Record<string, VisualEditorProps>[]
+  createHandler?: () => Record<string, VisualEditorProps>
+}
+
+export type VisualEditorSourceDataMap = Record<string, VisualEditorSourceData>
+
+export type VisualSourceData = Record<string, any> | Record<string, any>[]
+
+export type VisualSourceDataMap = Record<string, VisualSourceData>
+
 // 组件属性编辑类型
 export enum VisualEditorPropsType {
   input = 'input',
@@ -26,6 +38,7 @@ export enum VisualEditorPropsType {
   switch = 'switch',
   table = 'table',
   image = 'image',
+  options = 'options',
 }
 
 export type VisualEditorTableOption = {
@@ -89,6 +102,7 @@ export type VisualEditorBlockData = {
   slots: VisualBlockSlotMap
   events: VisualBlockEventMap
   bindProps: Record<string, VisualBindProp>
+  sourceData: VisualSourceDataMap
 }
 
 // 页面配置
@@ -125,6 +139,7 @@ export type VisualEditorComponent = {
     styles: CSSProperties
     block: VisualEditorBlockData
     slots?: VisualBlockSlotMap
+    sourceData: VisualSourceDataMap
   }) => () => JSX.Element
   draggable?: boolean
   props?: Record<string, VisualEditorProps>
@@ -136,6 +151,7 @@ export type VisualEditorComponent = {
   initSlotsOptions?: (slotMap: VisualBlockSlotMap) => void
   events?: VisualEditorEvent[]
   bindProps?: Record<string, VisualBindProp>
+  sourceData?: VisualEditorSourceDataMap
 }
 
 // 组件模块

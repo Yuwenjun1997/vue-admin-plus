@@ -48,7 +48,6 @@ export const useVisualStorage = () => {
     if (currentPage.value) {
       setCurrentBlockFn(currentPage.value.blocks)
     }
-    console.log(currentBlock.value)
   }
 
   return {

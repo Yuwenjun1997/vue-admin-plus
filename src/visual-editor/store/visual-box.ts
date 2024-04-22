@@ -7,6 +7,7 @@ import { CssEditorOption, cssEditorOptions } from '../configs/css-editor-options
 import { CSSProperties } from 'vue'
 import { useVisualStorage } from '../hooks/useVisualStorage'
 import { useVisualSlots } from '../hooks/useVisualSlots'
+import { useVisualSourceData } from '../hooks/useVisualSourceData'
 
 interface VisualBoxState {
   isDrag: boolean
@@ -106,6 +107,9 @@ export const useVisualBoxStore = defineStore('visualBox', {
       // 处理插槽
       useVisualSlots().init(this.currentBlock.slots)
 
+      // 处理数据源
+      useVisualSourceData().init(this.currentBlock.sourceData)
+
       // 处理css样式
       if (!this.cssEditorOptions.length) {
         this.cssEditorOptions = cloneDeep(cssEditorOptions)
@@ -127,6 +131,8 @@ export const useVisualBoxStore = defineStore('visualBox', {
       replaceProps(this.currentBlock.slots, block.slots)
       // 合并绑定属性
       replaceProps(this.currentBlock.bindProps, block.bindProps)
+      // 合并数据源
+      replaceProps(this.currentBlock.sourceData, block.sourceData)
 
       // 向store中添加属性
       Object.entries(this.currentBlock.bindProps).forEach(([key, value]) => {

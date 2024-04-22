@@ -10,16 +10,15 @@
           <div v-if="!visualEditor" class="overflow-hidden p-2">
             <el-empty description="当前未选中组件" />
           </div>
-          <div v-else :key="currentBlock?._vid" class="p-4">
+          <div v-else :key="currentBlock?._vid" class="px-4 pb-4">
+            <el-divider>基础属性</el-divider>
             <AttrEditor :options="visualEditor.props" show-bind :trigger-handler="handleAttrChange" />
-            <template v-if="visualEditor.slots && visualEditor.slots.length">
+            <template v-if="visualEditor.slots">
               <el-divider>插槽配置</el-divider>
-              <SlotEditor
-                :options="visualEditor.slots"
-                :trigger-handler="handleAttrChange"
-                @add-slot="add"
-                @delete-slot="remove"
-              />
+              <SlotEditor :options="visualEditor.slots" :trigger-handler="handleAttrChange" />
+            </template>
+            <template v-if="visualEditor.sourceData">
+              <SourceEditor :options="visualEditor.sourceData" :trigger-handler="handleAttrChange" />
             </template>
           </div>
         </el-scrollbar>
@@ -64,14 +63,12 @@ import AttrEditor from './AttrEditor/index.vue'
 import SlotEditor from './SlotEditor/index.vue'
 import StyleEditor from './StyleEditor/index.vue'
 import EventEditor from './EventEditor/index.vue'
-import { useVisualSlots } from '@/visual-editor/hooks/useVisualSlots'
+import SourceEditor from './SourceEditor/index.vue'
 
 const activeTab = ref<string>('BasicAttribute')
 
 const visualBoxStore = useVisualBoxStore()
 const { visualEditor, cssEditorOptions, currentBlock } = storeToRefs(visualBoxStore)
-
-const { add, remove } = useVisualSlots()
 
 const handleAttrChange = () => {
   visualBoxStore.applyVisualEditor()
