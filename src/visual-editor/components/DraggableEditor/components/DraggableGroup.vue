@@ -42,6 +42,8 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   itemKey: '_vid',
+  tag: 'div',
+  componentData: () => ({}),
   moduleValue: () => [],
   group: () => ({ name: 'component' }),
   startHandler: () => {},

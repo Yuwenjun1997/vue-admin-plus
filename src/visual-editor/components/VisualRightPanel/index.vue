@@ -13,7 +13,11 @@
           <div v-else :key="currentBlock?._vid" class="px-4 pb-4">
             <el-divider>基础属性</el-divider>
             <AttrEditor :options="visualEditor.props" show-bind :trigger-handler="handleAttrChange" />
-            <template v-if="visualEditor.slots">
+            <template v-if="visualEditor.decorator && visualEditor.decoratorProps">
+              <el-divider>装饰器属性</el-divider>
+              <AttrEditor :options="visualEditor.decoratorProps" show-bind :trigger-handler="handleAttrChange" />
+            </template>
+            <template v-if="visualEditor.slots && currentBlock?.slotEditable">
               <el-divider>插槽配置</el-divider>
               <SlotEditor :options="visualEditor.slots" :trigger-handler="handleAttrChange" />
             </template>

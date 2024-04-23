@@ -21,15 +21,12 @@ export default {
   moduleName: 'basicWidgets',
   label: '栅格布局',
   preview: () => (
-    <Row style={{ width: '100%' }} gutter={4}>
-      <Col span={8}>
-        <div style={{ background: '#f0f0f0', minHeight: '26px' }}></div>
+    <Row style={{ width: '100%' }} gutter={16}>
+      <Col span={12}>
+        <div style={{ background: '#fff', minHeight: '40px' }}></div>
       </Col>
-      <Col span={8}>
-        <div style={{ background: '#f0f0f0', minHeight: '26px' }}></div>
-      </Col>
-      <Col span={8}>
-        <div style={{ background: '#f0f0f0', minHeight: '26px' }}></div>
+      <Col span={12}>
+        <div style={{ background: '#fff', minHeight: '40px' }}></div>
       </Col>
     </Row>
   ),

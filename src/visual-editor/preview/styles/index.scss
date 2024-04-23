@@ -4,6 +4,12 @@ body {
   min-height: 100vh;
 }
 
+#app,
+.visual-preview-container {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;

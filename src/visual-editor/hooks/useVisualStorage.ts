@@ -11,7 +11,7 @@ export const useVisualStorage = () => {
 
   // 预览数据
   const state = useStorage('visual-editor-preview', {
-    device: device.value,
+    device: device.value || 'h5',
     visualPages: visualPages.value,
     visualStore: visualStore.value,
     currentPageId: currentPage.value?.pageId,
@@ -41,7 +41,7 @@ export const useVisualStorage = () => {
 
   // 初始化预览数据
   const init = () => {
-    device.value = state.value.device
+    device.value = state.value.device || 'h5'
     visualPages.value = state.value.visualPages
     visualStore.value = state.value.visualStore
     currentPage.value = visualPages.value.find((item) => item.pageId === state.value.currentPageId) || null

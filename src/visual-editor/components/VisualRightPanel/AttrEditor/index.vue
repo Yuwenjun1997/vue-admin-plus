@@ -26,7 +26,7 @@
         <el-switch v-model="option.defaultValue" @change="triggerHandler" />
       </template>
       <template v-if="option.type === VisualEditorPropsType.select">
-        <el-select v-model="option.defaultValue" clearable @change="triggerHandler">
+        <el-select v-model="option.defaultValue" clearable placeholder="请选择" @change="triggerHandler">
           <el-option v-for="(item, i) in option.options" :key="i" :label="item.label" :value="item.value" />
         </el-select>
       </template>

@@ -48,6 +48,8 @@ interface Props {
 const { isActive, hasSlots } = useVisualUtils()
 
 const props = withDefaults(defineProps<Props>(), {
+  tag: 'div',
+  componentData: () => ({}),
   children: () => [],
 })
 const emit = defineEmits<{

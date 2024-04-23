@@ -36,6 +36,7 @@ const isEmpty = computed(() => currentPage.value && currentPage.value.blocks.len
   contain: layout;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 16px var(--el-color-primary-light-7);
 
   &.pc {
     width: 100%;

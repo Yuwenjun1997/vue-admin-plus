@@ -1,14 +1,15 @@
 import { useVisualEvents } from '@/visual-editor/hooks/useVisualEvents'
 import { useVisualProps } from '@/visual-editor/hooks/useVisualProps'
-import { VisualBlockSlotData, VisualEditorComponent } from '@/visual-editor/types'
+import { VisualEditorComponent } from '@/visual-editor/types'
 import {
   createEditorInputProp,
   createEditorSelectProp,
   createEditorSwitchProp,
 } from '@/visual-editor/visual-editor.props'
+import { isArray } from 'lodash'
 import { CellGroup, Cell } from 'vant'
 
-const createSlot = () => ({
+const createCell = () => ({
   title: createEditorInputProp({ label: '	左侧标题', defaultValue: '单元格' }),
   value: createEditorInputProp({ label: '	右侧内容', defaultValue: '内容' }),
   label: createEditorInputProp({ label: '	标题下方的描述信息' }),
@@ -41,7 +42,7 @@ const createSlot = () => ({
 })
 
 export default {
-  key: 'layout',
+  key: 'cell',
   moduleName: 'basicWidgets',
   label: '单元格',
 
@@ -52,7 +53,7 @@ export default {
     </CellGroup>
   ),
 
-  render: ({ styles, block, slots: vslots }) => {
+  render: ({ styles, block, sourceData }) => {
     const { genProps } = useVisualProps()
     const props = computed(() => genProps(block))
 
@@ -62,19 +63,25 @@ export default {
     return () => (
       <div style={styles}>
         <CellGroup {...props.value} style={'width: 100%'}>
-          {Object.entries<VisualBlockSlotData>(vslots || {}).map(([_key, vslot]) => {
-            return <Cell {...vslot.props} {...events.value}></Cell>
-          })}
+          {isArray(sourceData.cells) &&
+            sourceData.cells.map((item) => {
+              return <Cell {...item} {...events.value}></Cell>
+            })}
         </CellGroup>
       </div>
     )
   },
   props: {
     title: createEditorInputProp({ label: '分组标题', defaultValue: '' }),
-    inspect: createEditorSwitchProp({ label: '是否展示为圆角卡片风格' }),
+    inset: createEditorSwitchProp({ label: '是否展示为圆角卡片风格' }),
     border: createEditorSwitchProp({ label: '是否显示外边框' }),
   },
-  slots: [createSlot(), createSlot()],
-  createSlotHandler: createSlot,
+  sourceData: {
+    cells: {
+      label: '单元格',
+      value: [createCell(), createCell()],
+      createHandler: createCell,
+    },
+  },
   events: [{ label: '点击单元格时触发', eventName: 'click' }],
 } as VisualEditorComponent

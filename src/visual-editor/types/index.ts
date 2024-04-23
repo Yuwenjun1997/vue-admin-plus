@@ -103,6 +103,7 @@ export type VisualEditorBlockData = {
   events: VisualBlockEventMap
   bindProps: Record<string, VisualBindProp>
   sourceData: VisualSourceDataMap
+  slotEditable: boolean
 }
 
 // 页面配置
@@ -152,6 +153,7 @@ export type VisualEditorComponent = {
   events?: VisualEditorEvent[]
   bindProps?: Record<string, VisualBindProp>
   sourceData?: VisualEditorSourceDataMap
+  slotEditable?: boolean
 }
 
 // 组件模块
