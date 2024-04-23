@@ -30,8 +30,10 @@ import { ElMessage } from 'element-plus'
 import { saveAs } from 'file-saver'
 import { useVisualBoxStore } from '@/visual-editor/store/visual-box'
 import { storeToRefs } from 'pinia'
+import { useVisualStorage } from '@/visual-editor/hooks/useVisualStorage'
 
-const { visualPages } = storeToRefs(useVisualBoxStore())
+const { visualPages, currentPage } = storeToRefs(useVisualBoxStore())
+const { setState } = useVisualStorage()
 
 // 导入导出json
 const showJsonCodeModal = ref<boolean>(false)
@@ -50,7 +52,10 @@ const handleImportJson = () => {
   try {
     const data = JSON.parse(jsonCode.value)
     visualPages.value = data
+    currentPage.value = null
     showJsonCodeModal.value = false
+    setState()
+    ElMessage.success('已导入全部页面')
   } catch (error) {
     ElMessage.error('导入失败，请检查Json格式')
   }

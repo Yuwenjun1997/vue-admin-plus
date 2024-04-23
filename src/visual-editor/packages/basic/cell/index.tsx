@@ -64,8 +64,8 @@ export default {
       <div style={styles}>
         <CellGroup {...props.value} style={'width: 100%'}>
           {isArray(sourceData.cells) &&
-            sourceData.cells.map((item) => {
-              return <Cell {...item} {...events.value}></Cell>
+            sourceData.cells.map((item, index) => {
+              return <Cell {...item} {...events.value} key={index}></Cell>
             })}
         </CellGroup>
       </div>

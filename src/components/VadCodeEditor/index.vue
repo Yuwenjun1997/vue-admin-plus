@@ -92,7 +92,6 @@ onMounted(() => {
   //编辑时同步数据
   aceEditor.value.getSession().on('change', () => {
     if (!aceEditor.value) return
-    console.log(aceEditor.value.getValue())
     emit('update:modelValue', aceEditor.value.getValue())
   })
 })

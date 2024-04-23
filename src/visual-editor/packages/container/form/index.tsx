@@ -1,3 +1,4 @@
+import { useVisualEvents } from '@/visual-editor/hooks/useVisualEvents'
 import { useVisualProps } from '@/visual-editor/hooks/useVisualProps'
 import { useVisualStorage } from '@/visual-editor/hooks/useVisualStorage'
 import { VisualBlockSlotData, VisualEditorComponent } from '@/visual-editor/types'
@@ -30,8 +31,10 @@ export default {
     slotsTemp[block._vid] ??= {}
 
     const { genProps } = useVisualProps()
-
     const props = computed(() => genProps(block))
+
+    const { genEvents } = useVisualEvents()
+    const events = computed(() => genEvents(block))
 
     watchEffect(() => {
       if (Object.keys(vslots || {}).length) {
@@ -46,7 +49,7 @@ export default {
 
     return () => (
       <div style={styles}>
-        <Form style="width:100%" {...props.value}>
+        <Form style="width:100%" {...props.value} {...events.value}>
           {Object.entries<VisualBlockSlotData>(vslots || {}).map(([key, vslot]) => {
             slotsTemp[block._vid][key] = vslot
             return renderSlot(slots, key)

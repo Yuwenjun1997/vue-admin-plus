@@ -34,7 +34,7 @@ export default {
     )
   },
   props: {
-    modelValue: createEditorInputProp({ label: '当前输入的值' }),
+    modelValue: createEditorInputProp({ label: '当前输入的值', defaultValue: '' }),
     label: createEditorInputProp({ label: '输入框左侧文本', defaultValue: '文本' }),
     name: createEditorInputProp({ label: '名称' }),
     size: createEditorSelectProp({

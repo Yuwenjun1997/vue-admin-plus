@@ -139,7 +139,7 @@ export type VisualEditorComponent = {
   render: (data: {
     styles: CSSProperties
     block: VisualEditorBlockData
-    slots?: VisualBlockSlotMap
+    slots: VisualBlockSlotMap
     sourceData: VisualSourceDataMap
   }) => () => JSX.Element
   draggable?: boolean

@@ -95,8 +95,9 @@ export const useVisualUtils = () => {
   }
 
   const clear = () => {
-    if (!currentPage.value) return
-    currentPage.value.blocks = []
+    if (currentPage.value) {
+      currentPage.value.blocks = []
+    }
     currentBlock.value = null
     visualEditor.value = null
   }

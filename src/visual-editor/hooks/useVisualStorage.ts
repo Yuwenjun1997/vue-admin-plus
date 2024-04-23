@@ -50,9 +50,19 @@ export const useVisualStorage = () => {
     }
   }
 
+  // 清空全部状态
+  const clear = () => {
+    state.value.currentBlockId = ''
+    state.value.currentPageId = ''
+    state.value.device = 'h5'
+    state.value.visualPages = []
+    state.value.visualStore = {}
+  }
+
   return {
     previewLink,
     init,
     setState,
+    clear,
   }
 }
