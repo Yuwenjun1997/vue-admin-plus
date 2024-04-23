@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'vue'
 import { customAlphabet } from 'nanoid'
 
 import {
@@ -7,7 +6,6 @@ import {
   VisualBlockSlotMap,
   VisualEditorBlockData,
   VisualEditorComponent,
-  VisualEditorProps,
 } from './types'
 import { isArray } from 'lodash'
 
@@ -78,21 +76,7 @@ export function createVisualEditorConfig() {
   return {
     componentModules,
     componentMap,
-    registry: <_, Props extends Record<string, VisualEditorProps> = {}>(
-      moduleName: keyof ComponentModules,
-      key: string,
-      component: {
-        label: string
-        preview: () => JSX.Element
-        render: (data: {
-          styles: CSSProperties
-          block: VisualEditorBlockData
-          slots?: VisualBlockSlotMap
-        }) => () => JSX.Element
-        props?: Props
-        styles?: CSSProperties
-      }
-    ) => {
+    registry: (moduleName: keyof ComponentModules, key: string, component: VisualEditorComponent) => {
       const comp = { ...component, key, moduleName }
       componentModules[moduleName].push(comp)
       componentMap[key] = comp
