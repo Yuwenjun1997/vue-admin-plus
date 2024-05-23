@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 vad-bg-color">
+  <div class="p-4 vad-bg-color h-full flex flex-col">
     <div class="flex items-center justify-between">
       <div class="flex items-center">
         <el-button type="primary">
@@ -16,31 +16,41 @@
         <el-button type="primary">查询</el-button>
       </div>
     </div>
-    <vxe-table
-      align="center"
-      border
-      class="mt-4"
-      :data="data"
-      round
-      :row-config="{ isCurrent: true, isHover: true }"
-      size="mini"
-      stripe
-    >
-      <vxe-column type="checkbox" width="60" />
-      <vxe-column type="seq" width="60" />
-      <vxe-column field="nickname" resizable title="昵称" />
-      <vxe-column title="邮箱" />
-      <vxe-column title="角色" />
-      <vxe-column title="修改时间" />
-      <vxe-column title="操作" />
-    </vxe-table>
+    <div class="mt-4 flex-1">
+      <vxe-table border :data="data" height="auto" size="mini">
+        <vxe-column align="center" type="seq" width="60" />
+        <vxe-column field="nickname" title="昵称" />
+        <vxe-column title="手机号" />
+        <vxe-column title="邮箱" />
+        <vxe-column title="角色" />
+        <vxe-column title="修改时间" />
+        <vxe-column title="操作" />
+      </vxe-table>
+    </div>
+    <div v-if="total" class="mt-4">
+      <VadPagination v-model:page-num="listQuery.pageNum" v-model:page-size="listQuery.pageSize" :total="total" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts" name="SettingUser">
+import { PageInfo } from '@/apis/type'
+import { getUserList } from '@/apis/user/api'
+import { UserDetail, UserListQuery } from '@/apis/user/type'
+import VadPagination from '@/components/VadPagination/index.vue'
 import { Icon } from '@iconify/vue'
 
 const data = ref<any[]>([{ nickname: '喻文俊' }, { nickname: '喻文俊' }])
+
+const listQuery = ref(new UserListQuery())
+const total = ref<number>(10)
+
+const fetchUserList = async () => {
+  const { data } = await getUserList<PageInfo<UserDetail>, UserListQuery>(listQuery.value)
+  console.log(data)
+}
+
+fetchUserList()
 </script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>
