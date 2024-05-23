@@ -16,3 +16,5 @@ export const VIEW_COMPONENT = () => import('@/views/index.vue')
  * @description: default layout
  */
 export const LAYOUT = () => import('@/layout/index.vue')
+
+export const PREV_ROUTES_KEY = 'visual_prev_routes'

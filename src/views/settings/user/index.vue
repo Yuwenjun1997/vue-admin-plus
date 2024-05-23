@@ -6,10 +6,6 @@
           <template #icon><Icon icon="line-md:plus" /></template>
           <span>添加</span>
         </el-button>
-        <el-button type="danger">
-          <template #icon><Icon icon="ep:delete" /></template>
-          <span>批量删除</span>
-        </el-button>
       </div>
       <div class="flex items-center">
         <el-input class="!w-64 mr-3" placeholder="请输入内容" />
@@ -17,13 +13,24 @@
       </div>
     </div>
     <div class="mt-4 flex-1">
-      <vxe-table border :data="data" height="auto" size="mini">
+      <vxe-table border :data="list" height="auto" size="mini">
         <vxe-column align="center" type="seq" width="60" />
-        <vxe-column field="nickname" title="昵称" />
-        <vxe-column title="手机号" />
-        <vxe-column title="邮箱" />
-        <vxe-column title="角色" />
-        <vxe-column title="修改时间" />
+        <vxe-column field="username" title="用户名">
+          <template #default="{ row }">{{ row.username || '-' }}</template>
+        </vxe-column>
+        <vxe-column field="nickname" title="昵称">
+          <template #default="{ row }">{{ row.nickname || '-' }}</template>
+        </vxe-column>
+        <vxe-column title="手机号">
+          <template #default="{ row }">{{ row.mobile || '-' }}</template>
+        </vxe-column>
+        <vxe-column title="邮箱">
+          <template #default="{ row }">{{ row.email || '-' }}</template>
+        </vxe-column>
+        <vxe-column field="createDate" title="创建时间" />
+        <vxe-column field="updateDate" title="修改时间">
+          <template #default="{ row }">{{ row.updateDate || '-' }}</template>
+        </vxe-column>
         <vxe-column title="操作" />
       </vxe-table>
     </div>
@@ -40,14 +47,14 @@ import { UserDetail, UserListQuery } from '@/apis/user/type'
 import VadPagination from '@/components/VadPagination/index.vue'
 import { Icon } from '@iconify/vue'
 
-const data = ref<any[]>([{ nickname: '喻文俊' }, { nickname: '喻文俊' }])
-
 const listQuery = ref(new UserListQuery())
 const total = ref<number>(10)
+const list = ref<UserDetail[]>([])
 
 const fetchUserList = async () => {
   const { data } = await getUserList<PageInfo<UserDetail>, UserListQuery>(listQuery.value)
-  console.log(data)
+  list.value = data.records
+  total.value = data.total
 }
 
 fetchUserList()

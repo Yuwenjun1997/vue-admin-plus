@@ -32,8 +32,12 @@
 <script setup lang="ts">
 import { userLogin } from '@/apis/auth/api'
 import { UserLoginForm } from '@/apis/auth/type'
+import { ROOT_NAME } from '@/router/constant'
+import { getPrevRoute } from '@/router/helper'
 import { useUserStore } from '@/store/modules/user'
 import { FormInstance, FormRules } from 'element-plus'
+
+const router = useRouter()
 
 const form = ref<UserLoginForm>(new UserLoginForm())
 
@@ -49,8 +53,18 @@ const handleLogin = async () => {
     await formRef.value?.validate()
     const { data } = await userLogin<string, UserLoginForm>(form.value)
     useUserStore().login(data)
+    loginSuccess()
   } catch (error) {
     console.log(error)
+  }
+}
+
+const loginSuccess = () => {
+  const prevRoute = getPrevRoute()
+  if (prevRoute && prevRoute.name) {
+    router.replace({ ...prevRoute })
+  } else {
+    router.replace({ name: ROOT_NAME })
   }
 }
 </script>

@@ -1,6 +1,6 @@
 export class UserListQuery {
   pageNum: number = 1
-  pageSize: number = 20
+  pageSize: number = 50
   email?: string
   mobile?: string
   nickname?: string

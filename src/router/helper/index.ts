@@ -1,7 +1,8 @@
 import { MenuOption } from '@/layout/types'
 import { WHITE_NAME_LIST, router } from '..'
-import { LAYOUT, VIEW_COMPONENT } from '../constant'
+import { LAYOUT, PREV_ROUTES_KEY, VIEW_COMPONENT } from '../constant'
 import { RouteRecordRaw } from 'vue-router'
+import { getStorage } from '@/utils/storage'
 
 const modules = import.meta.glob('@/views/**/*.vue')
 
@@ -72,4 +73,8 @@ export function generateRoutes(menus: MenuOption[]): RouteRecordRaw[] {
  */
 export function addAllRoutes(routes: RouteRecordRaw[]) {
   routes.forEach((route) => router.addRoute(route))
+}
+
+export function getPrevRoute(): RouteRecordRaw | null {
+  return getStorage(PREV_ROUTES_KEY)
 }
