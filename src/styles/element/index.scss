@@ -2,3 +2,8 @@
   top: 16% !important;
   bottom: unset !important;
 }
+
+.el-card {
+  --el-card-border-radius: 2px !important;
+  border: 0 !important;
+}

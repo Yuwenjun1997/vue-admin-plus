@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "name": "Settings",
+      "path": "/settings",
+      "component": "@views/settings/settings.vue"
+    }
+  ]
+}

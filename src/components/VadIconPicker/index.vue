@@ -53,9 +53,9 @@ import { useIconList } from '@/hooks/useIconList'
 import { PopoverInstance } from 'element-plus'
 
 interface Props {
-  modelValue: string
-  trigger: 'hover' | 'click'
-  width: number | string
+  modelValue?: string
+  trigger?: 'hover' | 'click'
+  width?: number | string
 }
 
 const props = withDefaults(defineProps<Props>(), {

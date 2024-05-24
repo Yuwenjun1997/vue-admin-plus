@@ -110,6 +110,26 @@ export const menus: MenuOption[] = [
         },
       },
       {
+        name: 'SettingUserAdd',
+        path: '/settings/user/add',
+        meta: {
+          menuId: 'SettingUserAdd',
+          title: '添加用户',
+          icon: 'line-md:person-add',
+          component: '@/views/settings/user/edit.vue',
+        },
+      },
+      {
+        name: 'SettingUserEdit',
+        path: '/settings/user/edit/:id',
+        meta: {
+          menuId: 'SettingUserEdit',
+          title: '修改用户',
+          icon: 'line-md:person-add',
+          component: '@/views/settings/user/edit.vue',
+        },
+      },
+      {
         name: 'SettingRole',
         path: '/settings/role',
         meta: {
@@ -137,6 +157,26 @@ export const menus: MenuOption[] = [
           title: '菜单管理',
           icon: 'line-md:list-3-twotone',
           component: '@/views/settings/menu/index.vue',
+        },
+      },
+      {
+        name: 'SettingMenuAdd',
+        path: '/settings/menu/add',
+        meta: {
+          menuId: 'SettingMenuAdd',
+          title: '添加菜单',
+          icon: 'line-md:list-3-twotone',
+          component: '@/views/settings/menu/edit.vue',
+        },
+      },
+      {
+        name: 'SettingMenuEdit',
+        path: '/settings/menu/edit/:id',
+        meta: {
+          menuId: 'SettingMenuEdit',
+          title: '修改菜单',
+          icon: 'line-md:list-3-twotone',
+          component: '@/views/settings/menu/edit.vue',
         },
       },
       {

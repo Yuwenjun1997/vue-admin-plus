@@ -23,6 +23,9 @@ dependencies:
   '@vueuse/core':
     specifier: ^10.9.0
     version: 10.9.0(vue@3.4.21)
+  '@vxecli/import-unplugin-vue-components':
+    specifier: ^1.0.2
+    version: 1.0.2
   axios:
     specifier: ^1.7.2
     version: 1.7.2
@@ -1541,6 +1544,10 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+    dev: false
+
+  /@vxecli/import-unplugin-vue-components@1.0.2:
+    resolution: {integrity: sha512-lwzDQFqaZ53n84EjeE8v0wd09cYLwMB9+4A3qxxDlwvNjuFAfOEFeg5AbFJsSvFvZcbbwa9P+5VnusjU7FUsnQ==}
     dev: false
 
   /ace-builds@1.32.7:

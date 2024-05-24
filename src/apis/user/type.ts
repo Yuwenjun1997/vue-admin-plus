@@ -23,3 +23,13 @@ export type UserDetail = {
   roles: UserRole[]
   updateDate: string
 }
+
+export class UserEditForm {
+  id?: number
+  avatar?: string
+  username: string = ''
+  email: string = ''
+  mobile: string = ''
+  nickname: string = ''
+  roleIds: number[] = []
+}

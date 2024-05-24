@@ -3,7 +3,7 @@ import { useTabsStore } from '@/layout/store/tabs'
 import { getStorage, setStorage } from '@/utils/storage'
 import nProgress from 'nprogress'
 import { Router } from 'vue-router'
-import { PREV_ROUTES_KEY } from '../constant'
+import { PREV_ROUTES_KEY, ROOT_NAME } from '../constant'
 import netConfig from '@/config/net.config'
 import { useUserStore } from '@/store/modules/user'
 
@@ -63,6 +63,9 @@ export function createPermissionGuard(router: Router) {
     login(token)
     if (!token && !WHITE_ROUTE_NAME.includes(to.name as string)) {
       return { name: 'Login' }
+    }
+    if (token && to.name === 'Login') {
+      return { name: ROOT_NAME }
     }
     return true
   })

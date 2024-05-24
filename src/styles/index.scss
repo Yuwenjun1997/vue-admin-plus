@@ -4,13 +4,13 @@
 @import './element/index.scss';
 
 ::-webkit-scrollbar {
-  width: 4px; /* 滚动条宽度 */
-  height: 4px; /* 滚动条高度 */
-  border-radius: 4px;
+  width: 8px; /* 滚动条宽度 */
+  height: 8px; /* 滚动条高度 */
+  border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb {
   background-color: var(--el-scrollbar-bg-color, var(--el-text-color-secondary)); /* 滚动条滑块背景色 */
-  border-radius: 4px; /* 滑块圆角 */
+  border-radius: 8px; /* 滑块圆角 */
   transition: var(--el-transition-duration) background-color;
 }
 ::-webkit-scrollbar-thumb:hover {

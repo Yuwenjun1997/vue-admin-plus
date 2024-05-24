@@ -6,6 +6,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vueSetupExtend from 'vite-plugin-vue-setup-extend' // 引入插件
+import { VxeTableResolver } from '@vxecli/import-unplugin-vue-components'
 
 const pathSrc = path.resolve(__dirname, '../src')
 
@@ -36,6 +37,7 @@ export default {
         ElementPlusResolver({
           importStyle: 'sass',
         }),
+        VxeTableResolver(),
       ],
       dts: path.resolve(pathSrc, 'components.d.ts'),
     }),
